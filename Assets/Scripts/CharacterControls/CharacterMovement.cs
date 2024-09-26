@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.DefaultInputActions;
 
 
 public interface IPlayer
@@ -26,11 +27,14 @@ public class CharacterMovement : MonoBehaviour
 
     private InputActionMap player;
     private PlayerInput playerInput;
+    private InputAction openInventory;
 
     public InputActionMap PlayerAction { get => player; set => player = value; }
 
     [SerializeField] int jumpForce = 2;
     [SerializeField] bool canJump = false;
+
+    private bool isInventoryOpen = false;
 
     private void Awake()
     {
@@ -41,7 +45,24 @@ public class CharacterMovement : MonoBehaviour
     void Start()
     {
         speed = normalSpeed;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void OnEnable()
+    {
+        openInventory = player.FindAction("Inventory");
+
+        openInventory.performed += DisableControls;
+
+        openInventory.Enable();
+    }
+
+    private void OnDisable()
+    {
+        openInventory.Disable();
+
+        openInventory.performed -= DisableControls;
+
     }
 
     // Update is called once per frame
@@ -53,7 +74,10 @@ public class CharacterMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        Look();
+        if (!isInventoryOpen)
+        {
+            Look();
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -100,5 +124,22 @@ public class CharacterMovement : MonoBehaviour
         lookRotation += (-look.y * sensitivity);
         lookRotation = Mathf.Clamp(lookRotation, -90, 90);
         playerInput.camera.transform.eulerAngles = new Vector3(lookRotation, playerInput.camera.transform.eulerAngles.y, playerInput.camera.transform.eulerAngles.z);
+    }
+
+    private void DisableControls(InputAction.CallbackContext context)
+    {
+        isInventoryOpen = !isInventoryOpen; 
+
+        if (isInventoryOpen)
+        {
+            
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }
