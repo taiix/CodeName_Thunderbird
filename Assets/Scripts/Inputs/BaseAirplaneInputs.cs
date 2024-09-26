@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class BaseAirplaneInputs : MonoBehaviour
 {
+
+
     public InputActionAsset inputActions;
     #region Input Actions
 
@@ -17,7 +19,6 @@ public class BaseAirplaneInputs : MonoBehaviour
     private InputAction flapsAction;
 
     #endregion
-
 
     public float throttleSpeed = 0.1f;
 
@@ -62,6 +63,7 @@ public class BaseAirplaneInputs : MonoBehaviour
 
     private void OnDisable()
     {
+
         // Disable the actions
         pitchAction.Disable();
         yawAction.Disable();
@@ -106,7 +108,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+     
     }
 
     // Update is called once per frame
@@ -115,6 +117,8 @@ public class BaseAirplaneInputs : MonoBehaviour
  
 
         HandleInput();
+
+        
     }
 
 
@@ -154,5 +158,12 @@ public class BaseAirplaneInputs : MonoBehaviour
         stickyThrottle = stickyThrottle + (throttle * throttleSpeed * Time.deltaTime);
         stickyThrottle = Mathf.Clamp01(stickyThrottle);
         //Debug.Log("Sticky Throttle = " + stickyThrottle);
+    }
+
+    //FOR DEMO
+
+    public void ResetStickyThrottle()
+    {
+        stickyThrottle = 0f;
     }
 }
