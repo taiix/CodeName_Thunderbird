@@ -20,10 +20,16 @@ public class RingTracker : MonoBehaviour
         
         if (other.CompareTag("Ring"))
         {
-            ringsPassed++;
-            UpdateRingCounter(); 
 
-            Destroy(other.transform.parent.gameObject);
+            Ring ring = other.GetComponentInParent<Ring>();
+
+            if (ring != null && !ring.isPassedThrough)
+            {
+                ring.isPassedThrough = true;
+                ringsPassed++; 
+                UpdateRingCounter();    
+                Destroy(other.transform.parent.gameObject);
+            }
         }
     }
 
