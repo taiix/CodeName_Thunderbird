@@ -70,7 +70,7 @@ public class AirplaneController : RigidBodyController
             {
                 foreach (AirplaneEngine engine in engines)
                 {
-                    rb.AddForce(engine.CalculateForce(Input.StickyThrottle));
+                    rb.AddForce(engine.CalculateForce(Input.Throttle));
 
                 }
             }
