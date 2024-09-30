@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public abstract class Interactable : MonoBehaviour
 {
     public bool isHeld;
 
+    public string interactionText = string.Empty;
+    
     public virtual void Awake()
     {
+        
         gameObject.layer = 9;
     }
     //Method that each interactable will overwrite and call when the player interacts 

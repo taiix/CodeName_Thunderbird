@@ -18,8 +18,8 @@ public class InteractionHandler : MonoBehaviour
 
     private IPlayer playerControls;
 
-    [SerializeField] private GameObject pressF;
-    // Start is called before the first frame update
+    [SerializeField] public GameObject interactionUI;
+ 
 
     private void Awake()
     {
@@ -65,7 +65,7 @@ public class InteractionHandler : MonoBehaviour
                 {
                     //button.IsPressed = false;
                     currentInteractable.OnLoseFocus();
-                    pressF.SetActive(false);
+                    interactionUI.SetActive(false);
 
                 }
 
@@ -75,14 +75,17 @@ public class InteractionHandler : MonoBehaviour
                 {
                     //If the current interactable is in range of the raycast call the OnFocus method 
                     currentInteractable.OnFocus();
-                    pressF.SetActive(true);          
+
+                    interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = currentInteractable.interactionText;
+
+                    interactionUI.SetActive(true);          
                 }
             }
         }
 
         else if (currentInteractable == null)
         {
-            pressF.GetComponentInChildren<TextMeshProUGUI>().text = "Press F";
+            //interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = "Press F";
         }
 
         //If we are not looking at an interactable nullify the last current interactable 
@@ -90,8 +93,8 @@ public class InteractionHandler : MonoBehaviour
         {
             currentInteractable.OnLoseFocus();
             currentInteractable = null;
-            pressF.SetActive(false);
-            pressF.GetComponentInChildren<TextMeshProUGUI>().text = "Press F";
+            interactionUI.SetActive(false);
+            //interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = "Press F";
         }
     }
 
