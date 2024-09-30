@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aabe4d06f0f5b944a2f82764f523209, type: 3}
+  m_Name: Wood
+  m_EditorClassIdentifier: 
+  id: 1
+  itemName: Wood
+  itemIcon: {fileID: 21300000, guid: 1bd58574ab16619408ecfe39a9cc7b16, type: 3}
+  itemDescription: 'Log of wood '
+  itemPrefab: {fileID: 2881304172665529174, guid: 88bcef4b78556fa4e9fd82dda23c7c5f, type: 3}
+  maxStack: 5
+  inventorySize: 1
+  weight: 10
+  type: 0

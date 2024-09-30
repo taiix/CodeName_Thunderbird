@@ -8,7 +8,7 @@ public class Workbench : Interactable
     private Coroutine showTextCoroutine;
     public override void OnFocus()
     {
-
+        interactionText = "Press 'F' to interact with Workbench.";
     }
 
     public override void OnInteract()
@@ -25,7 +25,7 @@ public class Workbench : Interactable
 
     public override void OnLoseFocus()
     {
-
+        interactionText = string.Empty;
     }
 
     // Start is called before the first frame update
