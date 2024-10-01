@@ -16,6 +16,9 @@ public class AirplaneController : RigidBodyController
 
     public List<AirplaneWheels> wheels = new List<AirplaneWheels>();
 
+
+    private bool canControlPlane = false;
+
     public override void Start()
     {
 
@@ -53,7 +56,7 @@ public class AirplaneController : RigidBodyController
     }
     protected override void HandlePhysics()
     {
-        if (Input)
+        if (Input && canControlPlane)
         {
             HandleEngines();
             HandleAerodynamics();
@@ -100,5 +103,10 @@ public class AirplaneController : RigidBodyController
     void HandleAltitude()
     {
         //TODO
+    }
+
+    public void ActivateControls()
+    {
+        canControlPlane = !canControlPlane;
     }
 }

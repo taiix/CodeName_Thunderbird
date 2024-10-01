@@ -7,7 +7,6 @@ using static UnityEngine.InputSystem.DefaultInputActions;
 
 public interface IPlayer
 {
-
     InputActionMap PlayerAction { get; set; }
 }
 
@@ -29,7 +28,18 @@ public class CharacterMovement : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction openInventory;
 
-    public InputActionMap PlayerAction { get => player; set => player = value; }
+    public InputActionMap PlayerAction
+    {
+        get
+        {
+            // Ensure PlayerAction is initialized before accessing it.
+            if (player == null && playerInput != null)
+            {
+                player = playerInput.currentActionMap;
+            }
+            return player;
+        }
+    }
 
     [SerializeField] int jumpForce = 2;
     [SerializeField] bool canJump = false;
@@ -69,7 +79,7 @@ public class CharacterMovement : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
-       
+
     }
 
     private void LateUpdate()
@@ -128,18 +138,6 @@ public class CharacterMovement : MonoBehaviour
 
     private void DisableControls(InputAction.CallbackContext context)
     {
-        isInventoryOpen = !isInventoryOpen; 
-
-        if (isInventoryOpen)
-        {
-            
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
+        isInventoryOpen = !isInventoryOpen;
     }
 }
