@@ -49,7 +49,7 @@ public class PlaneInteractable : Interactable
      
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && IsPlaneStationary())
         {
             ExitPlane();
         }
@@ -57,41 +57,30 @@ public class PlaneInteractable : Interactable
 
     private void EnterPlane()
     {
-        interactionText = "Press 'Escape' to exit the plane";
 
         inPlaneUi.SetActive(true);
-
-        // Hide the player.
         player.SetActive(false);
 
-        // Enable the plane's controls.
         airplaneController.ActivateControls();
-
-        // Activate the plane camera.
         planeCamera.gameObject.SetActive(true);
 
         isPlayerInPlane = true;
 
-        Debug.Log("Player has entered the plane.");
+        InteractionHandler.Instance.UpdateInteractionText("Press 'Escape' to exit the plane");
+        //Debug.Log("Player has entered the plane.");
     }
 
-    // Method to handle the player exiting the plane.
     private void ExitPlane()
     {
         inPlaneUi.SetActive(false);
 
-        // Deactivate the plane's controls.
         airplaneController.ActivateControls();
 
-        // Disable the plane camera.
         planeCamera.gameObject.SetActive(false);
 
-        // Show the player and move them to the designated exit position.
+   
         player.SetActive(true);
         player.transform.position = playerExitPosition.position;
-
-        // Reactivate player controls here if needed (e.g., enabling character controller, input, etc.)
-
         isPlayerInPlane = false;
 
         Debug.Log("Player has exited the plane.");

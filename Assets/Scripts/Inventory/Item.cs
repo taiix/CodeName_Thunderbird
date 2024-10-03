@@ -18,6 +18,9 @@ public class Item : ScriptableObject
     public int inventorySize;
     public float weight;
 
+    //FOR ORES ONLY
+    public float miningTime;
+    public int minigameDifficulty;
 
     public enum Types
     {
