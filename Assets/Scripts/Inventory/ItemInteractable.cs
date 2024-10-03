@@ -8,7 +8,6 @@ public class ItemInteractable : Interactable
     public Item itemSO;
     public int amount = 1;
     
-
     private void Start()
     {
       
@@ -27,6 +26,8 @@ public class ItemInteractable : Interactable
     public override void OnInteract()
     {
         InventorySystem.Instance.PickUpItem(this);
+
+        InteractionHandler.Instance.UpdateInteractionText(string.Empty);
     }
 
     public override void OnLoseFocus()

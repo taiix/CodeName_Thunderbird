@@ -126,6 +126,7 @@ public class InventorySystem : MonoBehaviour
 
     public void PickUpItem(ItemInteractable item)
     {
+        Destroy(item.gameObject);
         int amountToAdd = item.amount;
 
         foreach (InventorySlot slot in slots)
@@ -174,6 +175,8 @@ public class InventorySystem : MonoBehaviour
                 return;
             }
         }
+
+       
     }
 
     public void OnSlotClicked(InventorySlot slot)
@@ -188,7 +191,7 @@ public class InventorySystem : MonoBehaviour
             largeItemImage.sprite = slot.itemInSlot.itemIcon;
             itemDescriptionText.text = slot.itemInSlot.itemDescription;
 
-            Debug.Log($"Showing details for {slot.itemInSlot.itemName}");
+            Debug.Log("Showing details for " + slot.itemInSlot.itemName);
         }
     }
 

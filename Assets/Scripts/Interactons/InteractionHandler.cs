@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class InteractionHandler : MonoBehaviour
 {
+    public static InteractionHandler Instance { get; private set; }
+
     public Vector3 interactionRaypoint = new Vector3(0.5f, 0.5f, 0f);
     public float interactionDistance = default;
 
@@ -23,6 +25,15 @@ public class InteractionHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         inputAsset = this.GetComponentInParent<PlayerInput>().actions;
         player = inputAsset.FindActionMap("Player");
         playerInput = this.GetComponentInParent<PlayerInput>();
@@ -110,6 +121,11 @@ public class InteractionHandler : MonoBehaviour
             //anim?.SetTrigger("press");
             currentInteractable.OnInteract();
         }
+    }
+
+    public void UpdateInteractionText(string text)
+    {
+        interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = text;
     }
 
 }
