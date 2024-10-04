@@ -25,6 +25,8 @@ public class InventorySystem : MonoBehaviour
 
     [SerializeField] public List<InventorySlot> slots = new List<InventorySlot>();
 
+    public List<Item> itemsInInventory = new List<Item>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -129,6 +131,8 @@ public class InventorySystem : MonoBehaviour
         Destroy(item.gameObject);
         int amountToAdd = item.amount;
 
+        itemsInInventory.Add(item.itemSO);
+
         foreach (InventorySlot slot in slots)
         {
             if (slot.itemInSlot == item.itemSO && slot.amountInSlot < item.itemSO.maxStack)
@@ -200,6 +204,7 @@ public class InventorySystem : MonoBehaviour
     {
         if (selectedSlot != null && selectedSlot.amountInSlot > 0)
         {
+            itemsInInventory.Remove(selectedSlot.itemInSlot);
             // Decrease the item amount in the selected slot by 1.
             selectedSlot.amountInSlot--;
 
@@ -207,19 +212,13 @@ public class InventorySystem : MonoBehaviour
             {
                 // If no more items are left in the slot, clear the slot.
                 selectedSlot.itemInSlot = null;
-                selectedSlot.gameObject.SetActive(false);
+                itemPanelUI.SetActive(false);
+                //selectedSlot.gameObject.SetActive(false);
                 Debug.Log("Slot is now empty.");
             }
 
             // Update the slot's UI.
             selectedSlot.SetStats();
-
-            // Optionally hide the item panel if the slot is empty.
-            if (selectedSlot.itemInSlot == null)
-            {
-                //itemPanelUI.SetActive(false);
-                Debug.Log("No items left to display, hiding item panel.");
-            }
         }
     }
 

@@ -31,7 +31,6 @@ public class MiningPoint : MonoBehaviour
             yield return null;
         }
 
-        // If the point fully disappears, consider it as a missed point.
         miniGame.PointMissed(this);
         Destroy(gameObject);
     }
@@ -39,23 +38,18 @@ public class MiningPoint : MonoBehaviour
     {
         if (isClicked)
             return;
-
-        // Use raycasting to ensure only the top-most object is clicked
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            // Check if the object hit by the raycast is this MiningPoint
+   
             if (hit.collider.gameObject == gameObject)
             {
-                // Mark the point as clicked to prevent multiple clicks
                 isClicked = true;
-
-                // Disable collider to prevent further clicks
+   
                 GetComponent<Collider>().enabled = false;
-
-                // Notify the mini-game and destroy the point
+             
                 miniGame.PointClicked(this);
             }
         }
