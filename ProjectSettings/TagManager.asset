@@ -5,14 +5,18 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ring
+  - LeftWing
+  - RightWing
+  - Rudder
+  - Damageable
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wing
   - Water
   - UI
-  - 
+  - PlaneBody
   - 
   - 
   - 

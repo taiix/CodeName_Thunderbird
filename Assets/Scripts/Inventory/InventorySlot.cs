@@ -19,22 +19,20 @@ public class InventorySlot : MonoBehaviour
     void Start()
     {
         slotButton = GetComponent<Button>();
-        slotButton.onClick.AddListener(OnSlotClicked); 
-    }
-    public void SetStats()
-    {
+        slotButton.onClick.AddListener(OnSlotClicked);
 
-        // Initialize UI components if not already set
         if (itemIcon == null)
         {
-            itemIcon = GetComponentInChildren<Image>(); 
+            itemIcon = GetComponentInChildren<Image>();
         }
 
         if (amountText == null)
         {
-            amountText = GetComponentInChildren<TextMeshProUGUI>(); 
+            amountText = GetComponentInChildren<TextMeshProUGUI>();
         }
-
+    }
+    public void SetStats()
+    {
         if (itemInSlot != null)
         {
             itemIcon.sprite = itemInSlot.itemIcon; 
@@ -44,15 +42,16 @@ public class InventorySlot : MonoBehaviour
             itemIcon.gameObject.SetActive(true);
             amountText.gameObject.SetActive(true);
         }
-        //else
-        //{
-        //    // Hide UI elements if there's no item
-        //    itemIcon.sprite = null;
-        //    amountText.text = string.Empty;
+        else
+        {
+            //Debug.Log("hide icon");
+            // Hide UI elements if there's no item
+            itemIcon.sprite = null;
+            amountText.text = string.Empty;
 
-        //    itemIcon.gameObject.SetActive(false);
-        //    amountText.gameObject.SetActive(false);
-        //}
+            itemIcon.gameObject.SetActive(false);
+            amountText.gameObject.SetActive(false);
+        }
     }
 
     private void OnSlotClicked()

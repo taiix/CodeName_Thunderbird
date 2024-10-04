@@ -45,7 +45,7 @@ public class OreInteractable : Interactable
     {
         if (oreItem.itemPrefab != null)
         {
-            for (int i = 0; i <= amountToSpawn; i++)
+            for (int i = 0; i < amountToSpawn; i++)
             {
                 Instantiate(oreItem.itemPrefab, transform.position + new Vector3(Random.Range(-2f,2f), 0,Random.Range(-2f, 2f)), Quaternion.Euler(new Vector3(0,Random.Range(0, 360),0)));
             }
