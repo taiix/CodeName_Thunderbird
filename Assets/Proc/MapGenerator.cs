@@ -12,17 +12,16 @@ public class MapGenerator : MonoBehaviour
     private int height;
 
     [SerializeField] private float scale;
-
-    #region Test
-    HeightMapGenerator posiblePos;
-    #endregion
+    [SerializeField] private float decreasePercentage;
+    [SerializeField] private AnimationCurve edgeCurve;
+    float[,] edgeReduction;
 
     #region Perlin Noise Variables
     [Header("Perlin Noise")]
     [SerializeField] private int octaves;
     [SerializeField] private float persistence;
     [SerializeField] private float lacunarity;
-    [SerializeField] private float seed;
+    [SerializeField] private int seed;
     [SerializeField] private float terrainHighMultiplier;
 
     [SerializeField] private Vector2 offset;
@@ -47,31 +46,16 @@ public class MapGenerator : MonoBehaviour
 
     #endregion
 
-    #region Falloff Variables
-    [Space]
-    [Header("Falloff Map")]
-    [SerializeField] private bool useFalloffMap;
-    [SerializeField] private FalloffType falloffType;
-    [SerializeField] private AnimationCurve falloffMapCurve;
-    [SerializeField] private float falloffSize;
-    private float[,] falloffMap;
     #endregion
 
-    #region DELETE BEFORE PRODUCTION, ONLY FOR TESTING
-    public TerrainRegion[] regions;
-    [SerializeField] private Renderer rend;
-    #endregion
-
-    #endregion
 
     private void Start()
     {
         terrain = GetComponent<Terrain>();
-        posiblePos = GetComponent<HeightMapGenerator>();
-
         terrainData = terrain.terrainData;
 
         CalculatePerlin();
+        Smooth();
     }
 
     private void OnValidate()
@@ -83,8 +67,6 @@ public class MapGenerator : MonoBehaviour
     #region Generation
     public void CalculatePerlin()
     {
-        GenerateFalloff();
-
         int resolutionValue = (int)resolution;
 
         terrainData.alphamapResolution = resolutionValue;
@@ -99,90 +81,104 @@ public class MapGenerator : MonoBehaviour
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;
 
-        Dictionary<Vector2, float> allPixels = posiblePos.GetPossiblePositions();
+        edgeReduction = CalculateIslandBorders();
 
-        foreach (KeyValuePair<Vector2, float> pixelData in allPixels)
-        {
-            Vector2 pos = pixelData.Key;
-            float pixel = pixelData.Value;
-
-            if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height)
-            {
-                if (pixel == 0)
-                {
-                    float amplitude = 1;        //aka height
-                    float frequency = 1;        //aka lenght
-                    float noiseHeight = 0;
-
-                    for (int i = 0; i < octaves; i++)
-                    {
-                        float xCoord = ((float)pos.x / (width / 2) * scale * frequency) + offset.x;
-                        float yCoord = ((float)pos.y / (height / 2) * scale * frequency) + offset.y;
-
-                        float perlin = Mathf.PerlinNoise(xCoord, yCoord) * 2 - 1;
-                        noiseHeight += perlin * amplitude;
-
-                        amplitude *= persistence;
-                        frequency *= lacunarity;
-                    }
-
-                    if (noiseHeight < minValue) minValue = noiseHeight;
-                    if (noiseHeight > maxValue) maxValue = noiseHeight;
-
-                    noiseHeights[(int)pos.x, (int)pos.y] = noiseHeight;
-                }
-                else noiseHeights[(int)pos.x, (int)pos.y] = -1f;
-            }
-        }
-
+        Random.InitState(seed);
 
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                //Same as Mathf.InverseLerp
+                float amplitude = 1;        //aka height
+                float frequency = 1;        //aka lenght
+                float noiseHeight = 0;
 
-                if (useFalloffMap)
-                    noiseHeights[x, y] = terrainCurve.Evaluate((noiseHeights[x, y] - falloffMap[x, y])) * terrainHighMultiplier;
-                else
-                    noiseHeights[x, y] = terrainCurve.Evaluate((noiseHeights[x, y] - minValue) / (maxValue - minValue)) * terrainHighMultiplier;
+                for (int i = 0; i < octaves; i++)
+                {
+                    float xCoord = ((float)x / (width / 2) * scale * frequency) + offset.x + seed;
+                    float yCoord = ((float)y / (height / 2) * scale * frequency) + offset.y + seed;
+
+                    float perlin = Mathf.PerlinNoise(xCoord, yCoord);
+                    noiseHeight += perlin * amplitude;
+
+                    amplitude *= persistence;
+                    frequency *= lacunarity;
+                }
+
+                if (noiseHeight < minValue) minValue = noiseHeight;
+                if (noiseHeight > maxValue) maxValue = noiseHeight;
+                noiseHeight = Mathf.Clamp(noiseHeight, minValue, maxValue);
+                noiseHeights[(int)x, (int)y] = noiseHeight;
+            }
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                noiseHeights[x, y] *= edgeReduction[x, y];
+                noiseHeights[x, y] = terrainCurve.Evaluate(
+                       (noiseHeights[x, y] - minValue) / (maxValue - minValue)) * terrainHighMultiplier;
             }
         }
 
         SplatMaps();
 
-        GenerateRegions();      //DELETE LATER
-
         ApplyTerrainSettings();
     }
 
-    private void GenerateFalloff()
+    public void Smooth()
     {
-        if (!useFalloffMap) return;
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        int neighborX = x + dx;
+                        int neighborY = y + dy;
 
-        falloffMap = new float[width, height];
+                        Debug.Log($"Neighbor at: ({neighborX}, {neighborY})");
+                    }
+                }
+            }
+        }
+    }
+
+    private float[,] CalculateIslandBorders()
+    {
+        float[,] edgeReduction = new float[width, height];
+
+        int halfMap = width / 2;
+        Vector2Int centerOfIsland = new Vector2Int(halfMap, halfMap);
+
+        float unAffectedAreaBorder = decreasePercentage * halfMap;
+
+        float areaToAffect = halfMap - unAffectedAreaBorder;    //The area to affect, from the edge of unAffectedArea to edge of the map
 
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                //makes the grid from -1 to 1, the center is 0, 0 
-                //calculates the dist from current point to the center to create gradient
-                float xDist = ((float)x / width) * 2 - 1;
-                float yDist = ((float)y / height) * 2 - 1;
+                //substract the area so inside the area will be a negative number and not gonna be affected.
+                //Without substracting the edge reduction will start immediately
+                float distanceToCenter = Vector2.Distance(centerOfIsland, new Vector2(x, y)) - unAffectedAreaBorder;
 
-                float positiveDistX = Mathf.Abs(xDist);
-                float positiveDistY = Mathf.Abs(yDist);
+                if (distanceToCenter < 0)
+                {
+                    edgeReduction[x, y] = 1;
+                }
 
-                //If we use higher point we create square shape, if we use euclidean we create circular
-                float value = Mathf.Max(positiveDistX, positiveDistY) / falloffSize;
-
-                if (falloffType == FalloffType.Square)
-                    falloffMap[x, y] = falloffMapCurve.Evaluate(Mathf.Pow(value, 2) * (3 - 2 * value));
-                else if (falloffType == FalloffType.Circle)
-                    falloffMap[x, y] = falloffMapCurve.Evaluate(Mathf.Sqrt(positiveDistX * positiveDistX + positiveDistY * positiveDistY));
+                else if (distanceToCenter > areaToAffect)
+                {
+                    edgeReduction[x, y] = 0;
+                }
+                else edgeReduction[x, y] = edgeCurve.Evaluate(1 - distanceToCenter / areaToAffect);
             }
         }
+        return edgeReduction;
     }
 
     private void ApplyTerrainSettings()
@@ -288,84 +284,5 @@ public class MapGenerator : MonoBehaviour
         public float minHeight = 0.1f;
         public float maxHeight = 0.2f;
     }
-    #endregion
-
-    #region DELETE BEFORE PRODUCTION, ONLY FOR TESTING
-    [System.Serializable]
-    public struct TerrainRegion
-    {
-        public string name;
-        public float height;
-        public Color color;
-    }
-
-    public void GenerateRegions()
-    {
-        float[,] map = noiseHeights;
-
-        Texture2D texture = new Texture2D(width, height);
-        Color[] colorMap = new Color[width * height];
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                float currentH = map[x, y];
-                for (int i = 0; i < regions.Length; i++)
-                {
-                    if (currentH <= regions[i].height)
-                    {
-                        colorMap[y * width + x] = regions[i].color;
-                        break;
-                    }
-                }
-            }
-        }
-        texture.SetPixels(colorMap);
-
-        texture.Apply();
-
-        if (rend != null) rend.sharedMaterial.mainTexture = texture;
-        texture.filterMode = FilterMode.Point;
-    }
-
-    Texture2D CreateTexture(float[,] map)
-    {
-        Texture2D texture = new Texture2D(width, height);
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                Color color = CalculateColor(x, y, map);
-                texture.SetPixel(x, y, color);
-            }
-        }
-        texture.Apply();
-        return texture;
-    }
-
-    Color CalculateColor(int x, int y, float[,] map)
-    {
-        return new Color(map[x, y], map[x, y], map[x, y]);
-    }
-
-    //void OnDrawGizmos()
-    //{
-    //    if (terrainData == null) return;
-
-    //    int stepSize = 10;  // Reduce the number of points displayed
-    //    Vector3 terrainPosition = terrain.transform.position;
-
-    //    for (int y = 0; y < terrainData.heightmapResolution; y += stepSize)
-    //    {
-    //        for (int x = 0; x < terrainData.heightmapResolution; x += stepSize)
-    //        {
-    //            // Get the current height from the terrain
-    //            float heightValue = terrainData.GetHeight(x, y) / terrainData.size.y;
-    //            Vector3 position = new Vector3(x, heightValue, y);  // Add terrain's world position
-    //            Handles.Label(position, heightValue.ToString("F2"));
-    //        }
-    //    }
-    //}
     #endregion
 }
