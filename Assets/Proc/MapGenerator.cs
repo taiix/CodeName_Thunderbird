@@ -13,6 +13,10 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] private float scale;
 
+    #region Test
+    HeightMapGenerator posiblePos;
+    #endregion
+
     #region Perlin Noise Variables
     [Header("Perlin Noise")]
     [SerializeField] private int octaves;
@@ -63,7 +67,8 @@ public class MapGenerator : MonoBehaviour
     private void Start()
     {
         terrain = GetComponent<Terrain>();
-        
+        posiblePos = GetComponent<HeightMapGenerator>();
+
         terrainData = terrain.terrainData;
 
         CalculatePerlin();
@@ -94,32 +99,42 @@ public class MapGenerator : MonoBehaviour
         float minValue = float.MaxValue;
         float maxValue = float.MinValue;
 
-        for (int y = 0; y < height; y++)
+        Dictionary<Vector2, float> allPixels = posiblePos.GetPossiblePositions();
+
+        foreach (KeyValuePair<Vector2, float> pixelData in allPixels)
         {
-            for (int x = 0; x < width; x++)
+            Vector2 pos = pixelData.Key;
+            float pixel = pixelData.Value;
+
+            if (pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height)
             {
-                float amplitude = 1;        //aka height
-                float frequency = 1;        //aka lenght
-                float noiseHeight = 0;
-
-                for (int i = 0; i < octaves; i++)
+                if (pixel == 0)
                 {
-                    float xCoord = ((float)x / (width / 2) * scale * frequency) + offset.x;
-                    float yCoord = ((float)y / (height / 2) * scale * frequency) + offset.y;
+                    float amplitude = 1;        //aka height
+                    float frequency = 1;        //aka lenght
+                    float noiseHeight = 0;
 
-                    float perlin = Mathf.PerlinNoise(xCoord, yCoord) * 2 - 1;
-                    noiseHeight += perlin * amplitude;
+                    for (int i = 0; i < octaves; i++)
+                    {
+                        float xCoord = ((float)pos.x / (width / 2) * scale * frequency) + offset.x;
+                        float yCoord = ((float)pos.y / (height / 2) * scale * frequency) + offset.y;
 
-                    amplitude *= persistence;
-                    frequency *= lacunarity;
+                        float perlin = Mathf.PerlinNoise(xCoord, yCoord) * 2 - 1;
+                        noiseHeight += perlin * amplitude;
+
+                        amplitude *= persistence;
+                        frequency *= lacunarity;
+                    }
+
+                    if (noiseHeight < minValue) minValue = noiseHeight;
+                    if (noiseHeight > maxValue) maxValue = noiseHeight;
+
+                    noiseHeights[(int)pos.x, (int)pos.y] = noiseHeight;
                 }
-
-                if (noiseHeight < minValue) minValue = noiseHeight;
-                if (noiseHeight > maxValue) maxValue = noiseHeight;
-
-                noiseHeights[x, y] = noiseHeight;
+                else noiseHeights[(int)pos.x, (int)pos.y] = -1f;
             }
         }
+
 
         for (int y = 0; y < height; y++)
         {
@@ -309,7 +324,7 @@ public class MapGenerator : MonoBehaviour
 
         texture.Apply();
 
-        if(rend != null) rend.sharedMaterial.mainTexture = texture;
+        if (rend != null) rend.sharedMaterial.mainTexture = texture;
         texture.filterMode = FilterMode.Point;
     }
 
