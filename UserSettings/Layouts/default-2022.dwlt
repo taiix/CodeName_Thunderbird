@@ -24,6 +24,9 @@ MonoBehaviour:
     y: 43.2
     width: 1536
     height: 772.8
+<<<<<<< HEAD
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
   m_ShowMode: 4
   m_Title: Inspector
@@ -52,8 +55,13 @@ MonoBehaviour:
     x: 0
     y: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 2560
     height: 1349.3334
+=======
+    width: 1536
+    height: 772.8
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     width: 1536
     height: 772.8
@@ -82,7 +90,11 @@ MonoBehaviour:
     x: 0
     y: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 2560
+=======
+    width: 1536
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     width: 1536
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
@@ -107,8 +119,13 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     y: 1329.3334
     width: 2560
+=======
+    y: 752.8
+    width: 1536
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     y: 752.8
     width: 1536
@@ -136,8 +153,13 @@ MonoBehaviour:
     x: 0
     y: 30
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 2560
     height: 1299.3334
+=======
+    width: 1536
+    height: 722.8
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     width: 1536
     height: 722.8
@@ -166,8 +188,13 @@ MonoBehaviour:
     x: 0
     y: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 1669.3334
     height: 1299.3334
+=======
+    width: 1097.6
+    height: 722.8
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     width: 1097.6
     height: 722.8
@@ -196,8 +223,13 @@ MonoBehaviour:
     x: 0
     y: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 1669.3334
     height: 836.6667
+=======
+    width: 1097.6
+    height: 508
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     width: 1097.6
     height: 508
@@ -224,8 +256,13 @@ MonoBehaviour:
     x: 0
     y: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 282.66666
     height: 836.6667
+=======
+    width: 260.8
+    height: 508
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     width: 260.8
     height: 508
@@ -253,10 +290,17 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 282.66666
     y: 0
     width: 1386.6667
     height: 836.6667
+=======
+    x: 260.8
+    y: 0
+    width: 836.8
+    height: 508
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     x: 260.8
     y: 0
@@ -289,9 +333,15 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     y: 836.6667
     width: 1669.3334
     height: 462.6667
+=======
+    y: 508
+    width: 1097.6
+    height: 214.79999
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     y: 508
     width: 1097.6
@@ -321,10 +371,17 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 1669.3334
     y: 0
     width: 890.6666
     height: 1299.3334
+=======
+    x: 1097.6
+    y: 0
+    width: 438.40002
+    height: 722.8
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     x: 1097.6
     y: 0
@@ -523,15 +580,21 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 1562.6667
     y: 72.66667
     width: 1384.6667
     height: 815.6667
 =======
+=======
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
     x: 260.80002
     y: 73.6
     width: 834.8
     height: 487
+<<<<<<< HEAD
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -866,9 +929,15 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_Position:
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: {x: 128.67735, y: -276.81607, z: -163.32242}
     speed: 2
     m_Value: {x: 128.67735, y: -276.81607, z: -163.32242}
+=======
+    m_Target: {x: -396.8329, y: 39.23361, z: 896.6265}
+    speed: 2
+    m_Value: {x: -396.8329, y: 39.23361, z: 896.6265}
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     m_Target: {x: -396.8329, y: 39.23361, z: 896.6265}
     speed: 2
@@ -920,6 +989,7 @@ MonoBehaviour:
     m_gridOpacity: 0.5
   m_Rotation:
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_Target: {x: 0.1083122, y: -0.89108306, z: 0.29371282, w: 0.32860324}
     speed: 2
     m_Value: {x: 0.10831177, y: -0.89107955, z: 0.29371166, w: 0.32860196}
@@ -927,6 +997,15 @@ MonoBehaviour:
     m_Target: 362.7458
     speed: 2
     m_Value: 362.7458
+=======
+    m_Target: {x: 0.31081325, y: -0.23289323, z: 0.078837626, w: 0.91818726}
+    speed: 2
+    m_Value: {x: 0.311895, y: -0.23278362, z: 0.079112075, w: 0.9177552}
+  m_Size:
+    m_Target: 1.3344308
+    speed: 2
+    m_Value: 1.3344308
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     m_Target: {x: 0.31081325, y: -0.23289323, z: 0.078837626, w: 0.91818726}
     speed: 2
@@ -1221,6 +1300,9 @@ MonoBehaviour:
     y: 581.60004
     width: 1096.6
     height: 193.79999
+<<<<<<< HEAD
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1244,7 +1326,11 @@ MonoBehaviour:
     m_SearchArea: 1
     m_Folders:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - Assets/Procedural/TextureBlendShader
+=======
+    - Assets/Scenes
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     - Assets/Scenes
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
@@ -1255,6 +1341,7 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
+<<<<<<< HEAD
 <<<<<<< HEAD
   - Assets/Procedural/TextureBlendShader
   m_LastFoldersGridSize: -1
@@ -1273,10 +1360,21 @@ MonoBehaviour:
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
+=======
+  - Assets/Scenes
+  m_LastFoldersGridSize: -1
+  m_LastProjectPath: D:\SAXION\MINOR SKILLED\Thunderbird\CodeName_Thunderbird
+  m_LockTracker:
+    m_IsLocked: 0
+  m_FolderTreeState:
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
     scrollPos: {x: 0, y: 152.99976}
     m_SelectedIDs: e2670000
     m_LastClickedID: 26594
     m_ExpandedIDs: 00000000be670000c0670000c26700002c93010030930100989301009a9301009e930100a8930100ac930100b4c201002ac5010068c501007cc501008cc501009cc501001cc7010034c7010036c7010000ca9a3b
+<<<<<<< HEAD
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1306,7 +1404,11 @@ MonoBehaviour:
     m_SelectedIDs: 
     m_LastClickedID: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_ExpandedIDs: 000000007e67000080670000
+=======
+    m_ExpandedIDs: 00000000be670000c0670000c26700002c93010030930100989301009a9301009e930100a8930100ac930100b4c201002ac5010068c501007cc501008cc501009cc501001cc7010034c7010036c7010000ca9a3b
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
     m_ExpandedIDs: 00000000be670000c0670000c26700002c93010030930100989301009a9301009e930100a8930100ac930100b4c201002ac5010068c501007cc501008cc501009cc501001cc7010034c7010036c7010000ca9a3b
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
@@ -1386,15 +1488,21 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 1280
     y: 909.3334
     width: 1668.3334
     height: 441.6667
 =======
+=======
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
     x: 7.2000003
     y: 578.4
     width: 1000.6
     height: 189.80002
+<<<<<<< HEAD
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1427,15 +1535,21 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
     x: 2949.3335
     y: 72.66667
     width: 889.6666
     height: 1278.3334
 =======
+=======
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
     x: 1097.6
     y: 73.6
     width: 437.40002
     height: 701.8
+<<<<<<< HEAD
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
   m_SerializedDataModeController:
     m_DataMode: 0
