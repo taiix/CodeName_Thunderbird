@@ -49,7 +49,7 @@ public class PlaneInteractable : Interactable
      
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && IsPlaneStationary())
+        if(Input.GetKeyDown(KeyCode.Escape) && IsPlaneStationary() && isPlayerInPlane)
         {
             ExitPlane();
         }
@@ -78,12 +78,13 @@ public class PlaneInteractable : Interactable
 
         planeCamera.gameObject.SetActive(false);
 
-   
+
         player.SetActive(true);
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
 
         Debug.Log("Player has exited the plane.");
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private bool IsPlaneStationary()

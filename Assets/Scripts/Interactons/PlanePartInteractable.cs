@@ -20,7 +20,7 @@ public class PlanePartInteractable : Interactable
     }
     public override void OnFocus()
     {
-        interactionText = planePart.IsDamaged ? "Press F to Repair" : string.Empty;
+        interactionText = planePart.IsDamaged ? "Press F to Repair " + planePart.partName : string.Empty;
     }
 
     public override void OnInteract()
@@ -37,7 +37,7 @@ public class PlanePartInteractable : Interactable
             }
             else
             {
-                interactionText = "Press F to Repair"; 
+                interactionText = "Press F to Repair " + planePart.partName; 
             }
         }
 
