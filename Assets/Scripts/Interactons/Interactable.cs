@@ -11,7 +11,7 @@ public abstract class Interactable : MonoBehaviour
     
     public virtual void Awake()
     {
-        gameObject.layer = 9;
+        gameObject.layer = 7;
     }
     //Method that each interactable will overwrite and call when the player interacts 
     public abstract void OnInteract();

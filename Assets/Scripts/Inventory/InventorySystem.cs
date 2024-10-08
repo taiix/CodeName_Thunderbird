@@ -48,17 +48,13 @@ public class InventorySystem : MonoBehaviour
 
     private IEnumerator InitializeInventorySystem()
     {
-        // Wait until CharacterMovement and its PlayerAction are fully initialized.
         CharacterMovement characterMovement = gameObject.GetComponent<CharacterMovement>();
 
-        // Wait until the CharacterMovement component and its PlayerAction are properly initialized.
         while (characterMovement == null || characterMovement.PlayerAction == null)
         {
             characterMovement = gameObject.GetComponent<CharacterMovement>();
-            yield return null; // Wait for the next frame.
+            yield return null; 
         }
-
-        // Now that CharacterMovement and PlayerAction are initialized, find the "Inventory" action.
         openInventory = characterMovement.PlayerAction.FindAction("Inventory");
 
         if (openInventory == null)
@@ -170,11 +166,10 @@ public class InventorySystem : MonoBehaviour
                 emptySlot.SetStats();
                 emptySlot.gameObject.SetActive(true);
 
-                Debug.Log($"Added {amountToSlot} {item.itemSO.itemName}(s) to a new slot. Remaining amount to add: {amountToAdd}");
+                //Debug.Log($"Added {amountToSlot} {item.itemSO.itemName}(s) to a new slot. Remaining amount to add: {amountToAdd}");
             }
             else
             {
-                // If no empty slots are available, log a warning and stop adding items.
                 Debug.LogWarning("No empty slots available in the inventory.");
                 return;
             }
@@ -187,10 +182,8 @@ public class InventorySystem : MonoBehaviour
     {
         if (slot.itemInSlot != null)
         {
-            // Set the selected slot to the clicked slot.
             selectedSlot = slot;
 
-            // Show the item panel and update the UI elements.
             itemPanelUI.SetActive(true);
             largeItemImage.sprite = slot.itemInSlot.itemIcon;
             itemDescriptionText.text = slot.itemInSlot.itemDescription;
@@ -205,19 +198,15 @@ public class InventorySystem : MonoBehaviour
         if (selectedSlot != null && selectedSlot.amountInSlot > 0)
         {
             itemsInInventory.Remove(selectedSlot.itemInSlot);
-            // Decrease the item amount in the selected slot by 1.
             selectedSlot.amountInSlot--;
 
             if (selectedSlot.amountInSlot <= 0)
             {
-                // If no more items are left in the slot, clear the slot.
                 selectedSlot.itemInSlot = null;
                 itemPanelUI.SetActive(false);
                 //selectedSlot.gameObject.SetActive(false);
                 Debug.Log("Slot is now empty.");
             }
-
-            // Update the slot's UI.
             selectedSlot.SetStats();
         }
     }
