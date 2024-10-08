@@ -46,7 +46,6 @@ public class MiningMiniGame : MonoBehaviour
 
         for (int i = 0; i < pointsToSpawn; i++)
         {
-            // Create a random position within a circular area on the visible side of the ore
             Vector2 randomCirclePos = Random.insideUnitCircle * pointSpawnDistance;
 
             Vector3 pointPosition = spawnCenter + oreTransform.right * randomCirclePos.x + oreTransform.up * randomCirclePos.y;

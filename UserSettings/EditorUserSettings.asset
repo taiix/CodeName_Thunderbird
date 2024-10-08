@@ -9,7 +9,11 @@ EditorUserSettings:
       value: 5a53510551530f020859582141700a44434f4b79797d74647b7a4b66e1e3313a
       flags: 0
     RecentlyUsedSceneGuid-1:
+<<<<<<< HEAD
       value: 000456055705500d0f0a0d7a49705a44134f4e7d787b7e657e2f1837e0b06d6b
+=======
+      value: 55045654005608095d5a5a2441720f44144e1d2f7f7176657a2c4864b4b7623c
+>>>>>>> 389c395 (Fixed interaction and started on crafting)
       flags: 0
     RecentlyUsedSceneGuid-2:
       value: 5a5757560101590a5d0c0e24427b5d44434e4c7a7b7a23677f2b4565b7b5353a
@@ -34,5 +38,4 @@ EditorUserSettings:
   m_VCHierarchyOverlayIcons: 1
   m_VCOtherOverlayIcons: 1
   m_VCAllowAsyncUpdate: 1
-  m_VCScanLocalPackagesOnConnect: 1
   m_ArtifactGarbageCollection: 1
