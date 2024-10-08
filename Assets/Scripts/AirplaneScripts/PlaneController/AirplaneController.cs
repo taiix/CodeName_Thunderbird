@@ -12,8 +12,8 @@ public class AirplaneController : RigidBodyController
     public Transform centerOfGravity;
     public float airplaneWeight = 800f;
 
-    public List<AirplaneEngine> engines = new List<AirplaneEngine>();
 
+    public List<AirplaneEngine> engines = new List<AirplaneEngine>();
     public List<AirplaneWheels> wheels = new List<AirplaneWheels>();
 
 
@@ -21,7 +21,6 @@ public class AirplaneController : RigidBodyController
 
     public override void Start()
     {
-
         base.Start();
 
         if (rb)

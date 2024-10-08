@@ -11,7 +11,6 @@ public class VFXManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern setup
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);

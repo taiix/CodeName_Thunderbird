@@ -5,20 +5,25 @@ using UnityEngine;
 public class PlanePart : MonoBehaviour
 {
     public float maxHealth = 100f;
-    private float currentHealth;
+    public float currentHealth = 50;
 
     private Rigidbody planeRb;
-    public float damageFactor = 1f; 
+    public float damageFactor = 1f;
 
     public string partName;
     public bool IsDamaged => currentHealth < maxHealth;
 
     public float CurrentHealth { get; private set; }
 
-    private void Awake()
+    public bool setCurrentHealth = false;
+
+    private void Start()
     {
         planeRb = GetComponentInParent<Rigidbody>();
-        currentHealth = maxHealth;
+        if (!setCurrentHealth)
+        {
+            currentHealth = maxHealth;
+        }
 
         // Register the smoke effect with the VFX Manager
         var smokeEffect = GetComponentInChildren<ParticleSystem>();
@@ -26,6 +31,7 @@ public class PlanePart : MonoBehaviour
         {
             VFXManager.Instance.RegisterVFX(partName, smokeEffect);
         }
+        TakeDamage(0);
     }
 
     void OnTriggerEnter(Collider other)
@@ -46,9 +52,8 @@ public class PlanePart : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        //currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
-        // Optional: Add visual feedback for damage
         if (currentHealth < 75f)
         {
             VFXManager.Instance.PlayVFX(partName);

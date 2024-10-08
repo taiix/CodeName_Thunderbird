@@ -12,6 +12,7 @@ public interface IPlayer
 
 public class CharacterMovement : MonoBehaviour
 {
+
     public Rigidbody rb;
     float speed;
     public float sensitivity;
@@ -27,6 +28,8 @@ public class CharacterMovement : MonoBehaviour
     private InputActionMap player;
     private PlayerInput playerInput;
     private InputAction openInventory;
+    private InputAction jumpAction;
+
 
     public InputActionMap PlayerAction
     {
@@ -61,18 +64,22 @@ public class CharacterMovement : MonoBehaviour
     private void OnEnable()
     {
         openInventory = player.FindAction("Inventory");
-
         openInventory.performed += DisableControls;
 
+        jumpAction = player.FindAction("Jump");
+        jumpAction.performed += Jump;
+
         openInventory.Enable();
+        jumpAction.Enable();
     }
 
     private void OnDisable()
     {
         openInventory.Disable();
+        jumpAction.Disable();
 
         openInventory.performed -= DisableControls;
-
+        jumpAction.performed -= Jump;
     }
 
     // Update is called once per frame
@@ -100,6 +107,8 @@ public class CharacterMovement : MonoBehaviour
         look = context.ReadValue<Vector2>();
     }
 
+ 
+
     void Movement()
     {
         Vector3 currentVelocity = rb.velocity;
@@ -120,7 +129,7 @@ public class CharacterMovement : MonoBehaviour
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
     }
 
-    private void Jump()
+    private void Jump(InputAction.CallbackContext context)
     {
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }

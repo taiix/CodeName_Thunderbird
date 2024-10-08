@@ -6,8 +6,9 @@ using TMPro;
 
 public class AirplaneAerodynamics : MonoBehaviour
 {
-
     //FOR TESTING
+    public List<PlanePart> parts = new List<PlanePart>();
+    public float healthThreshold = 50f;
     public TextMeshProUGUI speedText;
 
     //
@@ -42,7 +43,6 @@ public class AirplaneAerodynamics : MonoBehaviour
     private float startDrag;
     private float startAngularDrag;
 
-
     const float mpsToKph = 3.6f;
     public void InitializeAerodynamics(Rigidbody rigidBody, BaseAirplaneInputs inputs)
     {
@@ -70,26 +70,44 @@ public class AirplaneAerodynamics : MonoBehaviour
         }
     }
 
+   
+
     void ForwardSpeed()
     {
-        Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
-        forwardSpeed = Mathf.Max(0, localVelocity.z);
-        forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
+            Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
+            forwardSpeed = Mathf.Max(0, localVelocity.z);
+            forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
 
-        kph = forwardSpeed * mpsToKph;
-        kph = Mathf.Clamp(kph, 0, maxKph);
-        normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
+            kph = forwardSpeed * mpsToKph;
+            kph = Mathf.Clamp(kph, 0, maxKph);
+            normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
 
-        speedText.text = "KPH: " + kph;
+            speedText.text = "KPH: " + kph;
 
-        //Debug.Log(normalizedKph);
+            //Debug.Log(normalizedKph);
 
-        //Debug.DrawRay(transform.position, transform.position + localVelocity, Color.green);
+            //Debug.DrawRay(transform.position, transform.position + localVelocity, Color.green);
+    }
+
+    bool CanGenerateLift()
+    {
+        // Find left and right wings in the parts list
+        PlanePart leftWing = parts.Find(part => part.name.Contains("LeftWing"));
+        PlanePart rightWing = parts.Find(part => part.name.Contains("RightWing"));
+
+        // Ensure both wings are present and check if they are above the health threshold
+        if (leftWing != null && rightWing != null)
+        {
+            return leftWing.CurrentHealth > healthThreshold && rightWing.CurrentHealth > healthThreshold;
+        }
+
+        // If wings are not defined, default to false (can't generate lift)
+        return false;
     }
 
     void Lift()
     {
-        if (kph > 10)
+        if (kph > 10 && CanGenerateLift())
         {
 
             //get the angle of attack
@@ -109,6 +127,10 @@ public class AirplaneAerodynamics : MonoBehaviour
             Vector3 finalLiftForce = liftDirection * liftPower * angleOfAttack;
 
             rb.AddForce(finalLiftForce);
+        }
+        else
+        {
+            Debug.Log("Cannot generate lift: one or both wings are too damaged.");
         }
     }
 

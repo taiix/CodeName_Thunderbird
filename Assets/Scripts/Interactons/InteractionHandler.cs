@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,8 +12,11 @@ public class InteractionHandler : MonoBehaviour
     public Vector3 interactionRaypoint = new Vector3(0.5f, 0.5f, 0f);
     public float interactionDistance = default;
 
+    public LayerMask layerMask;
+
     public Interactable currentInteractable;
 
+    public CinemachineVirtualCamera virtualCamera;
     private Camera mainCamera;
     private InputActionAsset inputAsset;
     private InputActionMap player;
@@ -21,7 +25,9 @@ public class InteractionHandler : MonoBehaviour
     private IPlayer playerControls;
 
     [SerializeField] public GameObject interactionUI;
- 
+
+
+
 
     private void Awake()
     {
@@ -37,7 +43,8 @@ public class InteractionHandler : MonoBehaviour
         inputAsset = this.GetComponentInParent<PlayerInput>().actions;
         player = inputAsset.FindActionMap("Player");
         playerInput = this.GetComponentInParent<PlayerInput>();
-        mainCamera = playerInput.camera;
+        
+        mainCamera = Camera.main;
     }
     void Start()
     {
@@ -56,56 +63,52 @@ public class InteractionHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         HandleInteractionCheck();
     }
 
     void HandleInteractionCheck()
     {
-        var ray = mainCamera.ViewportPointToRay(interactionRaypoint);
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
+        if (mainCamera == null)
         {
-            Debug.DrawLine(ray.origin, hit.point, Color.red);
+            Debug.LogError("Main camera is not set!");
+            return;
+        }
 
-            //If there is no currentInteractable or the hit object is an interactable different from the current one 
-            if (currentInteractable == null || hit.collider.gameObject != currentInteractable.gameObject)
+        var ray = mainCamera.ViewportPointToRay(interactionRaypoint);
+        Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.green);
+
+       
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, layerMask))
+        {
+            if (hit.collider.TryGetComponent(out Interactable hitInteractable) && hitInteractable != currentInteractable)
             {
-                //If we had an interactable before hitting the new one call the onLoseFocus method for that interactable
-                if (currentInteractable != null)
+                // If the current interactable is different, handle focus change
+                if (currentInteractable != hitInteractable)
                 {
-                    //button.IsPressed = false;
-                    currentInteractable.OnLoseFocus();
-                    interactionUI.SetActive(false);
+                    // Lose focus on the previous interactable
+                    if (currentInteractable != null)
+                    {
+                        currentInteractable.OnLoseFocus();
+                        interactionUI.SetActive(false);
+                    }
 
-                }
-
-                hit.collider.TryGetComponent(out currentInteractable);
-                //Check if the object we are hitting is an interactable and assign the current interactable 
-                if (hit.collider.TryGetComponent(out currentInteractable))
-                {
-                    //If the current interactable is in range of the raycast call the OnFocus method 
+                    // Focus on the new interactable
+                    currentInteractable = hitInteractable;
                     currentInteractable.OnFocus();
 
                     interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = currentInteractable.interactionText;
-
-                    interactionUI.SetActive(true);          
+                    interactionUI.SetActive(true);
                 }
             }
         }
-
-        else if (currentInteractable == null)
-        {
-            //interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = "Press F";
-        }
-
-        //If we are not looking at an interactable nullify the last current interactable 
         else if (currentInteractable != null)
         {
+            // No hit; lose focus on the current interactable
             currentInteractable.OnLoseFocus();
             currentInteractable = null;
             interactionUI.SetActive(false);
-            //interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = "Press F";
         }
     }
 
