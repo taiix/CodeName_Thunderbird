@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Procedural/ComputeShaders.meta
 guid: f270de0190f8fa048882693ff97c368f
 folderAsset: yes
 DefaultImporter:
+========
+guid: 375f52d4db3b3eb49b4c1ad2bd1ab4a2
+PrefabImporter:
+>>>>>>>> 389c395 (Fixed interaction and started on crafting):Assets/Prefabs/Main Camera.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
