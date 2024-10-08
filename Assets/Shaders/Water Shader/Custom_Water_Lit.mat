@@ -34,13 +34,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _Amplitude: 1
-    - _DepthFactor: 3.73
+    - _DepthFactor: 3.05
     - _Glossiness: 1
     - _Metallic: 0.135
-    - _Scale: 0.976
-    - _SpeedMap1: 1
+    - _Scale: 0.97
+    - _SpeedMap1: 1.56
     - _SpeedMap2: 1
     m_Colors:
     - _DeepColor: {r: 0, g: 0.5, b: 1, a: 1}
-    - _ShallowColor: {r: 0.8060826, g: 0.9245283, b: 0.46662515, a: 1}
+    - _ShallowColor: {r: 0.45671672, g: 0.8584906, b: 0.20652366, a: 1}
   m_BuildTextureStacks: []
