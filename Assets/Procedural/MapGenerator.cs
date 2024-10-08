@@ -54,8 +54,8 @@ public class MapGenerator : MonoBehaviour
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
 
-        CalculatePerlin();
-        Smooth();
+        //CalculatePerlin();
+        //Smooth();
     }
 
     private void OnValidate()
@@ -247,9 +247,6 @@ public class MapGenerator : MonoBehaviour
 
                     for (int i = 0; i < splatWeights.Length; i++)
                         splatmapData[x, y, i] = splatWeights[i];
-                    //float totalWeight = splatWeights.Sum();
-                    //for (int i = 0; i < splatWeights.Length; i++)
-                    //    splatmapData[x, y, i] = splatWeights[i] / totalWeight;
                 }
             }
         }
