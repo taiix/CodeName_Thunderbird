@@ -532,7 +532,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 8a240000
       m_LastClickedID: 0
       m_ExpandedIDs: 180afdff7c44fdffbec8fdffe0e2fdff56fdfdff4e00feff9e00feff0008feffa83afeffe859feff2871feff2a71feff2e8afeff388efeff2a89ffff76c9ffff28caffff64caffff66ccffff5ed4ffffc0deffff28dfffff74ecffff0efbfffff4ffffff289a0100709a0100809a0100e8af010002b00100
       m_RenameOverlay:
@@ -928,6 +928,7 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
     m_Target: {x: 128.67735, y: -276.81607, z: -163.32242}
@@ -943,6 +944,11 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -396.8329, y: 39.23361, z: 896.6265}
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
+    m_Target: {x: -208.3268, y: 19.133656, z: 913.5486}
+    speed: 2
+    m_Value: {x: -208.3268, y: 19.133656, z: 913.5486}
+>>>>>>> Stashed changes
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -988,14 +994,21 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
     m_Target: {x: 0.1083122, y: -0.89108306, z: 0.29371282, w: 0.32860324}
     speed: 2
     m_Value: {x: 0.10831177, y: -0.89107955, z: 0.29371166, w: 0.32860196}
+=======
+    m_Target: {x: 0.00966139, y: 0.9846563, z: -0.16427249, w: 0.057967406}
+    speed: 2
+    m_Value: {x: 0.009907853, y: 0.9845746, z: -0.16425888, w: 0.05944471}
+>>>>>>> Stashed changes
   m_Size:
     m_Target: 362.7458
     speed: 2
+<<<<<<< Updated upstream
     m_Value: 362.7458
 =======
     m_Target: {x: 0.31081325, y: -0.23289323, z: 0.078837626, w: 0.91818726}
@@ -1015,6 +1028,9 @@ MonoBehaviour:
     speed: 2
     m_Value: 1.3344308
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
+    m_Value: 66.01264
+>>>>>>> Stashed changes
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1325,6 +1341,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
     - Assets/Procedural/TextureBlendShader
@@ -1334,6 +1351,9 @@ MonoBehaviour:
 =======
     - Assets/Scenes
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
+    - Assets
+>>>>>>> Stashed changes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1341,14 +1361,19 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< HEAD
   - Assets/Procedural/TextureBlendShader
+=======
+  - Assets
+>>>>>>> Stashed changes
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Unity\Projects\CodeName_Thunderbird
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
+<<<<<<< Updated upstream
     scrollPos: {x: 0, y: 78.33331}
     m_SelectedIDs: dc790000
     m_LastClickedID: 31196
@@ -1376,6 +1401,12 @@ MonoBehaviour:
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
 =======
 >>>>>>> 389c395 (Fixed interaction and started on crafting)
+=======
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: bc660000
+    m_LastClickedID: 26300
+    m_ExpandedIDs: 00000000bc660000be66000000ca9a3b
+>>>>>>> Stashed changes
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
