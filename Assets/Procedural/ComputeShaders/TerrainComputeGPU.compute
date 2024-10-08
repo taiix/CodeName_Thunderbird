@@ -1,0 +1,76 @@
+#pragma kernel CSMain
+
+inline float unity_noise_randomValue(float2 uv)
+{
+    return frac(sin(dot(uv, float2(12.9898, 78.233))) * 43758.5453);
+}
+
+inline float unity_noise_interpolate(float a, float b, float t)
+{
+    return (1.0 - t) * a + (t * b);
+}
+
+inline float unity_valueNoise(float2 uv)
+{
+    float2 i = floor(uv);
+    float2 f = frac(uv);
+    f = f * f * (3.0 - 2.0 * f);
+
+    float2 c0 = i + float2(0.0, 0.0);
+    float2 c1 = i + float2(1.0, 0.0);
+    float2 c2 = i + float2(0.0, 1.0);
+    float2 c3 = i + float2(1.0, 1.0);
+    
+    float r0 = unity_noise_randomValue(c0);
+    float r1 = unity_noise_randomValue(c1);
+    float r2 = unity_noise_randomValue(c2);
+    float r3 = unity_noise_randomValue(c3);
+
+    float bottomOfGrid = unity_noise_interpolate(r0, r1, f.x);
+    float topOfGrid = unity_noise_interpolate(r2, r3, f.x);
+    return unity_noise_interpolate(bottomOfGrid, topOfGrid, f.y);
+}
+
+float Unity_SimpleNoise_float(float2 UV, float Scale, int octaves, float persistence, float lacunarity, float2 offset, int seed)
+{
+    float2 seedV = float2(seed, seed);
+    float amplitude = 1;
+    float frequency = 1;
+    float noiseHeight = 0;
+    float max = 0;
+    for (int i = 0; i < octaves; i++)
+    {
+        float2 uvOffset = (UV * 2) * Scale * frequency + offset + seedV;
+        noiseHeight += unity_valueNoise(uvOffset) * amplitude;
+        max += amplitude;
+        amplitude *= persistence;
+        frequency *= lacunarity;
+    }
+    
+    return noiseHeight / max;    
+}
+
+//Perlin noise///////////////////////////////////////////////////////
+RWStructuredBuffer<float> perlinData; // Store noise values as float
+
+float scale;
+
+int seed;
+int width;
+int height;
+
+int octaves;
+float persistence;
+float lacunarity;
+float2 offset;
+//////////////////////////////////////////////////////////////////////
+
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    float2 uv = id.xy / float2(width, height);
+    float noiseValue = Unity_SimpleNoise_float(uv, scale, octaves, persistence, lacunarity, offset.xy, seed);
+    
+    
+    perlinData[id.x + id.y * width] = noiseValue;
+}
