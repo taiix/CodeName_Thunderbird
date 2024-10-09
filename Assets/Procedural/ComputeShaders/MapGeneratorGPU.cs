@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapGeneratorGPU : MonoBehaviour
@@ -25,31 +28,58 @@ public class MapGeneratorGPU : MonoBehaviour
 
     [SerializeField] private Vector2 offset;
 
-    private Texture2D texture;
-
     private float[,] noiseHeights;
 
-    [SerializeField] private Terrain terrain;
-    [SerializeField] private TerrainData terrainData;
+    private Terrain terrain;
+    private TerrainData terrainData;
+
     [SerializeField] private float decreasePercentage;
     [SerializeField] private AnimationCurve edgeCurve;
 
+    [SerializeField] private List<TerrainTexture> terrainDataList = new();
+    public float tiling;
+
+    private void Start()
+    {
+        terrain = GetComponent<Terrain>();
+        terrainData = terrain.terrainData;
+
+        Stopwatch sw = Stopwatch.StartNew();
+
+        Calculate();
+
+        sw.Stop();
+
+        UnityEngine.Debug.Log("Time elapsed: " + sw.ElapsedMilliseconds + " ms");
+    }
+
     public void Calculate()
     {
-        Stopwatch sw = Stopwatch.StartNew();
         noiseHeights = new float[width, height];
         perlinData = new ComputeBuffer(width * height, sizeof(float));
 
-        Random.InitState(seed);
+        UnityEngine.Random.InitState(seed);
 
         GeneratePerlin();
         CreateTerrain(noiseHeights);
 
-        sw.Stop();
-        UnityEngine.Debug.Log("Time elapsed: " + sw.ElapsedMilliseconds + " ms");
     }
 
+    #region Compute Shader
     void GeneratePerlin()
+    {
+        ComputeShaderProperties();
+
+        float[] data = new float[width * height];
+
+        perlinData.GetData(data);
+
+        noiseHeights = GetHeightsFromShader(data);
+
+        CreateHeightmapTexture(noiseHeights);
+    }
+
+    void ComputeShaderProperties()
     {
         int kernelIndex = computeShader.FindKernel("CSMain");
 
@@ -67,19 +97,59 @@ public class MapGeneratorGPU : MonoBehaviour
 
         computeShader.Dispatch(0, width / 8, height / 8, 1);
 
-        float[] data = new float[width * height];
-
-        perlinData.GetData(data);
-
-        ComputeBuffer heightBuffer = new ComputeBuffer (data.Length, sizeof(float));
-        heightBuffer.SetData(data);
-        terrainMaterial.SetBuffer("terrainHeights", heightBuffer);
-        terrainMaterial.SetInt("_TerrainWidth", width);
-        terrainMaterial.SetInt("_TerrainHeight", height);
-
-        noiseHeights = GetHeightsFromShader(data);
     }
 
+    #endregion
+
+    #region Surface Shader
+    private void CreateHeightmapTexture(float[,] heights)
+    {
+        Texture2D heightmapTexture = new Texture2D(width, height, TextureFormat.RFloat, false);
+        heightmapTexture.filterMode = FilterMode.Trilinear;
+        heightmapTexture.wrapMode = TextureWrapMode.Repeat;
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                float heightValue = (heights[y, x]);
+                heightmapTexture.SetPixel(x, y, new Color(heightValue, heightValue, heightValue));
+            }
+        }
+
+        heightmapTexture.Apply();
+
+        terrainMaterial.SetTexture("_HeightmapTexture", heightmapTexture);
+
+        terrainMaterial.SetFloat("tiling", tiling);
+
+        SendTextureInfoToSurface();
+    }
+
+    private void SendTextureInfoToSurface()
+    {
+        int getSize = terrainDataList.Count;
+
+        terrainMaterial.SetInt("_texSize", getSize);
+
+        float[] minHeights = new float[getSize];
+        float[] maxHeights = new float[getSize];
+
+        for (int i = 0; i < getSize; i++)
+        {
+            TerrainTexture terrainTexture = terrainDataList[i];
+
+            minHeights[i] = terrainTexture._minHeight;
+            maxHeights[i] = terrainTexture._maxHeight;
+
+            terrainMaterial.SetTexture($"_LayerTexture{i + 1}", terrainTexture.texture);
+        }
+
+        terrainMaterial.SetFloatArray("_MinHeights", minHeights);
+        terrainMaterial.SetFloatArray("_MaxHeights", maxHeights);
+    }
+    #endregion
+
+    #region Terrain Generation
     private float[,] GetHeightsFromShader(float[] data)
     {
         float[,] heights = new float[width, height];
@@ -144,10 +214,19 @@ public class MapGeneratorGPU : MonoBehaviour
     {
         terrainData.SetHeights(0, 0, heights);
     }
+    #endregion
 
     private void OnDestroy()
     {
         if (perlinData != null)
             perlinData.Release();
+    }
+
+    [Serializable]
+    public struct TerrainTexture
+    {
+        public Texture2D texture;
+        public float _minHeight;
+        public float _maxHeight;
     }
 }

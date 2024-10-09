@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEditor;
 using UnityEngine;
 
@@ -54,7 +55,10 @@ public class MapGenerator : MonoBehaviour
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
 
-        //CalculatePerlin();
+        Stopwatch sw = Stopwatch.StartNew();
+        CalculatePerlin();
+        sw.Stop();
+        UnityEngine.Debug.Log("Time elapsed: " + sw.ElapsedMilliseconds + " ms");
         //Smooth();
     }
 
@@ -127,25 +131,25 @@ public class MapGenerator : MonoBehaviour
         ApplyTerrainSettings();
     }
 
-    public void Smooth()
-    {
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                for (int dy = -1; dy <= 1; dy++)
-                {
-                    for (int dx = -1; dx <= 1; dx++)
-                    {
-                        int neighborX = x + dx;
-                        int neighborY = y + dy;
+    //public void Smooth()
+    //{
+    //    for (int y = 0; y < height; y++)
+    //    {
+    //        for (int x = 0; x < width; x++)
+    //        {
+    //            for (int dy = -1; dy <= 1; dy++)
+    //            {
+    //                for (int dx = -1; dx <= 1; dx++)
+    //                {
+    //                    int neighborX = x + dx;
+    //                    int neighborY = y + dy;
 
-                        Debug.Log($"Neighbor at: ({neighborX}, {neighborY})");
-                    }
-                }
-            }
-        }
-    }
+    //                    Debug.Log($"Neighbor at: ({neighborX}, {neighborY})");
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     private float[,] CalculateIslandBorders()
     {

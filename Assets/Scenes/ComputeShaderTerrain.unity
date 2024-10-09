@@ -276,6 +276,7 @@ GameObject:
   - component: {fileID: 1135684461}
   - component: {fileID: 1135684460}
   - component: {fileID: 1135684459}
+  - component: {fileID: 1135684462}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -330,7 +331,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: c47aede86ed347d4b99d3dde3557197f, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 082b868af49a7bd40bf57cf21b9c8aaf, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -351,13 +352,151 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135684458}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -280}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1135684462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135684458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4207f88cec7c14340a100232911212d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainMaterial: {fileID: 2100000, guid: 082b868af49a7bd40bf57cf21b9c8aaf, type: 2}
+  computeShader: {fileID: 7200000, guid: 05f6954756982f24699d06b257f2fb0f, type: 3}
+  seed: 413
+  scale: 2.51
+  octaves: 4
+  persistence: 0.34
+  lacunarity: 3
+  terrainCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1192106
+      value: -0.0014397502
+      inSlope: 0.040459357
+      outSlope: 0.040459357
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13048364
+      outWeight: 0.12326772
+    - serializedVersion: 3
+      time: 0.25421944
+      value: 0.046490908
+      inSlope: 0.6930153
+      outSlope: 0.6930153
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2205489
+    - serializedVersion: 3
+      time: 0.34041438
+      value: 0.11387463
+      inSlope: 0.20293029
+      outSlope: 0.20293029
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.30724728
+    - serializedVersion: 3
+      time: 0.5284027
+      value: 0.118984014
+      inSlope: 0.09981039
+      outSlope: 0.09981039
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.27347186
+    - serializedVersion: 3
+      time: 0.686174
+      value: 0.5833606
+      inSlope: 2.3463547
+      outSlope: 2.3463547
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.16080831
+    - serializedVersion: 3
+      time: 0.88838154
+      value: 0.9915019
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terrainHighMultiplier: 1
+  offset: {x: 13.61, y: -3.41}
+  decreasePercentage: 0.77
+  edgeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.36344162
+      value: 0.5365821
+      inSlope: 0.18708794
+      outSlope: 0.18708794
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.12032288
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terrainDataList:
+  - texture: {fileID: 2800000, guid: ddeb05fa1b90f344185e77c73c3cadee, type: 3}
+    _minHeight: 0
+    _maxHeight: 0.09
+  - texture: {fileID: 2800000, guid: 35b57745e41a1ea409cda86c1d1f4e6c, type: 3}
+    _minHeight: 0.09
+    _maxHeight: 0.09
+  - texture: {fileID: 2800000, guid: d4bdd03cfb1d2ec4d9f72a280b5435d9, type: 3}
+    _minHeight: 0.1
+    _maxHeight: 0.11
+  - texture: {fileID: 2800000, guid: 7e231ffcfb0356e40b329f504be60a55, type: 3}
+    _minHeight: 0.3
+    _maxHeight: 0.56
+  tiling: 10
 --- !u!1 &1518691013
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1924119993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,14 +617,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924119992}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4207f88cec7c14340a100232911212d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   terrainMaterial: {fileID: 2100000, guid: 082b868af49a7bd40bf57cf21b9c8aaf, type: 2}
   computeShader: {fileID: 7200000, guid: 05f6954756982f24699d06b257f2fb0f, type: 3}
-  seed: 341
+  seed: 413
   scale: 2.51
   octaves: 4
   persistence: 0.34
@@ -561,8 +700,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   terrainHighMultiplier: 1
   offset: {x: 13.61, y: -3.41}
-  terrain: {fileID: 1135684460}
-  terrainData: {fileID: 15600000, guid: 3c533cd7dcebec4468332d71e94eb8bc, type: 2}
   decreasePercentage: 0.77
   edgeCurve:
     serializedVersion: 2
@@ -597,6 +734,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  terrainDataList:
+  - texture: {fileID: 2800000, guid: ddeb05fa1b90f344185e77c73c3cadee, type: 3}
+    _minHeight: 0
+    _maxHeight: 0.09
+  - texture: {fileID: 2800000, guid: 35b57745e41a1ea409cda86c1d1f4e6c, type: 3}
+    _minHeight: 0.09
+    _maxHeight: 0.09
+  - texture: {fileID: 2800000, guid: d4bdd03cfb1d2ec4d9f72a280b5435d9, type: 3}
+    _minHeight: 0.1
+    _maxHeight: 0.11
+  - texture: {fileID: 2800000, guid: 7e231ffcfb0356e40b329f504be60a55, type: 3}
+    _minHeight: 0.3
+    _maxHeight: 0.56
+  tiling: 10
 --- !u!23 &1924119995
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -747,8 +898,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2044703333}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.26977977, y: 0.4776686, z: -0.15691967, w: 0.8212356}
+  m_LocalPosition: {x: -58.695282, y: 197.51169, z: -158.1092}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -760,5 +911,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 2044703336}
   - {fileID: 1518691015}
-  - {fileID: 1135684461}
   - {fileID: 1924119997}
+  - {fileID: 1135684461}

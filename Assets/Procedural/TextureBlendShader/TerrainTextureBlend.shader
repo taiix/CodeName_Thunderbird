@@ -2,9 +2,12 @@ Shader "Custom/TerrainTextureBlend"
 {
     Properties
     {
+        _HeightmapTexture("Heightmap Texture", 2D) = "white"{}
+
         _LayerTexture1("Layer 1 texture", 2D) = "white"{}
-        _minHeight1("Layer 1 min height", Float) = 0.0
-        _maxHeight1("Layer 1 max height", Float) = 0.0
+        _LayerTexture2("Layer 2 texture", 2D) = "white"{}
+        _LayerTexture3("Layer 3 texture", 2D) = "white"{}
+        _LayerTexture4("Layer 4 texture", 2D) = "white"{}
 
         _blendFactor("Blend factor", Float) = 0.1
     }
@@ -20,56 +23,67 @@ Shader "Custom/TerrainTextureBlend"
         #pragma surface surf Standard fullforwardshadows
 
         #pragma target 3.0
+        ///////////////////////////////////////Properties//////////////////////////////////////
+        sampler2D _HeightmapTexture;
 
         sampler2D _LayerTexture1;
-        StructuredBuffer<float> terrainHeights;
-        int _TerrainWidth;
-        int _TerrainHeight;
+        sampler2D _LayerTexture2;
+        sampler2D _LayerTexture3;
+        sampler2D _LayerTexture4;
 
-        float _minHeight1;
-        float _maxHeight1;
+        int _texSize;
+        float _MinHeights[4];
+        float _MaxHeights[4];
+        float tiling;
+
         float _blendFactor;
 
-        struct TextureLayer
-        {
-            sampler2D tex;
-            float minHeight;
-            float maxHeight;
-        };
-
+        ///////////////////////////////////////////////////////////////////////////////////////
         struct Input
         {
-            float2 uv;
+            float2 uv_HeightmapTexture;
         };
-
-        TextureLayer CreateLayer(sampler2D tex, float minHeight, float maxHeight)
-        {
-            TextureLayer layer;
-            layer.tex = tex;
-            layer.minHeight = minHeight;
-            layer.maxHeight = maxHeight;
-
-            return layer;
-        }
 
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
-            TextureLayer layer1 = CreateLayer(_LayerTexture1, _minHeight1, _maxHeight1);
+            float terrainHeight = saturate(tex2D(_HeightmapTexture, IN.uv_HeightmapTexture).r);
 
-            int scaledUV_x = (int)(IN.uv.x * _TerrainWidth);
-            int scaledUV_y = (int)(IN.uv.y * _TerrainHeight);
+            float4 waterTex = tex2D(_LayerTexture1, IN.uv_HeightmapTexture * tiling);
+            float4 sandTex = tex2D(_LayerTexture2, IN.uv_HeightmapTexture * tiling);
+            float4 grassTex = tex2D(_LayerTexture3, IN.uv_HeightmapTexture * tiling);
+            float4 rockTex = tex2D(_LayerTexture4, IN.uv_HeightmapTexture * tiling);
 
-            int index = scaledUV_x + scaledUV_y * _TerrainWidth;
+            float4 finalColor = float4(0, 0, 0, 0);
+            float blendF = 0;
 
-            float terrainHeight = terrainHeights[index];
-
-            float blend = smoothstep(layer1.minHeight, layer1.maxHeight + _blendFactor, terrainHeight);
-            float4 tex = tex2D(layer1.tex, IN.uv);
-
-            float4 final = tex * blend;
-
-            o.Albedo = float3(terrainHeight,terrainHeight,terrainHeight);
-            o.Alpha = final.a;
+            if (terrainHeight <= _MaxHeights[0]) // Water
+            {
+                finalColor = waterTex;
+            }
+            else if (terrainHeight > _MaxHeights[0] && terrainHeight <= _MaxHeights[1])
+            // Interpolate between water and sand
+            {
+                blendF = smoothstep(_MinHeights[1], _MaxHeights[1], terrainHeight);
+                finalColor = lerp(waterTex, sandTex, blendF);
+            }
+            else if (terrainHeight > _MaxHeights[1] && terrainHeight <= _MaxHeights[2])
+            // Interpolate between sand and grass
+            {
+                blendF = smoothstep(_MinHeights[2], _MaxHeights[2], terrainHeight);
+                finalColor = lerp(sandTex, grassTex, blendF);
+            }
+            else if (terrainHeight > _MaxHeights[2] && terrainHeight <= _MaxHeights[3])
+            // Interpolate between grass and rock
+            {
+                blendF = smoothstep(_MinHeights[3], _MaxHeights[3], terrainHeight);
+                finalColor = lerp(grassTex, rockTex, blendF);
+            }
+            else // Rock (at the top)
+            {
+                finalColor = rockTex;
+            }
+            o.Albedo = finalColor.rgb;
+            o.Alpha = finalColor.a;
         }
         ENDCG
     }
