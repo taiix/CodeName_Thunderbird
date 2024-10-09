@@ -1,18 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.DefaultInputActions;
 
-
-public interface IPlayer
-{
-    InputActionMap PlayerAction { get; set; }
-}
-
 public class CharacterMovement : MonoBehaviour
 {
-
     public Rigidbody rb;
     float speed;
     public float sensitivity;
@@ -27,9 +21,12 @@ public class CharacterMovement : MonoBehaviour
 
     private InputActionMap player;
     private PlayerInput playerInput;
-    private InputAction openInventory;
     private InputAction jumpAction;
 
+    private bool activateControls = true;
+
+    public static event Action OnDisableControls;
+    public static event Action OnEnableControls;
 
     public InputActionMap PlayerAction
     {
@@ -45,9 +42,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
     [SerializeField] int jumpForce = 2;
-    [SerializeField] bool canJump = false;
-
-    private bool isInventoryOpen = false;
+    //[SerializeField] bool canJump = false;
 
     private void Awake()
     {
@@ -63,35 +58,38 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        openInventory = player.FindAction("Inventory");
-        openInventory.performed += DisableControls;
-
         jumpAction = player.FindAction("Jump");
         jumpAction.performed += Jump;
 
-        openInventory.Enable();
         jumpAction.Enable();
+
+        OnDisableControls += DisableControls;
+        OnEnableControls += EnableControls;
     }
 
     private void OnDisable()
     {
-        openInventory.Disable();
         jumpAction.Disable();
 
-        openInventory.performed -= DisableControls;
         jumpAction.performed -= Jump;
+
+        OnDisableControls -= DisableControls;
+        OnEnableControls -= EnableControls;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        Movement();
+        if (activateControls)
+        {
+            Movement();
+        }
 
     }
 
     private void LateUpdate()
     {
-        if (!isInventoryOpen)
+        if (activateControls)
         {
             Look();
         }
@@ -107,7 +105,7 @@ public class CharacterMovement : MonoBehaviour
         look = context.ReadValue<Vector2>();
     }
 
- 
+
 
     void Movement()
     {
@@ -145,8 +143,13 @@ public class CharacterMovement : MonoBehaviour
         playerInput.camera.transform.eulerAngles = new Vector3(lookRotation, playerInput.camera.transform.eulerAngles.y, playerInput.camera.transform.eulerAngles.z);
     }
 
-    private void DisableControls(InputAction.CallbackContext context)
+    public void DisableControls()
     {
-        isInventoryOpen = !isInventoryOpen;
+        activateControls = false;
+    }
+
+    public void EnableControls()
+    {
+        activateControls = true;
     }
 }
