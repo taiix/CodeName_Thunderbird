@@ -23,13 +23,29 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _HeightmapTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _LayerTexture1:
+        m_Texture: {fileID: 2800000, guid: ddeb05fa1b90f344185e77c73c3cadee, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerTexture2:
         m_Texture: {fileID: 2800000, guid: 35b57745e41a1ea409cda86c1d1f4e6c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerTexture3:
+        m_Texture: {fileID: 2800000, guid: d4bdd03cfb1d2ec4d9f72a280b5435d9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerTexture4:
+        m_Texture: {fileID: 2800000, guid: 7e231ffcfb0356e40b329f504be60a55, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _blendFactor: 0.3
+    - _blendFactor: 0.01
     - _maxHeight1: 1
     - _minHeight1: 0
     m_Colors: []
