@@ -22,8 +22,6 @@ public class InteractionHandler : MonoBehaviour
     private InputActionMap player;
     private PlayerInput playerInput;
 
-    private IPlayer playerControls;
-
     [SerializeField] public GameObject interactionUI;
 
 
@@ -48,7 +46,7 @@ public class InteractionHandler : MonoBehaviour
     }
     void Start()
     {
-        playerControls = this.GetComponentInParent<IPlayer>();
+       
     }
 
     private void OnEnable()
@@ -129,6 +127,14 @@ public class InteractionHandler : MonoBehaviour
     public void UpdateInteractionText(string text)
     {
         interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = text;
+    }
+
+    public void HideInteractionUI()
+    {
+        if (interactionUI != null)
+        {
+            interactionUI.SetActive(false);
+        }
     }
 
 }
