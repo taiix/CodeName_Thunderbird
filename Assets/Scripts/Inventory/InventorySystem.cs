@@ -107,6 +107,7 @@ public class InventorySystem : MonoBehaviour
 
         if (isInventoryOpen)
         {
+            GameManager.Instance.DisablePlayerControls();
             inventoryUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -114,6 +115,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.EnablePlayerControls();
             inventoryUI.SetActive(false);
             itemPanelUI.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
