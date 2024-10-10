@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlanePart : MonoBehaviour
 {
     public float maxHealth = 100f;
-    public float currentHealth = 50;
+    private float currentHealth = 50;
 
     private Rigidbody planeRb;
     public float damageFactor = 1f;
@@ -16,6 +16,13 @@ public class PlanePart : MonoBehaviour
     public float CurrentHealth { get; private set; }
 
     public bool setCurrentHealth = false;
+
+    private int upgradePower = 0;
+    public int UpgradePower { get; private set; }
+
+    [SerializeField] public List<PartUpgrade> upgrades = new List<PartUpgrade>();
+
+    public int currentUpgradeIndex = 0;
 
     private void Start()
     {
@@ -62,7 +69,7 @@ public class PlanePart : MonoBehaviour
         {
             VFXManager.Instance.StopVFX(partName);
         }
-        Debug.Log("Current health of " + partName + ": " + currentHealth);
+        //Debug.Log("Current health of " + partName + ": " + currentHealth);
         CurrentHealth = currentHealth;
     }
 
@@ -76,5 +83,11 @@ public class PlanePart : MonoBehaviour
             VFXManager.Instance.StopVFX(partName);
         }
         CurrentHealth = currentHealth;
+    }
+
+    public void PartUpgrade(int upgradeAmount)
+    {
+        upgradePower += upgradeAmount;
+        UpgradePower = upgradePower;
     }
 }
