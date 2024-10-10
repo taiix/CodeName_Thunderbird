@@ -8,7 +8,7 @@ public class AirplaneController : RigidBodyController
 {
 
     public BaseAirplaneInputs Input;
-    public AirplaneAerodynamics airplaneAerodynamics;
+    private AirplaneAerodynamics airplaneAerodynamics;
     public Transform centerOfGravity;
     public float airplaneWeight = 800f;
 

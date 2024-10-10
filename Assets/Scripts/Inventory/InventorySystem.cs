@@ -23,7 +23,7 @@ public class InventorySystem : MonoBehaviour
 
     private InventorySlot selectedSlot;
 
-    [SerializeField] public List<InventorySlot> slots = new List<InventorySlot>();
+    [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
 
     public List<Item> itemsInInventory = new List<Item>();
 

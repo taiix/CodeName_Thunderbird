@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlanePart : MonoBehaviour
 {
-    public float maxHealth = 100f;
-    private float currentHealth = 50;
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float currentHealth = 50;
+    [SerializeField] private Rigidbody planeRb;
+    [SerializeField] private float damageFactor = 1f;
 
-    private Rigidbody planeRb;
-    public float damageFactor = 1f;
 
     public string partName;
     public bool IsDamaged => currentHealth < maxHealth;
@@ -22,7 +22,7 @@ public class PlanePart : MonoBehaviour
 
     [SerializeField] public List<PartUpgrade> upgrades = new List<PartUpgrade>();
 
-    public int currentUpgradeIndex = 0;
+    public int currentUpgradeLevel = 0;
 
     private void Start()
     {
@@ -85,9 +85,24 @@ public class PlanePart : MonoBehaviour
         CurrentHealth = currentHealth;
     }
 
-    public void PartUpgrade(int upgradeAmount)
+    public void PartUpgrade(PartUpgrade upgrade)
     {
-        upgradePower += upgradeAmount;
+        this.maxHealth += upgrade.upgradePower;
+        GameManager.Instance.GetAirplaneAerodynamics().maxLiftPower += upgradePower;
+        currentUpgradeLevel++;
+
         UpgradePower = upgradePower;
+    }
+
+    public PartUpgrade GetCurrentUpgrade()
+    {
+        if (currentUpgradeLevel < upgrades.Count)
+        {
+            return upgrades[currentUpgradeLevel];
+        }
+        else
+        {
+            return null;
+        }
     }
 }

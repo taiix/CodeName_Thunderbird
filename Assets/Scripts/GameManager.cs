@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance {  get; private set; }
 
     public CharacterMovement playerController;
+
+    public AirplaneAerodynamics airplaneAerodynamics;
     private void Awake()
     {
         Instance = this;
@@ -29,5 +31,10 @@ public class GameManager : MonoBehaviour
     public void EnablePlayerControls()
     {
         playerController?.EnableControls();
+    }
+
+    public AirplaneAerodynamics GetAirplaneAerodynamics()
+    {
+        return airplaneAerodynamics;
     }
 }
