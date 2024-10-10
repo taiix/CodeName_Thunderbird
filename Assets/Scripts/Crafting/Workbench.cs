@@ -1,17 +1,17 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 public class Workbench : Interactable
 {
-
     public GameObject backgroundVideo;
     public GameObject testingText;
     public GameObject crosshair;
-
     private Coroutine showTextCoroutine;
+
 
     [SerializeField] CinemachineVirtualCamera workbenchCamera;
 
@@ -20,8 +20,10 @@ public class Workbench : Interactable
     [SerializeField] Button upArrowButton;
     [SerializeField] Button downArrowButton;
 
-    [SerializeField] List<GameObject> planeParts = new List<GameObject>();
-    int currentPart = 0;
+    [SerializeField]UpgradeSystem upgradeSystem;
+    [SerializeField] List<GameObject> planePartsUI = new List<GameObject>();
+    [SerializeField] private List<PlanePart> planeParts = new List<PlanePart>();
+    private int currentPart = 0;
 
     bool isInteracting = false;
 
@@ -39,11 +41,11 @@ public class Workbench : Interactable
         downArrowButton.onClick.RemoveAllListeners();
     }
 
+
     public override void OnFocus()
     {
         if (!isInteracting)
         {
-
             interactionText = "Press 'F' to interact with Workbench.";
         }
     }
@@ -68,6 +70,11 @@ public class Workbench : Interactable
     // Start is called before the first frame update
     void Start()
     {
+        if(planeParts.Count > 0)
+        {
+            SelectCurrentPart(); 
+        }
+        upgradeSystem = GetComponent<UpgradeSystem>();
         backgroundVideo.SetActive(true);
         testingText.SetActive(false);
         workbenchCamera.gameObject.SetActive(false);
@@ -88,28 +95,30 @@ public class Workbench : Interactable
 
     private void ShowNextPart()
     {
-        planeParts[currentPart].SetActive(false);
+        planePartsUI[currentPart].SetActive(false);
 
-        currentPart = (currentPart + 1) % planeParts.Count;
+        currentPart = (currentPart + 1) % planePartsUI.Count;
 
         ShowCurrentPartUI();
+        SelectCurrentPart();
     }
 
     private void ShowPreviousPart()
     {
-        planeParts[currentPart].SetActive(false);
+        planePartsUI[currentPart].SetActive(false);
 
-        currentPart = (currentPart - 1 + planeParts.Count) % planeParts.Count;
+        currentPart = (currentPart - 1 + planePartsUI.Count) % planePartsUI.Count;
 
         ShowCurrentPartUI();
+        SelectCurrentPart();
     }
 
     private void ShowCurrentPartUI()
     {
-        if (planeParts.Count == 0)
+        if (planePartsUI.Count == 0)
             return;
 
-        planeParts[currentPart].SetActive(true);
+        planePartsUI[currentPart].SetActive(true);
     }
     private IEnumerator ShowTextTemporarily()
     {
@@ -122,13 +131,23 @@ public class Workbench : Interactable
 
     void DisableInteraction()
     {
-
         isInteracting = false;
         workbenchCamera.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         GameManager.Instance.EnablePlayerControls();
         crosshair.SetActive(true);
         backgroundVideo.SetActive(true);
+    }
+
+    private void SelectCurrentPart()
+    {
+        if (planeParts.Count == 0 || currentPart > planeParts.Count) return;
+
+        PlanePart selectedPart = planeParts[currentPart];
+        Debug.Log("Selected Part: " + selectedPart.partName);
+
+        // Pass the selected part to the UpgradeSystem
+        upgradeSystem.SelectPlanePart(selectedPart);
     }
 }
 
