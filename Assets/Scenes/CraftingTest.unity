@@ -642,7 +642,7 @@ GameObject:
   - component: {fileID: 429723302}
   - component: {fileID: 429723301}
   m_Layer: 5
-  m_Name: Craft
+  m_Name: UpgradeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1064,6 +1064,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1863494408}
+  airplaneAerodynamics: {fileID: 6928674494390931403}
 --- !u!4 &510275628
 Transform:
   m_ObjectHideFlags: 0
@@ -2048,7 +2049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requiredItemUiPrefab: {fileID: 1069253872}
   requiredItemTransform: {fileID: 1719201210}
-  upgradeButton: {fileID: 0}
+  upgradeButton: {fileID: 429723301}
 --- !u!1 &1017589826
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,7 +2496,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Craft
+  m_text: Upgrade
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4166,12 +4167,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 50
+  planeRb: {fileID: 0}
   damageFactor: 1
   partName: Engine
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 6995c155cff399e43a7951416b4c1a50, type: 2}
-  currentUpgradeIndex: 0
+  currentUpgradeLevel: 0
 --- !u!136 &707000270429050485
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4752,7 +4755,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6188762064902183201}
   Input: {fileID: 7136760311364474585}
-  airplaneAerodynamics: {fileID: 6928674494390931403}
   centerOfGravity: {fileID: 2131790553785563640}
   airplaneWeight: 544
   engines:
@@ -4790,12 +4792,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 50
+  planeRb: {fileID: 0}
   damageFactor: 1
   partName: RightWing
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
-  currentUpgradeIndex: 0
+  currentUpgradeLevel: 0
 --- !u!4 &3110737283093327030
 Transform:
   m_ObjectHideFlags: 0
@@ -5292,12 +5296,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 50
+  planeRb: {fileID: 0}
   damageFactor: 1
   partName: LeftWing
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
-  currentUpgradeIndex: 0
+  - {fileID: 11400000, guid: d99977c723f11fd488b82dede81e6b48, type: 2}
+  currentUpgradeLevel: 0
 --- !u!114 &5443011314337253095
 MonoBehaviour:
   m_ObjectHideFlags: 0
