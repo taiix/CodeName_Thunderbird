@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 public class Workbench : Interactable
 {
-    public GameObject backgroundVideo;
+    [SerializeField] private GameObject backgroundVideo;
     public GameObject testingText;
     public GameObject crosshair;
     private Coroutine showTextCoroutine;
@@ -15,17 +15,18 @@ public class Workbench : Interactable
 
     [SerializeField] CinemachineVirtualCamera workbenchCamera;
 
-    [SerializeField] Button exitButton;
+    [SerializeField] private Button exitButton;
+    [SerializeField] private Button upArrowButton;
+    [SerializeField] private Button downArrowButton;
 
-    [SerializeField] Button upArrowButton;
-    [SerializeField] Button downArrowButton;
-
-    [SerializeField]UpgradeSystem upgradeSystem;
-    [SerializeField] List<GameObject> planePartsUI = new List<GameObject>();
+    [SerializeField] private UpgradeSystem upgradeSystem;
+    [SerializeField] private List<GameObject> planePartsUI = new List<GameObject>();
     [SerializeField] private List<PlanePart> planeParts = new List<PlanePart>();
+
+    private PlanePart selectedPart;
     private int currentPart = 0;
 
-    bool isInteracting = false;
+    private bool isInteracting = false;
 
     private void OnEnable()
     {
@@ -56,10 +57,11 @@ public class Workbench : Interactable
         StartCoroutine(ShowTextTemporarily());
         InteractionHandler.Instance.HideInteractionUI();
         isInteracting = true;
-        Debug.Log("Interacting with Workbench");
         workbenchCamera.gameObject.SetActive(true);
 
         ShowCurrentPartUI();
+        
+        Debug.Log("Interacting with Workbench");
     }
 
     public override void OnLoseFocus()
@@ -74,6 +76,7 @@ public class Workbench : Interactable
         {
             SelectCurrentPart(); 
         }
+        
         upgradeSystem = GetComponent<UpgradeSystem>();
         backgroundVideo.SetActive(true);
         testingText.SetActive(false);
@@ -91,6 +94,10 @@ public class Workbench : Interactable
         }
     }
 
+    void InitializeWorkbench()
+    {
+
+    }
 
 
     private void ShowNextPart()
@@ -143,10 +150,9 @@ public class Workbench : Interactable
     {
         if (planeParts.Count == 0 || currentPart > planeParts.Count) return;
 
-        PlanePart selectedPart = planeParts[currentPart];
+        selectedPart = planeParts[currentPart];
         Debug.Log("Selected Part: " + selectedPart.partName);
 
-        // Pass the selected part to the UpgradeSystem
         upgradeSystem.SelectPlanePart(selectedPart);
     }
 }
