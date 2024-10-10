@@ -15,6 +15,7 @@ Shader "Custom/Water_Lit"
         _Amplitude ("Wave Amplitude", Range(0, 1)) = 0.1
 
         _DepthFactor ("Depth Factor", Float) = 1.0
+        _CenterPoint ("Center Point", Vector) = (0,0,0,0)
     }
     SubShader
     {
@@ -54,28 +55,30 @@ Shader "Custom/Water_Lit"
 
         float _DepthFactor;
 
+        float4 _CenterPoint;
+
         void vert(inout appdata_full v, out Input i)
         {
             UNITY_INITIALIZE_OUTPUT(Input, i);
-            i.screenPos = ComputeScreenPos(v.vertex); // Assign screen position for depth
+            i.screenPos = ComputeScreenPos(v.vertex);
         }
 
-        // Function to compute screen-space UV coordinates
+        
         float4 ComputeScreenCoords(Input i)
         {
-            float4 screenUV = i.screenPos; // Screen position passed from vert
-            screenUV.xy /= screenUV.w; // Normalize by w for NDC
+            float4 screenUV = i.screenPos; 
+            screenUV.xy /= screenUV.w;
             return screenUV;
         }
 
 
         float3 e(Input IN)
         {
-            float t1 = _Time * _SpeedMap1; // Continuous wave motion
+            float t1 = _Time * _SpeedMap1;
             float t2 = _Time * _SpeedMap2;
 
-            float2 offset1 = float2(t1 * _Scale, 0); // Horizontal wave movement
-            float2 offset2 = float2(0, t2 * _Scale); // Vertical wave movement
+            float2 offset1 = float2(t1 * _Scale, 0);
+            float2 offset2 = float2(0, t2 * _Scale);
 
             float2 uv1 = IN.uv_NormalMap1 + offset1;
             float2 uv2 = IN.uv_NormalMap2 + offset2;
@@ -83,7 +86,7 @@ Shader "Custom/Water_Lit"
             float3 normal1 = UnpackNormal(tex2D(_NormalMap1, uv1));
             float3 normal2 = UnpackNormal(tex2D(_NormalMap2, uv2));
 
-            float3 blendedNormal = normalize(normal1 + normal2); // Blending normals
+            float3 blendedNormal = normalize(normal1 + normal2);
 
             return blendedNormal;
         }

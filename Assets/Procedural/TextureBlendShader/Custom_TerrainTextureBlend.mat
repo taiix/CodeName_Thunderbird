@@ -27,16 +27,32 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _LayerNormal1:
+        m_Texture: {fileID: 2800000, guid: 082938fd2de54c945a89d984fc3db69c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerNormal2:
+        m_Texture: {fileID: 2800000, guid: da3980a2a1758ec4baa45f6e11472365, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerNormal3:
+        m_Texture: {fileID: 2800000, guid: 7f2c829b5ba677741a76152d057660af, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _LayerNormal4:
+        m_Texture: {fileID: 2800000, guid: 7f2c829b5ba677741a76152d057660af, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _LayerTexture1:
-        m_Texture: {fileID: 2800000, guid: ddeb05fa1b90f344185e77c73c3cadee, type: 3}
+        m_Texture: {fileID: 2800000, guid: 600420d525942ed4dbb93017b4f2c402, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LayerTexture2:
-        m_Texture: {fileID: 2800000, guid: 35b57745e41a1ea409cda86c1d1f4e6c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f3616802c32db94b8ed2e068097b963, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LayerTexture3:
-        m_Texture: {fileID: 2800000, guid: d4bdd03cfb1d2ec4d9f72a280b5435d9, type: 3}
+        m_Texture: {fileID: 2800000, guid: f57fe263992264e4d8d21613afd785a9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LayerTexture4:
@@ -45,8 +61,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _blendFactor: 0.01
+    - _LayerMetallic1: 0
+    - _LayerMetallic2: 0
+    - _LayerMetallic3: 0
+    - _LayerMetallic4: 0
+    - _LayerSmoothness1: 0
+    - _LayerSmoothness2: 0.26
+    - _LayerSmoothness3: 0
+    - _LayerSmoothness4: 0.5
+    - _blendFactor: 32.56
     - _maxHeight1: 1
     - _minHeight1: 0
-    m_Colors: []
+    m_Colors:
+    - _LayerTexTilingOffset1: {r: 100, g: 100, b: 100, a: 100}
+    - _LayerTexTilingOffset2: {r: 100, g: 100, b: 100, a: 100}
+    - _LayerTexTilingOffset3: {r: 50, g: 100, b: 100, a: 100}
+    - _LayerTexTilingOffset4: {r: 1.51, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

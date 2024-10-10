@@ -25,22 +25,22 @@ Material:
     m_TexEnvs:
     - _NormalMap1:
         m_Texture: {fileID: 2800000, guid: e0ff7d1d868dea740b4858c4794967e8, type: 3}
-        m_Scale: {x: 10, y: 10}
+        m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
     - _NormalMap2:
         m_Texture: {fileID: 2800000, guid: 76cfa49344ed2c849bf13a55bb037ed2, type: 3}
-        m_Scale: {x: 10, y: 10}
+        m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _Amplitude: 1
-    - _DepthFactor: 3.05
+    - _DepthFactor: 15.57
     - _Glossiness: 1
     - _Metallic: 0.135
-    - _Scale: 0.97
+    - _Scale: 0.277
     - _SpeedMap1: 1.56
     - _SpeedMap2: 1
     m_Colors:
-    - _DeepColor: {r: 0, g: 0.5, b: 1, a: 1}
-    - _ShallowColor: {r: 0.45671672, g: 0.8584906, b: 0.20652366, a: 1}
+    - _DeepColor: {r: 0, g: 0.5, b: 1, a: 0.74509805}
+    - _ShallowColor: {r: 0.20784311, g: 0.8021809, b: 0.85882354, a: 1}
   m_BuildTextureStacks: []
