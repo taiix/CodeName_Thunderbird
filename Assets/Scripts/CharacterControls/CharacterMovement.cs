@@ -7,7 +7,7 @@ using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public Rigidbody rb;
+    private Rigidbody rb;
     float speed;
     public float sensitivity;
     public float maxForce;
@@ -52,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         speed = normalSpeed;
         Cursor.lockState = CursorLockMode.Locked;
     }
