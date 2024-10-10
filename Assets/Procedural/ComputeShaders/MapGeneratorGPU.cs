@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Terrain))]
 public class MapGeneratorGPU : MonoBehaviour
 {
     public Material terrainMaterial;
@@ -37,9 +37,11 @@ public class MapGeneratorGPU : MonoBehaviour
     [SerializeField] private AnimationCurve edgeCurve;
 
     [SerializeField] private List<TerrainTexture> terrainDataList = new();
-    public float tiling;
+    [SerializeField] private float tiling;
 
-    private void Start()
+    [SerializeField] private Texture2D chunkTexture = null;
+
+    private void Awake()
     {
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
@@ -62,6 +64,14 @@ public class MapGeneratorGPU : MonoBehaviour
 
         GeneratePerlin();
         CreateTerrain(noiseHeights);
+
+    }
+
+    private void OnValidate()
+    {
+        noiseHeights = new float[width, height];
+        terrain = GetComponent<Terrain>();
+        terrainData = terrain.terrainData;
 
     }
 
@@ -105,6 +115,7 @@ public class MapGeneratorGPU : MonoBehaviour
     private void CreateHeightmapTexture(float[,] heights)
     {
         Texture2D heightmapTexture = new Texture2D(width, height, TextureFormat.RFloat, false);
+        chunkTexture = new Texture2D(width, height, TextureFormat.RFloat, false);
         heightmapTexture.filterMode = FilterMode.Trilinear;
         heightmapTexture.wrapMode = TextureWrapMode.Repeat;
         for (int y = 0; y < height; y++)
@@ -118,10 +129,13 @@ public class MapGeneratorGPU : MonoBehaviour
 
         heightmapTexture.Apply();
 
+        chunkTexture = heightmapTexture;
+
         terrainMaterial.SetTexture("_HeightmapTexture", heightmapTexture);
 
         terrainMaterial.SetFloat("tiling", tiling);
 
+        
         SendTextureInfoToSurface();
     }
 
@@ -141,7 +155,12 @@ public class MapGeneratorGPU : MonoBehaviour
             minHeights[i] = terrainTexture._minHeight;
             maxHeights[i] = terrainTexture._maxHeight;
 
-            terrainMaterial.SetTexture($"_LayerTexture{i + 1}", terrainTexture.texture);
+            Texture2D mainTexture = terrainTexture.material.mainTexture as Texture2D;
+
+            if (mainTexture != null)
+            {
+                terrainMaterial.SetTexture($"_LayerTexture{i + 1}", mainTexture);
+            }
         }
 
         terrainMaterial.SetFloatArray("_MinHeights", minHeights);
@@ -160,7 +179,8 @@ public class MapGeneratorGPU : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 int index = x + y * width;
-                heights[x, y] = data[index];
+                heights[x, y] = (data[index]);
+
             }
         }
 
@@ -225,8 +245,12 @@ public class MapGeneratorGPU : MonoBehaviour
     [Serializable]
     public struct TerrainTexture
     {
-        public Texture2D texture;
+        public Material material;
         public float _minHeight;
         public float _maxHeight;
+    }
+
+    public Texture2D GetHeightmapTexture() {
+        return chunkTexture;
     }
 }
