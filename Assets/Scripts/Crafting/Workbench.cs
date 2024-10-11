@@ -8,12 +8,10 @@ using UnityEngine.UI;
 public class Workbench : Interactable
 {
     [SerializeField] private GameObject backgroundVideo;
-    public GameObject testingText;
-    public GameObject crosshair;
     private Coroutine showTextCoroutine;
 
 
-    [SerializeField] CinemachineVirtualCamera workbenchCamera;
+    [SerializeField] private CinemachineVirtualCamera workbenchCamera;
 
     [SerializeField] private Button exitButton;
     [SerializeField] private Button upArrowButton;
@@ -53,7 +51,6 @@ public class Workbench : Interactable
 
     public override void OnInteract()
     {
-        crosshair.SetActive(false);
         StartCoroutine(ShowTextTemporarily());
         InteractionHandler.Instance.HideInteractionUI();
         isInteracting = true;
@@ -79,7 +76,6 @@ public class Workbench : Interactable
         
         upgradeSystem = GetComponent<UpgradeSystem>();
         backgroundVideo.SetActive(true);
-        testingText.SetActive(false);
         workbenchCamera.gameObject.SetActive(false);
     }
 
@@ -88,8 +84,8 @@ public class Workbench : Interactable
     {
         if (isInteracting)
         {
-            Cursor.lockState = CursorLockMode.None;
             GameManager.Instance.DisablePlayerControls();
+            Cursor.lockState = CursorLockMode.None;
             interactionText = string.Empty;
         }
     }
@@ -142,7 +138,6 @@ public class Workbench : Interactable
         workbenchCamera.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         GameManager.Instance.EnablePlayerControls();
-        crosshair.SetActive(true);
         backgroundVideo.SetActive(true);
     }
 
