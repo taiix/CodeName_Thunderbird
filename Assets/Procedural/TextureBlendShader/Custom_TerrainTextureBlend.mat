@@ -66,15 +66,17 @@ Material:
     - _LayerMetallic3: 0
     - _LayerMetallic4: 0
     - _LayerSmoothness1: 0
-    - _LayerSmoothness2: 0.26
+    - _LayerSmoothness2: 0
     - _LayerSmoothness3: 0
     - _LayerSmoothness4: 0.5
-    - _blendFactor: 32.56
+    - _blendFactor: 146.7
+    - _blendFactorGrassToRock: 151.5
+    - _blendFactorSandToGrass: 29.44
     - _maxHeight1: 1
     - _minHeight1: 0
     m_Colors:
     - _LayerTexTilingOffset1: {r: 100, g: 100, b: 100, a: 100}
     - _LayerTexTilingOffset2: {r: 100, g: 100, b: 100, a: 100}
-    - _LayerTexTilingOffset3: {r: 50, g: 100, b: 100, a: 100}
+    - _LayerTexTilingOffset3: {r: 100, g: 100, b: 100, a: 100}
     - _LayerTexTilingOffset4: {r: 1.51, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
