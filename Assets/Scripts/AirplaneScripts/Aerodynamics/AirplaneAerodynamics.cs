@@ -130,7 +130,7 @@ public class AirplaneAerodynamics : MonoBehaviour
         }
         else
         {
-            Debug.Log("Cannot generate lift: one or both wings are too damaged.");
+            //Debug.Log("Cannot generate lift: one or both wings are too damaged.");
         }
     }
 

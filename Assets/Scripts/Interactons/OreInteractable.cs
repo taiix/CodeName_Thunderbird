@@ -18,7 +18,7 @@ public class OreInteractable : Interactable
 
     public override void OnInteract()
     {
-        if (!isBeingMined)
+        if (!isBeingMined && miningMiniGame != null)
         {
             interactionText = string.Empty;
             isBeingMined = true;

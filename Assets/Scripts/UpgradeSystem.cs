@@ -12,6 +12,18 @@ public class UpgradeSystem : MonoBehaviour
 
     private PlanePart currentPlanePart = null;
     private PartUpgrade currentUpgrade = null;
+    private InventorySystem inventorySystem;
+
+    private void Start()
+    {
+        if(GameManager.Instance == null)
+        {
+            Debug.Log("No game manager found for Upgrade System");
+            return;
+        }
+        
+        inventorySystem = GameManager.Instance.GetInventorySystem();
+    }
 
     private void OnEnable()
     {
@@ -65,7 +77,19 @@ public class UpgradeSystem : MonoBehaviour
 
     public void UpgradePlanePart()
     {
-        if (currentPlanePart == null) return;
+        if (currentPlanePart == null || inventorySystem == null) return;
+        currentUpgrade = currentPlanePart.GetCurrentUpgrade();
+
+        foreach (RequiredItem requiredItem in currentUpgrade.requiredItemsList)
+        {
+            if (!inventorySystem.HasRequiredItem(requiredItem.item, requiredItem.amount))
+            {
+                Debug.Log("Not enough of required item: " + requiredItem.item.itemName);
+                return; 
+            }
+
+            inventorySystem.RemoveItem(requiredItem.item, requiredItem.amount);
+        }
 
         if (currentUpgrade != null)
         {

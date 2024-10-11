@@ -57,6 +57,8 @@ public class PlaneInteractable : Interactable
 
     private void EnterPlane()
     {
+        GameManager.Instance.DisablePlayerControls();
+        Cursor.visible = false;
 
         inPlaneUi.SetActive(true);
         player.SetActive(false);
@@ -73,18 +75,15 @@ public class PlaneInteractable : Interactable
     private void ExitPlane()
     {
         inPlaneUi.SetActive(false);
-
         airplaneController.ActivateControls();
-
         planeCamera.gameObject.SetActive(false);
-
 
         player.SetActive(true);
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
+        GameManager.Instance.EnablePlayerControls();
 
         Debug.Log("Player has exited the plane.");
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private bool IsPlaneStationary()

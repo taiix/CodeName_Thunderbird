@@ -53,7 +53,7 @@ public class InventorySystem : MonoBehaviour
         while (characterMovement == null || characterMovement.PlayerAction == null)
         {
             characterMovement = gameObject.GetComponent<CharacterMovement>();
-            yield return null; 
+            yield return null;
         }
         openInventory = characterMovement.PlayerAction.FindAction("Inventory");
 
@@ -109,17 +109,12 @@ public class InventorySystem : MonoBehaviour
         {
             GameManager.Instance.DisablePlayerControls();
             inventoryUI.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
         }
         else
         {
             GameManager.Instance.EnablePlayerControls();
             inventoryUI.SetActive(false);
             itemPanelUI.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
         }
     }
 
@@ -141,7 +136,6 @@ public class InventorySystem : MonoBehaviour
                 {
                     slot.amountInSlot += amountToAdd;
                     slot.SetStats();
-                    Debug.Log($"Increased amount of {item.itemSO.itemName} to {slot.amountInSlot} in an existing slot.");
                     return;
                 }
                 else
@@ -149,7 +143,6 @@ public class InventorySystem : MonoBehaviour
                     slot.amountInSlot += availableSpace;
                     amountToAdd -= availableSpace;
                     slot.SetStats();
-                    Debug.Log($"Filled existing slot with {availableSpace} more {item.itemSO.itemName}(s). Remaining amount to add: {amountToAdd}");
                 }
             }
         }
@@ -177,7 +170,7 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-       
+
     }
 
     public void OnSlotClicked(InventorySlot slot)
@@ -210,6 +203,55 @@ public class InventorySystem : MonoBehaviour
                 Debug.Log("Slot is now empty.");
             }
             selectedSlot.SetStats();
+        }
+    }
+
+    public bool HasRequiredItem(Item item, int requiredAmount)
+    {
+        int itemCount = GetItemCount(item);
+        return itemCount >= requiredAmount;
+    }
+
+    private int GetItemCount(Item item)
+    {
+        int totalAmount = 0;
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.itemInSlot == item)
+            {
+                totalAmount += slot.amountInSlot;
+            }
+        }
+        return totalAmount;
+    }
+
+    public void RemoveItem(Item item, int amountToRemove)
+    {
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.itemInSlot == item)
+            {
+                if (slot.amountInSlot >= amountToRemove)
+                {
+                    slot.amountInSlot -= amountToRemove;
+                    if (slot.amountInSlot <= 0)
+                    {
+                        slot.itemInSlot = null;
+
+                    }
+                    slot.SetStats();
+                    break;
+                }
+                else
+                {
+                    amountToRemove -= slot.amountInSlot;
+                    slot.amountInSlot = 0;
+                    slot.itemInSlot = null;
+                    slot.SetStats();
+                    //slot.gameObject.SetActive(false);
+                }
+            }
         }
     }
 

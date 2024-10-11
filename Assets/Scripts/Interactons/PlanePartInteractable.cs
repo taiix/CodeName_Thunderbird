@@ -33,7 +33,7 @@ public class PlanePartInteractable : Interactable
 
             if (!planePart.IsDamaged)
             {
-                interactionText = string.Empty; 
+                InteractionHandler.Instance.HideInteractionUI();
             }
             else
             {
