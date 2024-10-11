@@ -5,19 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45c446dc-41bc-4f4e-836e-39ac1d4a6920" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Art/Animation/New Render Texture.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Animation/New Render Texture.renderTexture" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Art/Materials/water_graph_0/water_graph_0_material.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Materials/water_graph_0/water_graph_0_material.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/New Terrain 3.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/New Terrain 3.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Procedural/ComputeShaders/MapGeneratorGPU.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Procedural/ComputeShaders/MapGeneratorGPU.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/Custom_TerrainTextureBlend.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/Custom_TerrainTextureBlend.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/TerrainTextureBlend.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/TerrainTextureBlend.shader" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/ComputeShaderTerrain.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ComputeShaderTerrain.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/CraftingTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/CraftingTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water Shader/Custom_Water_Lit.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water Shader/Custom_Water_Lit.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water Shader/WaterLit.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water Shader/WaterLit.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,18 +36,11 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Stanislav\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Stanislav\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\Stanislav\\AppData\\Local\\Symbols\\src"
-    ]
   }
 }]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Unity\2022.3.48f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\Unity\UnityEditor\2022.3.48f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Unity\Projects\CodeName_Thunderbird -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Unity\Projects\CodeName_Thunderbird" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -64,7 +48,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Unity\2022.3.48f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\Unity\UnityEditor\2022.3.48f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Unity\Projects\CodeName_Thunderbird -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Unity\Projects\CodeName_Thunderbird" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -104,6 +88,7 @@
       <workItem from="1728419527879" duration="7492000" />
       <workItem from="1728468876568" duration="8281000" />
       <workItem from="1728566881745" duration="1819000" />
+      <workItem from="1728632239440" duration="8709000" />
     </task>
     <servers />
   </component>
@@ -117,6 +102,7 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>
