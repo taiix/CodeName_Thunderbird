@@ -35,7 +35,6 @@ public class ProceduralVegetation : MonoBehaviour
 
     void PopulateTreeObjects()
     {
-        GameObject randTree = trees[0].treePrefab;
         float treeRadius = 5f;
 
         List<Vector3> placedTrees = new();
@@ -44,6 +43,8 @@ public class ProceduralVegetation : MonoBehaviour
         {
             for (int x = 0; x < terrainData.size.x; x += treeSpacing)
             {
+                int rand = Random.Range(0, trees.Count);
+                GameObject randTree = trees[rand].treePrefab;
                 int randIndex = Random.Range(0, availablePositions.Count);
                 Vector3 position = availablePositions[randIndex];
 
@@ -69,9 +70,9 @@ public class ProceduralVegetation : MonoBehaviour
                 }
                 if (canPlace)
                 {
-                    GameObject go = Instantiate(randTree, newTreePosition, Quaternion.identity);
-                    float randomIndex = Random.Range(.8f, 2);
-                    go.transform.localScale = new Vector3(go.transform.localScale.x + randomIndex, randomIndex, go.transform.localScale.z + randomIndex);
+                    GameObject go = Instantiate(randTree, newTreePosition, Quaternion.identity, this.gameObject.transform);
+                    float randomIndex = 2;
+                    go.transform.localScale = new Vector3(go.transform.localScale.x, 2, go.transform.localScale.z);
                     placedTrees.Add(newTreePosition);
                 }
 
