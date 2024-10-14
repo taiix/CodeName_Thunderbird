@@ -119,13 +119,13 @@ public class UpgradeSystem : MonoBehaviour
             int requiredAmount = entry.Value;
             int playerItemCount = inventorySystem.GetItemCount(item);
 
-            Debug.Log(item.itemName + "x " + playerItemCount + " in inventory, requires " + requiredAmount);
+           // Debug.Log(item.itemName + "x " + playerItemCount + " in inventory, requires " + requiredAmount);
 
             if (playerItemCount < requiredAmount)
             {
                 hasAllItems = false;
                 int missingAmount = requiredAmount - playerItemCount;
-                missingItemsMessage += $"{missingAmount}x {item.itemName}\n";
+                missingItemsMessage += missingAmount.ToString() + "x " + item.itemName + "\n";
             }
         }
 

@@ -547,7 +547,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   planeRb: {fileID: 0}
-  damageFactor: 5
+  damageFactor: 1
   partName: Engine
   setCurrentHealth: 1
   upgrades:
