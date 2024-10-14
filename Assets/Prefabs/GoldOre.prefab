@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3039465593007161505}
   - component: {fileID: 865830133109955196}
   - component: {fileID: 8602287418903003985}
+  - component: {fileID: 2427740311818981835}
   m_Layer: 7
   m_Name: GoldOre
   m_TagString: Untagged
@@ -123,3 +124,30 @@ MonoBehaviour:
   interactionText: 
   oreItem: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
   miningMiniGame: {fileID: 0}
+--- !u!54 &2427740311818981835
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3031603251702961282}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlanePartInteractable : Interactable
 {
     private PlanePart planePart;
+    [SerializeField] private int repairAmount = 50;
 
     public override void Awake()
     {
@@ -27,7 +28,7 @@ public class PlanePartInteractable : Interactable
     {
         if (planePart.IsDamaged)
         {
-            planePart.Repair(50f); 
+            planePart.Repair(repairAmount); 
 
             Debug.Log("Repaired " + gameObject.name);
 
