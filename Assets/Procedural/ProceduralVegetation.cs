@@ -69,7 +69,9 @@ public class ProceduralVegetation : MonoBehaviour
                 }
                 if (canPlace)
                 {
-                    Instantiate(randTree, newTreePosition, Quaternion.identity);
+                    GameObject go = Instantiate(randTree, newTreePosition, Quaternion.identity);
+                    float randomIndex = Random.Range(.8f, 2);
+                    go.transform.localScale = new Vector3(go.transform.localScale.x + randomIndex, randomIndex, go.transform.localScale.z + randomIndex);
                     placedTrees.Add(newTreePosition);
                 }
 
