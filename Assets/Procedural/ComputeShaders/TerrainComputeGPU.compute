@@ -114,24 +114,74 @@ void SmoothingWholeTerrain(uint3 id : SV_DispatchThreadID)
     smoothingData[index] = avarageHeight / validNeightbours;
 }
 
+
+//Custom Area Smoothing///////////////////////////////////////////////////////////////////////////////////////////////////////
+RWStructuredBuffer<float> customAreaData;
+
+int customAreaX;
+int customAreaZ;
+
+int interpolationNeightbours;
+
+float innerRadius;
+float outerRadius;
+float targetHeight;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+float GetAvarageHeightAroundArea(int x, int y)
+{
+    /*
+     * we want to interpolate between the radius and influence radius
+     */
+    float avarageHeight = 0;
+    int validNeightbours = 0;
+
+    for (int j_y = -interpolationNeightbours; j_y <= interpolationNeightbours; j_y++)
+    {
+        for (int j_x = -interpolationNeightbours; j_x <= interpolationNeightbours; j_x++)
+        {
+            int neightbourX = x + j_x;
+            int neightbourY = y + j_y;
+
+            if (neightbourX >= 0 && neightbourX < width - 1 && neightbourY >= 0 && neightbourY < height - 1)
+            {
+                int neightbourIndex = neightbourX + neightbourY * width;
+
+                avarageHeight += terrainHeightsData[neightbourIndex];
+                validNeightbours++;
+            }
+        }
+    }
+
+    return avarageHeight / validNeightbours;
+}
+
 [numthreads(8,8,1)]
 void SmoothingCustomArea(uint3 id : SV_DispatchThreadID)
 {
     int x = id.x;
     int y = id.y;
-
-    float avarageHeight = 0;
-    int validNeightbours = 0;
-
     int index = x + y * width;
-    
-    for (int i = -smoothRadius; i <= smoothRadius; i++)
+
+    float dist = distance(float3(x, 0, y), float3(customAreaX, 0, customAreaZ));
+
+    if (dist <= innerRadius)
     {
-        for (int j_y = -smoothRadius; j_y <= smoothRadius; j_y++)
-        {
-            for (int j_x = -smoothRadius; j_x <= smoothRadius; j_x++)
-            {
-            }
-        }
+        customAreaData[index] = targetHeight;
     }
+    else if (dist >= innerRadius && dist <= outerRadius)
+    {
+        //We are inside interpolate zone
+        float originalHeight = terrainHeightsData[index];
+
+        float avrgNeighhbourHeight = GetAvarageHeightAroundArea(x, y);
+
+        float t = smoothstep(outerRadius, innerRadius, dist);
+        float heightDifference = lerp(avrgNeighhbourHeight, originalHeight, t);
+
+        float blended = lerp(heightDifference, targetHeight, t);
+
+        customAreaData[index] = blended;
+    }
+    else customAreaData[index] = terrainHeightsData[index];
 }
