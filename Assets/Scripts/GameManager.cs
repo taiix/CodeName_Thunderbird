@@ -18,10 +18,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         if (player == null || airplane == null)
         {
             Debug.Log("No player or airplane object attached to the Game Manager ");
@@ -53,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     public InventorySystem GetInventorySystem()
     {
+
         return inventorySystem;
     }
 

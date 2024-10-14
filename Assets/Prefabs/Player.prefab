@@ -158,13 +158,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685449f03bff9bb4a9486e33490be20a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 2011121929313801141}
   sensitivity: 0.5
   maxForce: 3
   sprintSpeed: 2
   normalSpeed: 3
   jumpForce: 4
-  canJump: 0
 --- !u!54 &2011121929313801141
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -280,6 +278,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionRaypoint: {x: 0.5, y: 0.5, z: 0}
   interactionDistance: 5.2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
   currentInteractable: {fileID: 0}
   virtualCamera: {fileID: 3654959161182211359}
   interactionUI: {fileID: 0}

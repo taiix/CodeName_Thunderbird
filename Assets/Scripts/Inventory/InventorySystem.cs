@@ -103,18 +103,25 @@ public class InventorySystem : MonoBehaviour
 
     void InventoryUIController(InputAction.CallbackContext context)
     {
-        isInventoryOpen = !isInventoryOpen;
-
-        if (isInventoryOpen)
+        if (GameManager.Instance != null)
         {
-            GameManager.Instance.DisablePlayerControls();
-            inventoryUI.SetActive(true);
+
+            isInventoryOpen = !isInventoryOpen;
+            if (isInventoryOpen)
+            {
+                GameManager.Instance.DisablePlayerControls();
+                inventoryUI.SetActive(true);
+            }
+            else
+            {
+                GameManager.Instance.EnablePlayerControls();
+                inventoryUI.SetActive(false);
+                itemPanelUI.SetActive(false);
+            }
         }
         else
         {
-            GameManager.Instance.EnablePlayerControls();
-            inventoryUI.SetActive(false);
-            itemPanelUI.SetActive(false);
+            Debug.Log("No Game manager in scene, can't disable player contros."); 
         }
     }
 
@@ -212,7 +219,7 @@ public class InventorySystem : MonoBehaviour
         return itemCount >= requiredAmount;
     }
 
-    private int GetItemCount(Item item)
+    public int GetItemCount(Item item)
     {
         int totalAmount = 0;
 

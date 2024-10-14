@@ -17,12 +17,19 @@ public class PlaneInteractable : Interactable
 
     private bool isPlayerInPlane = false;
 
-    [SerializeField] private Rigidbody planeRigidbody; 
+    [SerializeField] private Rigidbody planeRigidbody;
 
 
     private void Start()
     {
-        planeCamera.gameObject.SetActive(false);
+        if (planeCamera != null)
+        {
+            planeCamera.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("No plane camera found. ");
+        }
     }
 
     public override void OnFocus()
@@ -46,10 +53,10 @@ public class PlaneInteractable : Interactable
             interactionText = string.Empty;
         }
     }
-     
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && IsPlaneStationary() && isPlayerInPlane)
+        if (Input.GetKeyDown(KeyCode.Escape) && IsPlaneStationary() && isPlayerInPlane)
         {
             ExitPlane();
         }

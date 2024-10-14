@@ -34,7 +34,7 @@ public class PlanePart : MonoBehaviour
 
         // Register the smoke effect with the VFX Manager
         var smokeEffect = GetComponentInChildren<ParticleSystem>();
-        if (smokeEffect != null)
+        if (smokeEffect != null && VFXManager.Instance != null)
         {
             VFXManager.Instance.RegisterVFX(partName, smokeEffect);
         }
@@ -59,18 +59,26 @@ public class PlanePart : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
+        CurrentHealth = currentHealth;
         //currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
-        if (currentHealth < 75f)
+        if (VFXManager.Instance != null)
         {
-            VFXManager.Instance.PlayVFX(partName);
+            if (currentHealth < 75f)
+            {
+                VFXManager.Instance.PlayVFX(partName);
+            }
+            else
+            {
+                VFXManager.Instance.StopVFX(partName);
+            }
         }
         else
         {
-            VFXManager.Instance.StopVFX(partName);
+            Debug.Log("No VFX Manager in scene, can't play VFX");
         }
+
         //Debug.Log("Current health of " + partName + ": " + currentHealth);
-        CurrentHealth = currentHealth;
     }
 
     public void Repair(float repairAmount)
