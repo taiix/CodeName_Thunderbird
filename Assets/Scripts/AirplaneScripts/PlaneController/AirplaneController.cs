@@ -62,6 +62,10 @@ public class AirplaneController : RigidBodyController
             HandleWheel();
             HandleAltitude();
         }
+        else
+        {
+            ApplyHandbrake();
+        }
     }
 
     void HandleEngines()
@@ -93,7 +97,7 @@ public class AirplaneController : RigidBodyController
         {
             foreach(AirplaneWheels wheel in wheels)
             {
-                wheel.HandleWheel(Input);
+                wheel.HandleWheel(Input, canControlPlane);
             }
         }
     }
@@ -107,5 +111,17 @@ public class AirplaneController : RigidBodyController
     public void ActivateControls()
     {
         canControlPlane = !canControlPlane;
+    }
+
+    private void ApplyHandbrake()
+    {
+        // If the player is not in control of the plane, apply the handbrake to all wheels
+        if (wheels.Count > 0)
+        {
+            foreach (AirplaneWheels wheel in wheels)
+            {
+                wheel.HandleWheel(Input, false); // Force the handbrake to be applied
+            }
+        }
     }
 }
