@@ -162,7 +162,8 @@ MonoBehaviour:
   maxForce: 3
   sprintSpeed: 2
   normalSpeed: 3
-  jumpForce: 4
+  groundCheckDistance: 1.2
+  jumpForce: 6
 --- !u!54 &2011121929313801141
 Rigidbody:
   m_ObjectHideFlags: 0
