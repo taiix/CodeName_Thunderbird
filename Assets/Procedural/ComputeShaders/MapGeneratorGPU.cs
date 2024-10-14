@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 [RequireComponent(typeof(Terrain))]
@@ -17,8 +16,9 @@ public class MapGeneratorGPU : MonoBehaviour
     private int width = 513;
     private int height = 513;
 
-    [Header("Perlin Noise")]
     [SerializeField] private int seed;
+    [Space]
+    [Header("Terrain Properties")]
 
     [SerializeField] private float scale;
 
@@ -40,14 +40,26 @@ public class MapGeneratorGPU : MonoBehaviour
     [SerializeField] private float decreasePercentage;
     [SerializeField] private AnimationCurve edgeCurve;
 
+    [Space]
+    [Header("Terrain Texturing")]
     [SerializeField] private List<TerrainTexture> terrainDataList = new();
-    [SerializeField] private float tiling;
 
     [SerializeField] private Texture2D chunkTexture = null;
 
+    [Space]
+    [Header("Smoothing Terrain")]
     [Range(0, 10)][SerializeField] private int smoothStrenght;
-    public int customAreaSmoothIteration;
 
+    [Space]
+    [Header("Smoothing Custom Area")]
+    [SerializeField] private float innerRadius; // Actual Radius of the area
+    [SerializeField] private float outerRadius; // Radius of where to start interpolating toward innerRadius
+
+    [SerializeField] private int interpolationNeightbours; //Number of neightbours to check 
+
+    [SerializeField] private float targetHeight; 
+    [SerializeField] private AnimationCurve customAreaCurve;
+    
     private void Awake()
     {
         terrain = GetComponent<Terrain>();
@@ -68,9 +80,9 @@ public class MapGeneratorGPU : MonoBehaviour
         UnityEngine.Random.InitState(seed);
 
         GeneratePerlin();
+
         CreateTerrain(noiseHeights);
         CreateHeightmapTexture(noiseHeights);
-
     }
 
     private void OnValidate()
@@ -78,7 +90,6 @@ public class MapGeneratorGPU : MonoBehaviour
         noiseHeights = new float[width, height];
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
-
     }
 
     #region Compute Shader
@@ -92,6 +103,25 @@ public class MapGeneratorGPU : MonoBehaviour
     {
         /////////PerlinNoise////////////////////////////////////////////////////////////////////
 
+        PerlinNoiseGenerationGPU();
+
+        //////////Smoothing///////////////////////////////////////////////////////////////////////
+
+        WholeTerrainSmoothing();
+
+        //////////////////Smoothing Custom Area///////////////////////////////////////////////////////////////////////
+
+        CustomAreaSmooth();
+
+        ///Release///
+        perlinData.Release();
+        smoothingData.Release();
+        terrainHeightsData.Release();
+        customAreaData.Release();
+    }
+
+    private void PerlinNoiseGenerationGPU()
+    {
         int kernelIndexPerlinNoise = computeShader.FindKernel("CSMain");
 
         computeShader.SetBuffer(kernelIndexPerlinNoise, "perlinData", perlinData);
@@ -113,9 +143,10 @@ public class MapGeneratorGPU : MonoBehaviour
 
         perlinData.GetData(data);
         noiseHeights = GetHeightsFromShader(data);
+    }
 
-        //////////Smoothing///////////////////////////////////////////////////////////////////////
-
+    private void WholeTerrainSmoothing()
+    {
         int kernelIndexSmoothing = computeShader.FindKernel("SmoothingWholeTerrain");
 
         computeShader.SetBuffer(kernelIndexSmoothing, "smoothingData", smoothingData);
@@ -138,18 +169,43 @@ public class MapGeneratorGPU : MonoBehaviour
                 noiseHeights[x, y] = smoothedHeightsData[index];
             }
         }
+    }
 
-        //////////////////Smoothing Custom Area///////////////////////////////////////////////////////////////////////
+    void CustomAreaSmooth()
+    {
+        int centerX = width / 2; // Modify later to be on a different location
+        int centerZ = height / 2; // Modify later to be on a different location
+
+
         int kernelIndexSmoothingCustomArea = computeShader.FindKernel("SmoothingCustomArea");
+
         computeShader.SetBuffer(kernelIndexSmoothingCustomArea, "customAreaData", customAreaData);
 
-        computeShader.SetInt("customAreaSmoothIteration", customAreaSmoothIteration);
+        terrainHeightsData.SetData(noiseHeights);
+        computeShader.SetBuffer(kernelIndexSmoothingCustomArea, "terrainHeightsData", terrainHeightsData);
 
+        computeShader.SetInt("customAreaX", centerX);
+        computeShader.SetInt("customAreaZ", centerZ);
+        computeShader.SetInt("interpolationNeightbours", interpolationNeightbours);
 
-        ///Release///
-        perlinData.Release();
-        smoothingData.Release();
-        terrainHeightsData.Release();
+        computeShader.SetFloat("innerRadius", innerRadius);
+        computeShader.SetFloat("outerRadius", outerRadius);
+
+        computeShader.SetFloat("targetHeight", targetHeight);
+
+        float[] data = new float[width * height];
+
+        computeShader.Dispatch(kernelIndexSmoothingCustomArea, width / 8, height / 8, 1);
+        customAreaData.GetData(data);
+        
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int index = x + y * width;
+                noiseHeights[x, y] = (data[index]);
+            }
+        }
     }
 
     #endregion
@@ -178,105 +234,7 @@ public class MapGeneratorGPU : MonoBehaviour
 
         terrainMaterial.SetTexture("_HeightmapTexture", heightmapTexture);
 
-        terrainMaterial.SetFloat("tiling", tiling);
-
-
         SendTextureInfoToSurface();
-    }
-
-    //void SmoothingMultiplePasses(int smoothingRadius = 3, int passes = 3)
-    //{
-    //    for (int p = 0; p < passes; p++)
-    //    {
-    //        float[,] _heights = noiseHeights;
-    //        float[,] smoothedHeights = (float[,])_heights.Clone();
-
-    //        for (int y = 0; y < height; y++)
-    //        {
-    //            for (int x = 0; x < width; x++)
-    //            {
-    //                float averageHeight = 0;
-    //                int validNeighbors = 0;
-
-    //                for (int i = -smoothingRadius; i <= smoothingRadius; i++)
-    //                {
-    //                    for (int j = -smoothingRadius; j <= smoothingRadius; j++)
-    //                    {
-    //                        int neighborX = x + j;
-    //                        int neighborY = y + i;
-
-    //                        if (neighborX >= 0 && neighborX < width && neighborY >= 0 && neighborY < height)
-    //                        {
-    //                            averageHeight += _heights[neighborX, neighborY];
-    //                            validNeighbors++;
-    //                        }
-    //                    }
-    //                }
-
-    //                smoothedHeights[x, y] = averageHeight / validNeighbors;
-    //            }
-    //        }
-
-    //        // Update the terrain heights
-    //        noiseHeights = smoothedHeights;
-    //    }
-    //}
-
-
-    //void FlattenRectangle()
-    //{
-    //    int centerX = width / 2;
-    //    int centerY = height / 2;
-    //    float influenceRadius = 100f;
-
-    //    float avgHeightAroundSpot = SampleAverageHeightAroundSpot(centerX, centerY, radius, influenceRadius);
-
-    //    for (int y = 0; y < height; y++)
-    //    {
-    //        for (int x = 0; x < width; x++)
-    //        {
-    //            float dist = Vector3.Distance(new Vector3(x, 0, y), new Vector3(centerX, 0, centerY));
-
-    //            if (dist <= radius)
-    //            {
-    //                float t = Mathf.SmoothStep(1, 0, Mathf.Clamp01((dist - radius) / (influenceRadius - radius)));
-
-    //                float originalHeight = noiseHeights[x, y];
-
-    //                float heightDifference = Mathf.Lerp(originalHeight, avgHeightAroundSpot, t);
-
-    //                float blendedHeight = Mathf.Lerp(heightDifference, tt, t);
-
-    //                noiseHeights[x, y] = blendedHeight;
-    //            }
-    //        }
-    //    }
-    //}
-
-    float SampleAverageHeightAroundSpot(int centerX, int centerY, float innerRadius, float outerRadius)
-    {
-        float totalHeight = 0f;
-        int sampleCount = 0;
-
-        // Loop through points around the custom spot to get average height
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                // Calculate distance from the center of the custom spot
-                float dist = Vector3.Distance(new Vector3(x, 0, y), new Vector3(centerX, 0, centerY));
-
-                // Only sample heights within the outer influence radius, but outside the inner radius
-                if (dist > innerRadius && dist <= outerRadius)
-                {
-                    totalHeight += noiseHeights[x, y];
-                    sampleCount++;
-                }
-            }
-        }
-
-        // Return the average height
-        return totalHeight / sampleCount;
     }
 
     private void SendTextureInfoToSurface()
@@ -377,8 +335,10 @@ public class MapGeneratorGPU : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (perlinData != null)
-            perlinData.Release();
+        if (perlinData != null) perlinData.Release();
+        if (smoothingData != null) smoothingData.Release();
+        if (terrainHeightsData != null) terrainHeightsData.Release();
+        if (customAreaData != null) customAreaData.Release();
     }
 
     [Serializable]
@@ -393,4 +353,5 @@ public class MapGeneratorGPU : MonoBehaviour
     {
         return chunkTexture;
     }
+
 }

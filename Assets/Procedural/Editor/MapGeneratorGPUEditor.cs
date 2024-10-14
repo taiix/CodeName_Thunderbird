@@ -10,14 +10,11 @@ public class MapGeneratorGPUEditor : Editor
 
         if (DrawDefaultInspector())
         {
-            //map.GenerateRegions();  //Delete
             map.Calculate();
-
         }
 
         if (GUILayout.Button("Generate"))
         {
-            //map.GenerateRegions();  //Delete
             map.Calculate();
         }
     }
