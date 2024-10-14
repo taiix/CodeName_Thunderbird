@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 7426414730139546380}
   - component: {fileID: 8359617416533083249}
   - component: {fileID: 5975943415722783709}
+  - component: {fileID: 7793498491322552210}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -162,7 +163,7 @@ MonoBehaviour:
   maxForce: 3
   sprintSpeed: 2
   normalSpeed: 3
-  groundCheckDistance: 1.2
+  groundCheckDistance: 1.5
   jumpForce: 6
 --- !u!54 &2011121929313801141
 Rigidbody:
@@ -278,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionRaypoint: {x: 0.5, y: 0.5, z: 0}
-  interactionDistance: 5.2
+  interactionDistance: 3
   layerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -302,6 +303,7 @@ MonoBehaviour:
   largeItemImage: {fileID: 0}
   itemDescriptionText: {fileID: 0}
   dropButton: {fileID: 0}
+  useButton: {fileID: 0}
   slots:
   - {fileID: 0}
   - {fileID: 0}
@@ -316,6 +318,19 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   itemsInInventory: []
+--- !u!114 &7793498491322552210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502479564273512209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a47123dd32aff14f87248672b2dc2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handTransform: {fileID: 0}
 --- !u!1 &5811664459883230587
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,14 +475,14 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 9
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60.000004
     OrthographicSize: 10
-    NearClipPlane: 0.1
+    NearClipPlane: 0.01
     FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0

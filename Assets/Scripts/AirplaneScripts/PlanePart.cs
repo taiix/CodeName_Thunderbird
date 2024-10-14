@@ -22,6 +22,8 @@ public class PlanePart : MonoBehaviour
 
     [SerializeField] public List<PartUpgrade> upgrades = new List<PartUpgrade>();
 
+    [SerializeField] private Item itemForFix;
+    [SerializeField] private int requiredItemForFixAmount = 3;
     public int currentUpgradeLevel = 0;
 
     private void Start()
@@ -83,14 +85,23 @@ public class PlanePart : MonoBehaviour
 
     public void Repair(float repairAmount)
     {
-        currentHealth += repairAmount;
-        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
-
-        if (currentHealth >= 75f)
+        
+        if (InventorySystem.Instance.HasRequiredItem(itemForFix, requiredItemForFixAmount))
         {
-            VFXManager.Instance.StopVFX(partName);
+            InventorySystem.Instance?.RemoveItem(itemForFix, requiredItemForFixAmount);
+            currentHealth += repairAmount;
+            currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+
+            if (currentHealth >= 75f)
+            {
+                VFXManager.Instance.StopVFX(partName);
+            }
+            CurrentHealth = currentHealth;
         }
-        CurrentHealth = currentHealth;
+        else
+        {
+            Debug.Log("Dont't have enough items to fix");
+        }
     }
 
     public void PartUpgrade(PartUpgrade upgrade)

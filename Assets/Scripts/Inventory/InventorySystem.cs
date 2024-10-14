@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -19,13 +20,18 @@ public class InventorySystem : MonoBehaviour
     public GameObject itemPanelUI;
     public Image largeItemImage;
     public TextMeshProUGUI itemDescriptionText;
-    public Button dropButton;
+
+    [SerializeField] Button dropButton;
+    [SerializeField] Button useButton;
 
     private InventorySlot selectedSlot;
+    private Item equippedItem;
 
     [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
 
     public List<Item> itemsInInventory = new List<Item>();
+
+    public static event Action<Item, bool> OnItemUsed;
 
     private void Awake()
     {
@@ -36,7 +42,6 @@ public class InventorySystem : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -81,7 +86,7 @@ public class InventorySystem : MonoBehaviour
         inventoryUI.SetActive(false);
         itemPanelUI.SetActive(false);
         dropButton.onClick.AddListener(DropSelectedItem);
-
+        useButton.onClick.AddListener(UseSelectedItem);
 
         for (int i = 0; i < slots.Count; i++)
         {
@@ -91,6 +96,11 @@ public class InventorySystem : MonoBehaviour
                 {
                     slots[i].transform.GetChild(j).gameObject.SetActive(false);
                 }
+
+            }
+            else
+            {
+                slots[i].SetStats();
             }
         }
     }
@@ -121,7 +131,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Game manager in scene, can't disable player contros."); 
+            Debug.Log("No Game manager in scene, can't disable player contros.");
         }
     }
 
@@ -167,8 +177,8 @@ public class InventorySystem : MonoBehaviour
 
                 emptySlot.SetStats();
                 emptySlot.gameObject.SetActive(true);
-              
-           }
+
+            }
             else
             {
                 Debug.LogWarning("No empty slots available in the inventory.");
@@ -183,13 +193,15 @@ public class InventorySystem : MonoBehaviour
     {
         if (slot.itemInSlot != null)
         {
+            Debug.Log("Show Slot");
             selectedSlot = slot;
 
             itemPanelUI.SetActive(true);
             largeItemImage.sprite = slot.itemInSlot.itemIcon;
             itemDescriptionText.text = slot.itemInSlot.itemDescription;
 
-            Debug.Log("Showing details for " + slot.itemInSlot.itemName);
+            UpdateUseButtonText();
+            //Debug.Log("Showing details for " + slot.itemInSlot.itemName);
         }
     }
 
@@ -258,6 +270,38 @@ public class InventorySystem : MonoBehaviour
                     //slot.gameObject.SetActive(false);
                 }
             }
+        }
+    }
+
+    private void UseSelectedItem()
+    {
+        if (selectedSlot != null && selectedSlot.amountInSlot > 0)
+        {
+            bool isEquipping = selectedSlot.itemInSlot != equippedItem;
+            OnItemUsed?.Invoke(selectedSlot.itemInSlot, isEquipping);
+            equippedItem = isEquipping ? selectedSlot.itemInSlot : null;
+            CloseInventory();
+        }
+    }
+
+    private void CloseInventory()
+    {
+        isInventoryOpen = false;
+        inventoryUI.SetActive(false);
+        itemPanelUI.SetActive(false);
+        GameManager.Instance.EnablePlayerControls();
+    }
+
+    private void UpdateUseButtonText()
+    {
+        // Check if the selected item is equipped and update the button text accordingly
+        if (selectedSlot.itemInSlot == equippedItem)
+        {
+            useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unequip";
+        }
+        else
+        {
+            useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Use";
         }
     }
 
