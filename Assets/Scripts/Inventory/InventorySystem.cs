@@ -167,9 +167,8 @@ public class InventorySystem : MonoBehaviour
 
                 emptySlot.SetStats();
                 emptySlot.gameObject.SetActive(true);
-
-                //Debug.Log($"Added {amountToSlot} {item.itemSO.itemName}(s) to a new slot. Remaining amount to add: {amountToAdd}");
-            }
+              
+           }
             else
             {
                 Debug.LogWarning("No empty slots available in the inventory.");

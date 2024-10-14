@@ -22,6 +22,10 @@ public class CharacterMovement : MonoBehaviour
     private InputActionMap player;
     private PlayerInput playerInput;
     private InputAction jumpAction;
+    [SerializeField] private float groundCheckDistance = 0.1f;
+    [SerializeField] int jumpForce = 2;
+    private bool isGrounded;
+
 
     private bool activateControls = true;
 
@@ -41,7 +45,6 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    [SerializeField] int jumpForce = 2;
     //[SerializeField] bool canJump = false;
 
     private void Awake()
@@ -85,6 +88,7 @@ public class CharacterMovement : MonoBehaviour
         {
             Movement();
         }
+            GroundCheck();
 
     }
 
@@ -94,6 +98,16 @@ public class CharacterMovement : MonoBehaviour
         {
             Look();
         }
+    }
+
+    private void GroundCheck()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+
+        isGrounded = Physics.Raycast(origin, Vector3.down, groundCheckDistance);
+
+        Debug.DrawRay(origin, Vector3.down * groundCheckDistance, Color.red);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -130,7 +144,11 @@ public class CharacterMovement : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        if (isGrounded)
+        {
+
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
 
     private void Look()
