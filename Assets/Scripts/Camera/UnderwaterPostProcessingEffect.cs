@@ -1,38 +1,40 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
+[RequireComponent(typeof(Camera), typeof(PostProcessVolume), typeof(PostProcessLayer))]
 public class UnderwaterPostProcessingEffect : MonoBehaviour
 {
     [Header("Attach this to the main camera")]
     [Space]
-
-
-    [SerializeField] private PostProcessVolume globalVolume;
+    private PostProcessVolume globalVolume;
 
     [SerializeField] private PostProcessProfile underwaterEffectProfile;
     [SerializeField] private PostProcessProfile globalProfile;
 
-    [SerializeField] private bool isActive;
-    List<Transform> waterSurface;
+    private bool isActive;
+
+    [SerializeField] private Transform waterSurface;
+
     private void Start()
     {
-        
+        globalVolume = GetComponent<PostProcessVolume>();
     }
 
     void Update()
     {
         float cameraHeightPosition = this.transform.position.y;
 
-        if (cameraHeightPosition < 8f) isActive = true;
+        if (cameraHeightPosition < waterSurface.position.y) isActive = true;
         else isActive = false;
 
         if (isActive)
         {
+            RenderSettings.fog = true;
             globalVolume.profile = underwaterEffectProfile;
         }
         else
         {
+            RenderSettings.fog = false;
             globalVolume.profile = globalProfile;
         }
     }
