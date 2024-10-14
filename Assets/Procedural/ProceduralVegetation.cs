@@ -1,16 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MapGeneratorGPU), typeof(Terrain))]
+[RequireComponent(typeof(MapGeneratorGPU))]
 public class ProceduralVegetation : MonoBehaviour
 {
-    [SerializeField] private int treeSpacing;
-    [SerializeField] private float randPos;
-    public Texture2D tex;
-    public Vector2 min_max_Values;  //x = min(0-1) : y = max(0-1)
+    private Texture2D tex;
 
     private List<Vector3> availablePositions = new();
-    [SerializeField] private List<Trees> trees = new();
+    [SerializeField] private List<Vegetation> vegetations = new();
 
     #region References
     private MapGeneratorGPU _mapGenerator;
@@ -26,58 +23,73 @@ public class ProceduralVegetation : MonoBehaviour
 
         tex = _mapGenerator.GetHeightmapTexture();
 
-        min_max_Values.x = Mathf.Clamp01(min_max_Values.x);
-        min_max_Values.y = Mathf.Clamp01(min_max_Values.y);
-
-        GetAvailableRegions();
         PopulateTreeObjects();
     }
 
-    void PopulateTreeObjects()
+    public void PopulateTreeObjects()
     {
-        float treeRadius = 5f;
+        GetAvailableRegions();
+        List<Vector3> placedVegetation = new();
 
-        List<Vector3> placedTrees = new();
+        Debug.Log($"terrainData.size.x : {terrainData.heightmapResolution}");
 
-        for (int y = 0; y < terrainData.size.z; y += treeSpacing)
+        foreach (var vegetation in vegetations)
         {
-            for (int x = 0; x < terrainData.size.x; x += treeSpacing)
+            for (int y = 0; y < terrainData.size.z; y += vegetation.spacing)
             {
-                int rand = Random.Range(0, trees.Count);
-                GameObject randTree = trees[rand].treePrefab;
-                int randIndex = Random.Range(0, availablePositions.Count);
-                Vector3 position = availablePositions[randIndex];
-
-                availablePositions.RemoveAt(randIndex);
-
-                float worldX = terrain.transform.position.x + ((float)position.x / (terrainData.heightmapResolution - 1)) * terrainData.size.x;
-                float worldZ = terrain.transform.position.z + ((float)position.z / (terrainData.heightmapResolution - 1)) * terrainData.size.z;
-
-                float worldY = terrain.SampleHeight(new Vector3(worldX, 0, worldZ)) + terrain.transform.position.y;
-
-                Vector3 newTreePosition = new Vector3(worldX, worldY, worldZ);
-
-
-                bool canPlace = true;
-                foreach (var oldTree in placedTrees)
+                for (int x = 0; x < terrainData.size.x; x += vegetation.spacing)
                 {
-                    float dist = (oldTree - newTreePosition).magnitude;
-                    if (dist < treeRadius)
+                    //normalized to world height. minHeight = 0.2 and terrainData.size.y = 100 is 20%
+                    //returns heights in world space
+                    float minHeight = vegetation.minHeight * terrainData.size.y;
+                    float maxHeight = vegetation.maxHeight * terrainData.size.y;
+
+                    float radius = vegetation.radius;
+
+                    Vector3 position = GetRandomPosition();
+
+                    Vector3 vegetationWorldPosition = ConvertTerrainToWorldPosition(position);
+
+                    float currentPositionHeight = vegetationWorldPosition.y;
+
+                    if (currentPositionHeight < minHeight || currentPositionHeight > maxHeight)
+                        continue;
+
+                    bool canPlace = true;
+
+                    foreach (var oldVegetation in placedVegetation)
                     {
-                        canPlace = false;
-                        break;
+                        float dist = (oldVegetation - vegetationWorldPosition).magnitude;
+                        if (dist < vegetation.radius)
+                        {
+                            canPlace = false;
+                            break;
+                        }
+                    }
+
+                    if (canPlace)
+                    {
+                        GameObject go = Instantiate
+                            (vegetation.prefab, vegetationWorldPosition,
+                            Quaternion.identity, this.gameObject.transform);
+
+                        go.transform.localScale = new Vector3
+                            (go.transform.localScale.x, 2, go.transform.localScale.z);
+
+                        placedVegetation.Add(go.transform.position);
                     }
                 }
-                if (canPlace)
-                {
-                    GameObject go = Instantiate(randTree, newTreePosition, Quaternion.identity, this.gameObject.transform);
-                    float randomIndex = 2;
-                    go.transform.localScale = new Vector3(go.transform.localScale.x, 2, go.transform.localScale.z);
-                    placedTrees.Add(newTreePosition);
-                }
-
             }
         }
+    }
+
+    private Vector3 GetRandomPosition()
+    {
+        int randIndex = Random.Range(0, availablePositions.Count);
+        Vector3 position = availablePositions[randIndex];
+
+        availablePositions.RemoveAt(randIndex);
+        return position;
     }
 
     void GetAvailableRegions()
@@ -85,25 +97,37 @@ public class ProceduralVegetation : MonoBehaviour
         int width = tex.width;
         int height = tex.height;
 
-        float minHeight = min_max_Values.x;
-        float maxHeight = min_max_Values.y;
-
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 float currectPixel = tex.GetPixel(x, y, 0).r;
-                if (currectPixel >= minHeight && currectPixel <= maxHeight)
-                {
-                    availablePositions.Add(new Vector3(x, 0, y));
-                }
+
+                availablePositions.Add(new Vector3(x, 0, y));
             }
         }
     }
 
-    [System.Serializable]
-    public struct Trees
+    Vector3 ConvertTerrainToWorldPosition(Vector3 position)
     {
-        public GameObject treePrefab;
+        float worldX = (float)position.x + terrain.transform.position.x;  // + terrain.transform.position.x if there are islands with x pos > 0
+
+        float worldZ = (float)position.z + terrain.transform.position.z;  // + terrain.transform.position.z if there are islands with z pos > 0
+
+        float worldY = terrain.SampleHeight(new Vector3(worldX, 0, worldZ)); // + + terrain.transform.position.z if there are islands with y > 0
+
+        Vector3 newVegetationPosition = new Vector3(worldX, worldY, worldZ);
+
+        return newVegetationPosition;
+    }
+
+    [System.Serializable]
+    public struct Vegetation
+    {
+        public GameObject prefab;
+        public float minHeight;
+        public float maxHeight;
+        public float radius;
+        public int spacing;
     }
 }
