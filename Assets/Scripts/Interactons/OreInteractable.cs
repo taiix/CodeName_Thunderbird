@@ -18,12 +18,19 @@ public class OreInteractable : Interactable
 
     public override void OnInteract()
     {
-        if (!isBeingMined && miningMiniGame != null)
+        if (miningMiniGame == null)
+        {
+            Debug.Log("No miningMiniGame object found");
+            return;
+        }
+        if (!isBeingMined)
         {
             interactionText = string.Empty;
             isBeingMined = true;
-            miningMiniGame.StartMining(this); 
+            miningMiniGame.StartMining(this);
+            InteractionHandler.Instance.HideInteractionUI();
         }
+     
     }
 
     public override void OnLoseFocus()

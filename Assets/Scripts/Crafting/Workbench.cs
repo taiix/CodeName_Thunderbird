@@ -90,12 +90,6 @@ public class Workbench : Interactable
         }
     }
 
-    void InitializeWorkbench()
-    {
-
-    }
-
-
     private void ShowNextPart()
     {
         planePartsUI[currentPart].SetActive(false);
