@@ -51,6 +51,8 @@ public class Workbench : Interactable
 
     public override void OnInteract()
     {
+        Camera.main.cullingMask = ~(1 << 9);
+        
         StartCoroutine(ShowTextTemporarily());
         InteractionHandler.Instance.HideInteractionUI();
         isInteracting = true;
@@ -122,17 +124,23 @@ public class Workbench : Interactable
 
         // Wait for 1.5 seconds
         yield return new WaitForSeconds(1.5f);
-
         backgroundVideo.SetActive(false);
     }
 
+    private IEnumerator EnableEquppable()
+    {
+
+        // Wait for 1.5 seconds
+        yield return new WaitForSeconds(1.5f);
+        Camera.main.cullingMask |= (1 << 9);
+    }
     void DisableInteraction()
     {
         isInteracting = false;
         workbenchCamera.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         GameManager.Instance.EnablePlayerControls();
-        backgroundVideo.SetActive(true);
+        StartCoroutine(EnableEquppable());
     }
 
     private void SelectCurrentPart()

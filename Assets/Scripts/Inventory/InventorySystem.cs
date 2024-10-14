@@ -42,7 +42,6 @@ public class InventorySystem : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -97,7 +96,7 @@ public class InventorySystem : MonoBehaviour
                 {
                     slots[i].transform.GetChild(j).gameObject.SetActive(false);
                 }
-                
+
             }
             else
             {
@@ -132,7 +131,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Game manager in scene, can't disable player contros."); 
+            Debug.Log("No Game manager in scene, can't disable player contros.");
         }
     }
 
@@ -178,8 +177,8 @@ public class InventorySystem : MonoBehaviour
 
                 emptySlot.SetStats();
                 emptySlot.gameObject.SetActive(true);
-              
-           }
+
+            }
             else
             {
                 Debug.LogWarning("No empty slots available in the inventory.");
@@ -194,6 +193,7 @@ public class InventorySystem : MonoBehaviour
     {
         if (slot.itemInSlot != null)
         {
+            Debug.Log("Show Slot");
             selectedSlot = slot;
 
             itemPanelUI.SetActive(true);
@@ -278,7 +278,7 @@ public class InventorySystem : MonoBehaviour
         if (selectedSlot != null && selectedSlot.amountInSlot > 0)
         {
             bool isEquipping = selectedSlot.itemInSlot != equippedItem;
-            OnItemUsed?.Invoke(selectedSlot.itemInSlot, isEquipping); 
+            OnItemUsed?.Invoke(selectedSlot.itemInSlot, isEquipping);
             equippedItem = isEquipping ? selectedSlot.itemInSlot : null;
             CloseInventory();
         }
@@ -289,7 +289,7 @@ public class InventorySystem : MonoBehaviour
         isInventoryOpen = false;
         inventoryUI.SetActive(false);
         itemPanelUI.SetActive(false);
-        GameManager.Instance.EnablePlayerControls(); 
+        GameManager.Instance.EnablePlayerControls();
     }
 
     private void UpdateUseButtonText()

@@ -409,21 +409,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 969924146165057941, guid: 8c338867bbc941a4097577433a93627a, type: 3}
-      propertyPath: jumpForce
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 2502479564273512209, guid: 8c338867bbc941a4097577433a93627a, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3654959161182211359, guid: 8c338867bbc941a4097577433a93627a, type: 3}
-      propertyPath: m_Priority
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 3654959161182211359, guid: 8c338867bbc941a4097577433a93627a, type: 3}
-      propertyPath: m_Lens.NearClipPlane
-      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4576081878574872259, guid: 8c338867bbc941a4097577433a93627a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -541,44 +529,24 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1127021116}
+    - target: {fileID: 7793498491322552210, guid: 8c338867bbc941a4097577433a93627a, type: 3}
+      propertyPath: handTransform
+      value: 
+      objectReference: {fileID: 1321862814}
     - target: {fileID: 8359617416533083249, guid: 8c338867bbc941a4097577433a93627a, type: 3}
       propertyPath: interactionUI
       value: 
       objectReference: {fileID: 6470182936893922382}
-    - target: {fileID: 8359617416533083249, guid: 8c338867bbc941a4097577433a93627a, type: 3}
-      propertyPath: layerMask.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 8359617416533083249, guid: 8c338867bbc941a4097577433a93627a, type: 3}
-      propertyPath: interactionDistance
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2502479564273512209, guid: 8c338867bbc941a4097577433a93627a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 514514966}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c338867bbc941a4097577433a93627a, type: 3}
 --- !u!1 &514514956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2502479564273512209, guid: 8c338867bbc941a4097577433a93627a, type: 3}
   m_PrefabInstance: {fileID: 514514955}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &514514966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514514956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a47123dd32aff14f87248672b2dc2fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handTransform: {fileID: 1321862814}
 --- !u!1001 &536381404
 PrefabInstance:
   m_ObjectHideFlags: 0

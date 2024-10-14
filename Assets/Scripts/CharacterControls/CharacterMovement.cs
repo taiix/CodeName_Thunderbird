@@ -113,6 +113,7 @@ public class CharacterMovement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
+       
     }
 
     public void OnLook(InputAction.CallbackContext context)
