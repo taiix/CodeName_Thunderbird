@@ -211,7 +211,7 @@ public class MapGenerator : MonoBehaviour
 
             newLayer.diffuseTexture.Apply(true);
             string path = $"Assets/Terrain Layers/New Terrain Layer {spIndex}.terrainlayer";
-            AssetDatabase.CreateAsset(newLayer, path);
+           // AssetDatabase.CreateAsset(newLayer, path);
 
             newSplatPrototypes[spIndex] = newLayer;
         }
