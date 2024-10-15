@@ -14,6 +14,11 @@ Shader "Custom/Water_Lit"
         _Scale ("Wave Scale", Range(0, 1)) = 0.1
         _Amplitude ("Wave Amplitude", Range(0, 1)) = 0.1
 
+        [HDR]_FoamColor ("Foam Color", Color) = (1, 1, 1, 1)
+        _FoamIntensity ("Foam Intensity", Float) = 0.5
+        _FoamScale ("Foam Scale", Float) = 1.0
+        _FoamCutoff ("Foam Cutoff", Float) = 1.0
+
         _DepthFactor ("Depth Factor", Float) = 1.0
         _CenterPoint ("Center Point", Vector) = (0,0,0,0)
     }
@@ -53,6 +58,13 @@ Shader "Custom/Water_Lit"
         float _Scale;
         float _Amplitude;
 
+        float4 _FoamColor;
+
+        float _FoamIntensity;
+        float _FoamScale;
+        float _FoamCutoff;
+
+
         float _DepthFactor;
 
         float4 _CenterPoint;
@@ -63,16 +75,41 @@ Shader "Custom/Water_Lit"
             i.screenPos = ComputeScreenPos(v.vertex);
         }
 
-        
+
         float4 ComputeScreenCoords(Input i)
         {
-            float4 screenUV = i.screenPos; 
+            float4 screenUV = i.screenPos;
             screenUV.xy /= screenUV.w;
             return screenUV;
         }
 
+        float2 unity_gradientNoise_dir(float2 p)
+        {
+            p = p % 289;
+            float x = (34 * p.x + 1) * p.x % 289 + p.y;
+            x = (34 * x + 1) * x % 289;
+            x = frac(x / 41) * 2 - 1;
+            return normalize(float2(x - floor(x + 0.5), abs(x) - 0.5));
+        }
 
-        float3 e(Input IN)
+        float unity_gradientNoise(float2 p)
+        {
+            float2 ip = floor(p);
+            float2 fp = frac(p);
+            float d00 = dot(unity_gradientNoise_dir(ip), fp);
+            float d01 = dot(unity_gradientNoise_dir(ip + float2(0, 1)), fp - float2(0, 1));
+            float d10 = dot(unity_gradientNoise_dir(ip + float2(1, 0)), fp - float2(1, 0));
+            float d11 = dot(unity_gradientNoise_dir(ip + float2(1, 1)), fp - float2(1, 1));
+            fp = fp * fp * fp * (fp * (fp * 6 - 15) + 10);
+            return lerp(lerp(d00, d01, fp.y), lerp(d10, d11, fp.y), fp.x);
+        }
+
+        void Unity_GradientNoise_float(float2 UV, float Scale, out float Out)
+        {
+            Out = unity_gradientNoise(UV * Scale) + 0.5;
+        }
+
+        float3 blendedNormals(Input IN)
         {
             float t1 = _Time * _SpeedMap1;
             float t2 = _Time * _SpeedMap2;
@@ -91,22 +128,50 @@ Shader "Custom/Water_Lit"
             return blendedNormal;
         }
 
+
+        float randomFoamGenerate(float foamScale, Input IN)
+        {
+            float3 blendUVs = blendedNormals(IN);
+            float gradientNoise;
+            Unity_GradientNoise_float(blendUVs.xy, foamScale, gradientNoise);
+
+            return (gradientNoise);
+        }
+
+        float testFoam(Input IN, float foamAmount, float foamCutoff)
+        {
+            float4 screenUV = ComputeScreenCoords(IN);
+            float cameraToUnderwaterDist = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
+            float cameraToSurfaceDist = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+
+            float depthDiff = saturate((cameraToUnderwaterDist - cameraToSurfaceDist) / foamAmount);
+
+            float gradNoise = randomFoamGenerate(_FoamScale, IN);
+            float a = depthDiff * foamCutoff;
+            float s = step(a, gradNoise);
+            float res = s * _FoamColor.a;
+            return res;
+        }
+
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
             float4 screenUV = ComputeScreenCoords(IN);
-        
+
             float cameraToUnderwaterDist = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
             float cameraToSurfaceDist = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
-            
+
             float depthDiff = saturate((cameraToUnderwaterDist - cameraToSurfaceDist) / _DepthFactor);
 
-            o.Albedo = lerp(_ShallowColor, _DeepColor, depthDiff);
+            float3 waterColor = lerp(_ShallowColor, _DeepColor, depthDiff);
+            float3 intp = lerp(waterColor, _FoamColor, testFoam(IN, _FoamIntensity, _FoamCutoff));
+
+            o.Albedo = intp;
 
             o.Alpha = _DeepColor.a;
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
 
-            o.Normal = e(IN);
+            o.Normal = blendedNormals(IN);
         }
         ENDCG
     }
