@@ -4,10 +4,13 @@ Shader "Custom/Water_Lit"
     {
         _DeepColor ("Deep Color", Color) = (0, 0.5, 1, 1) // Default deep color
         _ShallowColor ("Shallow Color", Color) = (0, 0.2, 0.5, 1) // Default shallow color
+
         _NormalMap1 ("Normal map 1", 2D) = "bump" {}
         _NormalMap2 ("Normal map 2", 2D) = "bump" {}
         _Glossiness ("Smoothness", Range(0, 1)) = 0.5
         _Metallic ("Metallic", Range(0, 1)) = 0.0
+
+        _WaveHeight ("Wave Height", Float) = 0.1
 
         _SpeedMap1 ("Wave Speed 1", Float) = 0.1
         _SpeedMap2 ("Wave Speed 2", Float) = 0.2
@@ -45,6 +48,9 @@ Shader "Custom/Water_Lit"
             float2 uv_NormalMap1;
             float2 uv_NormalMap2;
 
+            float3 worldNormal;
+            float3 worldPos;
+
             float4 screenPos;
         };
 
@@ -52,6 +58,8 @@ Shader "Custom/Water_Lit"
         half _Metallic;
         float4 _DeepColor;
         float4 _ShallowColor;
+
+        float _WaveHeight;
 
         float _SpeedMap1;
         float _SpeedMap2;
@@ -73,6 +81,23 @@ Shader "Custom/Water_Lit"
         {
             UNITY_INITIALIZE_OUTPUT(Input, i);
             i.screenPos = ComputeScreenPos(v.vertex);
+
+            float t1 = _Time * _SpeedMap1;
+            float t2 = _Time * _SpeedMap2;
+
+            float2 offset1 = float2(t1 * _Scale, 0);
+            float2 offset2 = float2(0, t2 * _Scale);
+
+            float2 uv1 = i.uv_NormalMap1 + offset1;
+            float2 uv2 = i.uv_NormalMap2 + offset2;
+
+            float3 normal1 = UnpackNormal(tex2Dlod(_NormalMap1, float4(uv1,0,0)));
+            float3 normal2 = UnpackNormal(tex2Dlod(_NormalMap2, float4(uv2,0,0)));
+
+            float3 blendedNormal = normalize(normal1 + normal2);
+            float displacement = _WaveHeight * blendedNormal.y;
+
+            //v.vertex += float4(0, displacement, 0, 0);
         }
 
 
