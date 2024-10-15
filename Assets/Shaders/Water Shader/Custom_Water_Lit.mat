@@ -19,7 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _FoamColor
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -35,12 +35,18 @@ Material:
     m_Floats:
     - _Amplitude: 1
     - _DepthFactor: 15.57
+    - _FoamCutoff: 5.1
+    - _FoamIntensity: 8.08
+    - _FoamScale: 19.89
+    - _FoamSpeed: 1
     - _Glossiness: 1
     - _Metallic: 0.135
     - _Scale: 0.277
     - _SpeedMap1: 1.56
     - _SpeedMap2: 1
     m_Colors:
+    - _CenterPoint: {r: 0, g: 0, b: 0, a: 0}
     - _DeepColor: {r: 0, g: 0.5, b: 1, a: 0.74509805}
+    - _FoamColor: {r: 2, g: 2, b: 2, a: 1}
     - _ShallowColor: {r: 0.20784311, g: 0.8021809, b: 0.85882354, a: 1}
   m_BuildTextureStacks: []
