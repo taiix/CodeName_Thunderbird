@@ -43,7 +43,7 @@ Material:
     - _FoamIntensity: 8.08
     - _FoamScale: 5
     - _FoamSpeed: 1
-    - _Glossiness: 1
+    - _Glossiness: 0.438
     - _Metallic: 0.16
     - _RefractionSpeed: 1
     - _RefractionStrengt: 0.35
@@ -55,6 +55,6 @@ Material:
     m_Colors:
     - _CenterPoint: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0, g: 0.5, b: 1, a: 1}
-    - _FoamColor: {r: 3.9999998, g: 3.9999998, b: 3.9999998, a: 1}
+    - _FoamColor: {r: 0.99999994, g: 0.99999994, b: 0.99999994, a: 1}
     - _ShallowColor: {r: 0.20784304, g: 0.8021809, b: 0.85882354, a: 1}
   m_BuildTextureStacks: []
