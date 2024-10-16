@@ -87,7 +87,6 @@ Shader "Custom/Water_Lit"
         float _FoamScale;
         float _FoamCutoff;
 
-
         float _DepthFactor;
 
         float4 _CenterPoint;
@@ -109,8 +108,8 @@ Shader "Custom/Water_Lit"
             float2 uv1 = i.uv_NormalMap1 + offset1;
             float2 uv2 = i.uv_NormalMap2 + offset2;
 
-            float3 normal1 = UnpackNormal(tex2Dlod(_NormalMap1, float4(uv1,0,0)));
-            float3 normal2 = UnpackNormal(tex2Dlod(_NormalMap2, float4(uv2,0,0)));
+            float3 normal1 = UnpackNormal(tex2Dlod(_NormalMap1, float4(uv1, 0, 0)));
+            float3 normal2 = UnpackNormal(tex2Dlod(_NormalMap2, float4(uv2, 0, 0)));
 
             float3 blendedNormal = normalize(normal1 + normal2);
             float displacement = _WaveHeight * blendedNormal.y;
@@ -118,7 +117,7 @@ Shader "Custom/Water_Lit"
             //v.vertex += float4(0, displacement, 0, 0);
         }
 
-
+        ///////////////////////////////////////////HELPERS////////////////////////////////////////////
         float4 ComputeScreenCoords(Input i)
         {
             float4 screenUV = i.screenPos;
@@ -126,6 +125,41 @@ Shader "Custom/Water_Lit"
             return screenUV;
         }
 
+        float CalculateDepth(Input IN, float scaleFactor)
+        {
+            float4 screenUV = ComputeScreenCoords(IN);
+
+            float cameraToUnderwaterDist = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
+            float cameraToSurfaceDist = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+
+            float depthDiff = saturate((cameraToUnderwaterDist - cameraToSurfaceDist) / scaleFactor);
+
+            return depthDiff;
+        }
+
+        float3 blendedNormals(Input IN)
+        {
+            float t1 = _Time * _SpeedMap1;
+            float t2 = _Time * _SpeedMap2;
+
+            float2 offset1 = float2(t1 * _Scale, 0);
+            float2 offset2 = float2(0, t2 * _Scale);
+
+            float2 uv1 = IN.uv_NormalMap1 + offset1;
+            float2 uv2 = IN.uv_NormalMap2 + offset2;
+
+            float3 normal1 = UnpackNormal(tex2D(_NormalMap1, uv1));
+            float3 normal2 = UnpackNormal(tex2D(_NormalMap2, uv2));
+
+            float3 blendedNormal = normalize(normal1 + normal2);
+
+            return blendedNormal;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////////////////////////////GRADIENT NOISE ////////////////////////////////////////////
         float2 unity_gradientNoise_dir(float2 p)
         {
             p = p % 289;
@@ -152,27 +186,7 @@ Shader "Custom/Water_Lit"
             Out = unity_gradientNoise(UV * Scale) + 0.5;
         }
 
-        float3 blendedNormals(Input IN)
-        {
-            float t1 = _Time * _SpeedMap1;
-            float t2 = _Time * _SpeedMap2;
-
-            float2 offset1 = float2(t1 * _Scale, 0);
-            float2 offset2 = float2(0, t2 * _Scale);
-
-            float2 uv1 = IN.uv_NormalMap1 + offset1;
-            float2 uv2 = IN.uv_NormalMap2 + offset2;
-
-            float3 normal1 = UnpackNormal(tex2D(_NormalMap1, uv1));
-            float3 normal2 = UnpackNormal(tex2D(_NormalMap2, uv2));
-
-            float3 blendedNormal = normalize(normal1 + normal2);
-
-            return blendedNormal;
-        }
-
-
-        float randomFoamGenerate(float foamScale, Input IN)
+        float GradientNoiseGeneration(float foamScale, Input IN)
         {
             float3 blendUVs = blendedNormals(IN);
             float gradientNoise;
@@ -181,34 +195,67 @@ Shader "Custom/Water_Lit"
             return (gradientNoise);
         }
 
-        float testFoam(Input IN, float foamAmount, float foamCutoff)
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////////////////////////////FOAM//////////////////////////////////////////////////////
+        float foam(Input IN, float foamAmount, float foamCutoff)
         {
-            float4 screenUV = ComputeScreenCoords(IN);
-            float cameraToUnderwaterDist = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
-            float cameraToSurfaceDist = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+            float depth = CalculateDepth(IN, foamAmount);
 
-            float depthDiff = saturate((cameraToUnderwaterDist - cameraToSurfaceDist) / foamAmount);
-
-            float gradNoise = randomFoamGenerate(_FoamScale, IN);
-            float a = depthDiff * foamCutoff;
-            float s = step(a, gradNoise);
-            float res = s * _FoamColor.a;
+            float gradNoise = GradientNoiseGeneration(_FoamScale, IN);
+            float foamThreshold = depth * foamCutoff;
+            float foamPlacement = step(foamThreshold, gradNoise);
+            float res = foamPlacement * _FoamColor.a;
             return res;
         }
 
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        ///////////////////////////////////////////REFRACTION////////////////////////////////////////////
+
+        float3 Refraction(Input IN)
+        {
+            float n1 = 1.0; // air
+            float n2 = 1.33; // water
+
+            float t1 = _Time * _SpeedMap1;
+            float t2 = _Time * _SpeedMap2;
+
+            float2 offset1 = float2(t1 * _Scale, 0);
+            float2 offset2 = float2(0, t2 * _Scale);
+
+            float2 uv1 = IN.uv_RefractoringNormal + offset1 + offset2;
+            float3 lightPos = _WorldSpaceLightPos0;
+            float3 normal = normalize(UnpackNormal(tex2D(_RefractoringNormal, uv1)));
+
+            float3 incidentRay = normalize(lightPos - IN.worldPos);
+
+            float3 refractionRay = normalize(refract(incidentRay, normal, n1 / n2));
+            return refractionRay;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
-            float4 screenUV = ComputeScreenCoords(IN);
+            float depth = CalculateDepth(IN, _DepthFactor);
 
-            float cameraToUnderwaterDist = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
-            float cameraToSurfaceDist = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+            float3 refractionRay = Refraction(IN);
+            float2 screenUV = IN.screenPos.xy / IN.screenPos.w;
 
-            float depthDiff = saturate((cameraToUnderwaterDist - cameraToSurfaceDist) / _DepthFactor);
+            float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * 0.02;
 
-            float3 waterColor = lerp(_ShallowColor, _DeepColor, depthDiff);
-            float3 intp = lerp(waterColor, _FoamColor, testFoam(IN, _FoamIntensity, _FoamCutoff));
+            float3 refractedColor = tex2D(_GrabTexture, distortedUV);
+            
+            float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
+            
+            float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
+            float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
 
-            o.Albedo = intp;
+            float3 finalColor = lerp(refractedColor, waterFoamColor, 0.4);
+
+            o.Albedo = finalColor;
 
             o.Alpha = _DeepColor.a;
             o.Metallic = _Metallic;
