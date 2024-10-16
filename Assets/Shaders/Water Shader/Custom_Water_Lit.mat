@@ -19,7 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _FoamColor
+  m_LockedProperties: _FoamColor _FoamScale
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -31,22 +31,30 @@ Material:
         m_Texture: {fileID: 2800000, guid: 76cfa49344ed2c849bf13a55bb037ed2, type: 3}
         m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
+    - _RefractoringNormal:
+        m_Texture: {fileID: 2800000, guid: 76cfa49344ed2c849bf13a55bb037ed2, type: 3}
+        m_Scale: {x: 100, y: 100}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _Amplitude: 1
     - _DepthFactor: 15.57
-    - _FoamCutoff: 5.1
+    - _FoamCutoff: 2.35
     - _FoamIntensity: 8.08
-    - _FoamScale: 19.89
+    - _FoamScale: 5
     - _FoamSpeed: 1
     - _Glossiness: 1
-    - _Metallic: 0.135
+    - _Metallic: 0.16
+    - _RefractionSpeed: 1
+    - _RefractionStrengt: 0.35
+    - _RefractionStrength: 2
     - _Scale: 0.277
     - _SpeedMap1: 1.56
     - _SpeedMap2: 1
+    - _WaveHeight: -2.24
     m_Colors:
-    - _CenterPoint: {r: 0, g: 0, b: 0, a: 0}
-    - _DeepColor: {r: 0, g: 0.5, b: 1, a: 0.74509805}
-    - _FoamColor: {r: 2, g: 2, b: 2, a: 1}
-    - _ShallowColor: {r: 0.20784311, g: 0.8021809, b: 0.85882354, a: 1}
+    - _CenterPoint: {r: 1, g: 1, b: 1, a: 1}
+    - _DeepColor: {r: 0, g: 0.5, b: 1, a: 1}
+    - _FoamColor: {r: 3.9999998, g: 3.9999998, b: 3.9999998, a: 1}
+    - _ShallowColor: {r: 0.20784304, g: 0.8021809, b: 0.85882354, a: 1}
   m_BuildTextureStacks: []

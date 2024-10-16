@@ -27,6 +27,8 @@ Shader "Custom/TerrainTextureBlend"
 
         _blendFactorGrassToRock("Blend factor grass to rock", Float) = 0.1
         _blendFactorSandToGrass("_blendFactorSandToGrass", Float) = 0.1
+        
+        _blendLine("Blend Line", Float) = 2
     }
     SubShader
     {
@@ -70,6 +72,7 @@ Shader "Custom/TerrainTextureBlend"
 
         float _blendFactorSandToGrass;
         float _blendFactorGrassToRock;
+        float _blendLine;
 
         ///////////////////////////////////////////////////////////////////////////////////////
         struct Input
@@ -114,7 +117,7 @@ Shader "Custom/TerrainTextureBlend"
                     float blend = smoothstep(_MaxHeights[0] - _blendFactorSandToGrass / 5000, _MinHeights[1] + _blendFactorSandToGrass / 5000,
                                              terrainHeight + noiseFactor * 0.05);
                     
-                    blend = pow(blend, 2.0);
+                    blend = pow(blend, _blendLine);
 
                     finalColor = lerp(sandTex, grassTex, blend);
                     finalNormal = lerp(sandNormal, grassNormal, blend);
@@ -135,7 +138,7 @@ Shader "Custom/TerrainTextureBlend"
                     float blend = smoothstep(_MaxHeights[1] - _blendFactorGrassToRock / 5000, _MinHeights[2] + _blendFactorGrassToRock / 5000,
                                              terrainHeight + noiseFactor * 0.05);
                     
-                    blend = pow(blend, 2.0);
+                    blend = pow(blend, _blendLine);
 
                     finalColor = lerp(grassTex, rockTex, blend);
                     finalNormal = lerp(grassNormal, rockNormal, blend);
