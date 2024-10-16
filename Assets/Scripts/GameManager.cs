@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
 
     [SerializeField] private GameObject crosshair;
+    [SerializeField] private GameObject virtualMouseUI;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject airplane;
 
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     public void DisablePlayerControls()
     {
         crosshair.SetActive(false);
+        virtualMouseUI.SetActive(true);
         playerController?.DisableControls();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     public void EnablePlayerControls()
     {
+        virtualMouseUI.SetActive(false);
         crosshair.SetActive(true);
         playerController?.EnableControls();
         Cursor.lockState = CursorLockMode.Locked;

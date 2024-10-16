@@ -9,7 +9,7 @@
                     "name": "Yaw",
                     "type": "Button",
                     "id": "84fe8c47-ea46-4e2a-805f-c56bc5e67ffd",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

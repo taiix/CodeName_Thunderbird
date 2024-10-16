@@ -5,6 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+
+[RequireComponent(typeof(UpgradeSystem))]
 public class Workbench : Interactable
 {
     [SerializeField] private GameObject backgroundVideo;
@@ -32,14 +34,12 @@ public class Workbench : Interactable
         upArrowButton.onClick.AddListener(ShowNextPart);
         downArrowButton.onClick.AddListener(ShowPreviousPart);
     }
-
     private void OnDisable()
     {
         exitButton.onClick.RemoveAllListeners();
         upArrowButton.onClick.RemoveAllListeners();
         downArrowButton.onClick.RemoveAllListeners();
     }
-
 
     public override void OnFocus()
     {
@@ -52,7 +52,6 @@ public class Workbench : Interactable
     public override void OnInteract()
     {
         Camera.main.cullingMask = ~(1 << 9);
-        
         StartCoroutine(ShowTextTemporarily());
         InteractionHandler.Instance.HideInteractionUI();
         isInteracting = true;
@@ -134,7 +133,7 @@ public class Workbench : Interactable
         yield return new WaitForSeconds(1.5f);
         Camera.main.cullingMask |= (1 << 9);
     }
-    void DisableInteraction()
+    private void DisableInteraction()
     {
         isInteracting = false;
         workbenchCamera.gameObject.SetActive(false);
