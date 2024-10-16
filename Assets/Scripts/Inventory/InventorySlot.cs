@@ -25,7 +25,6 @@ public class InventorySlot : MonoBehaviour
         {
             itemIcon = GetComponentInChildren<Image>();
         }
-
         if (amountText == null)
         {
             amountText = GetComponentInChildren<TextMeshProUGUI>();
@@ -48,7 +47,6 @@ public class InventorySlot : MonoBehaviour
             // Hide UI elements if there's no item
             itemIcon.sprite = null;
             amountText.text = string.Empty;
-
             itemIcon.gameObject.SetActive(false);
             amountText.gameObject.SetActive(false);
         }

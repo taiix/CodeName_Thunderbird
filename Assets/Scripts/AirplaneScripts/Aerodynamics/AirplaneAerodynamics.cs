@@ -10,7 +10,6 @@ public class AirplaneAerodynamics : MonoBehaviour
     public List<PlanePart> parts = new List<PlanePart>();
     public float healthThreshold = 50f;
     public TextMeshProUGUI speedText;
-
     //
 
     public float forwardSpeed;
@@ -69,9 +68,6 @@ public class AirplaneAerodynamics : MonoBehaviour
             RigibodyTransform();
         }
     }
-
-   
-
     void ForwardSpeed()
     {
             Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
