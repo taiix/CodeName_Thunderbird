@@ -384,6 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crosshair: {fileID: 569915885}
+  virtualMouseUI: {fileID: 0}
   player: {fileID: 514514956}
   airplane: {fileID: 8868244248081130298}
 --- !u!4 &510275628
@@ -705,6 +706,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &595191865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 595191866}
+  - component: {fileID: 595191867}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &595191866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595191865}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.011179929, y: -0.0036626337, z: 0.050199993}
+  m_LocalScale: {x: 0.0151619995, y: 0.0151619995, z: 0.0151619995}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849302114}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &595191867
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595191865}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &642782524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1248,7 +1302,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -2933469388890622794, guid: f4e354e58007735428359bd616e9ca56, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 595191866}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7019393883646730175, guid: f4e354e58007735428359bd616e9ca56, type: 3}
       insertIndex: -1
@@ -1339,6 +1396,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0073418343, y: 0.004578832, z: 0.02441787}
   m_Center: {x: -0.00086564803, y: -0.00025899394, z: 0.01636182}
+--- !u!4 &1849302114 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2933469388890622794, guid: f4e354e58007735428359bd616e9ca56, type: 3}
+  m_PrefabInstance: {fileID: 1849302108}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1857616397 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6810709059391405990, guid: 3b7f2c753d435d647a80f1f047a113e3, type: 3}
@@ -2299,6 +2361,8 @@ MonoBehaviour:
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 6995c155cff399e43a7951416b4c1a50, type: 2}
+  itemForFix: {fileID: 0}
+  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!114 &507120359446427279
 MonoBehaviour:
@@ -3014,6 +3078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHeld: 0
   interactionText: 
+  repairAmount: 50
 --- !u!114 &1173350040201406513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4665,6 +4730,8 @@ MonoBehaviour:
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
+  itemForFix: {fileID: 0}
+  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!114 &2999273676034136185
 MonoBehaviour:
@@ -6374,6 +6441,8 @@ MonoBehaviour:
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
   - {fileID: 11400000, guid: d99977c723f11fd488b82dede81e6b48, type: 2}
+  itemForFix: {fileID: 0}
+  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!1001 &5297947884397974676
 PrefabInstance:
@@ -6495,6 +6564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHeld: 0
   interactionText: 
+  repairAmount: 50
 --- !u!224 &5445991438478796386
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7335,6 +7405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHeld: 0
   interactionText: 
+  repairAmount: 50
 --- !u!114 &6342916423191607615
 MonoBehaviour:
   m_ObjectHideFlags: 0
