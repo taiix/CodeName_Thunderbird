@@ -25,8 +25,6 @@ public class InteractionHandler : MonoBehaviour
     [SerializeField] public GameObject interactionUI;
 
 
-
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
