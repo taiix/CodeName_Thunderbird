@@ -13,6 +13,7 @@ public abstract class Interactable : MonoBehaviour
     {
         gameObject.layer = 7;
     }
+
     //Method that each interactable will overwrite and call when the player interacts 
     public abstract void OnInteract();
 

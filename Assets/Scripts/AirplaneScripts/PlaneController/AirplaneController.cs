@@ -16,7 +16,6 @@ public class AirplaneController : RigidBodyController
     public List<AirplaneEngine> engines = new List<AirplaneEngine>();
     public List<AirplaneWheels> wheels = new List<AirplaneWheels>();
 
-
     private bool canControlPlane = false;
 
     public override void Start()
@@ -120,7 +119,7 @@ public class AirplaneController : RigidBodyController
         {
             foreach (AirplaneWheels wheel in wheels)
             {
-                wheel.HandleWheel(Input, false); // Force the handbrake to be applied
+                wheel.HandleWheel(Input, false); 
             }
         }
     }

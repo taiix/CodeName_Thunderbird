@@ -59,7 +59,6 @@ public class UpgradeSystem : MonoBehaviour
         }
 
         combinedRequiredItems.Clear();
-
         UpdateRequiredItemsUI(currentUpgrade);
     }
     public void UpdateRequiredItemsUI(PartUpgrade upgrade)
@@ -87,12 +86,11 @@ public class UpgradeSystem : MonoBehaviour
 
     public void UpgradePlanePart()
     {
-
         if (currentPlanePart == null || inventorySystem == null) return;
 
         currentUpgrade = currentPlanePart.GetCurrentUpgrade();
 
-        // Reset flags and message
+        // Reset message
         hasAllItems = true;
         missingItemsMessage = "";
 
