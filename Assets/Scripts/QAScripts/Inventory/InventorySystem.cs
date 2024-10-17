@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -305,4 +306,17 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
+    public bool IsInventoryOpen()
+    {
+        return isInventoryOpen;
+    }
+
+    public Item GetEquippedItem()
+    {
+        if (equippedItem != null)
+        {
+            return equippedItem;
+        }
+        return null;
+    }
 }

@@ -23,7 +23,8 @@ public class InteractionHandler : MonoBehaviour
     private PlayerInput playerInput;
 
     [SerializeField] public GameObject interactionUI;
-
+    [SerializeField] private GameObject treeUI;
+    public TreeInteractable treeInteractable;
 
     private void Awake()
     {
@@ -39,12 +40,12 @@ public class InteractionHandler : MonoBehaviour
         inputAsset = this.GetComponentInParent<PlayerInput>().actions;
         player = inputAsset.FindActionMap("Player");
         playerInput = this.GetComponentInParent<PlayerInput>();
-        
+
         mainCamera = Camera.main;
     }
     void Start()
     {
-       
+
     }
 
     private void OnEnable()
@@ -75,7 +76,7 @@ public class InteractionHandler : MonoBehaviour
         var ray = mainCamera.ViewportPointToRay(interactionRaypoint);
         Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.green);
 
-       
+
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, layerMask))
         {
             if (hit.collider.TryGetComponent(out Interactable hitInteractable) && hitInteractable != currentInteractable)
@@ -94,6 +95,14 @@ public class InteractionHandler : MonoBehaviour
                     currentInteractable = hitInteractable;
                     currentInteractable.OnFocus();
 
+                    treeInteractable = currentInteractable.GetComponent<TreeInteractable>();
+
+                    if (treeInteractable && treeInteractable.playerInRange)
+                    {
+                        treeInteractable.canBeChopped = true;
+                        treeUI.SetActive(true);
+                    }
+
                     interactionUI.GetComponentInChildren<TextMeshProUGUI>().text = currentInteractable.interactionText;
                     interactionUI.SetActive(true);
                 }
@@ -105,6 +114,15 @@ public class InteractionHandler : MonoBehaviour
             currentInteractable.OnLoseFocus();
             currentInteractable = null;
             interactionUI.SetActive(false);
+
+            if (treeInteractable != null)
+            {
+                treeUI.SetActive(false);
+                treeInteractable.canBeChopped = false;
+                treeInteractable = null;
+
+            }
+
         }
     }
 
@@ -132,6 +150,10 @@ public class InteractionHandler : MonoBehaviour
         if (interactionUI != null)
         {
             interactionUI.SetActive(false);
+        }
+        if(treeUI != null)
+        {
+            treeUI.SetActive(false);
         }
     }
 

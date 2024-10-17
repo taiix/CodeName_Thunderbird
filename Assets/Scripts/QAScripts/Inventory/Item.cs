@@ -24,7 +24,8 @@ public class Item : ScriptableObject
     public enum Types
     {
         craftingMaterial,
-        equipment
+        miningEquipment,
+        axe
     }
 
     public enum Rarity
