@@ -8,6 +8,8 @@ public class EquipableItem : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] InputActionAsset actions;
     InputAction hitAction;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +44,16 @@ public class EquipableItem : MonoBehaviour
     {
         Debug.Log("Hit");
         if (animator == null) return;
-        if (hitAction.WasPressedThisFrame())
+        if (hitAction.WasPressedThisFrame() && !InventorySystem.Instance.IsInventoryOpen())
         {
+            TreeInteractable treeInteractable = InteractionHandler.Instance.treeInteractable;
+
+            Item equippedItem = InventorySystem.Instance.GetEquippedItem();
+
+            if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
+            {
+                treeInteractable.GetHit();
+            }
             animator.SetTrigger("hit");
         }
     }
