@@ -29,40 +29,46 @@ Shader "Custom/CloudFog"
 
         sampler2D _CameraDepthTexture;
 
-        float CalculateFogIntensity(float3 shpereCenter, float sphereRadius, float innerRatio, float density,
-                                    float3 cameraPosition, float3 viewDir, float maxDistance)
+        float CalculateFogIntensity(float3 rayOrigin, float3 sphereCenter, float radius, float stepSize,
+                                    float maxDistance, float innerRatio, float density)
         {
-            //calculate ray-sphere intersection
-            float3 localCam = cameraPosition - shpereCenter;
-
-            float a = dot(viewDir, viewDir);
-            float b = 2 * dot(viewDir, localCam);
-            float c = dot(localCam, localCam) - sphereRadius * sphereRadius;
+            //RayOrigin = O, RayDirection = D
+            float3 O = rayOrigin;
+            float3 D = normalize(sphereCenter - rayOrigin);
+            //P^2 - R^2 expressed as (O + tD)^2 - R^2 = 0
+            /*
+             * dot(O, O) + 2t*dot(O,D) + t^2*dot(D,D) - R2 = 0
+             * t^2*dot(D,D) + 2t*dot(O,D) + dot(O, O) = 0
+             * a = dot(D, D), b = 2 * dot(O, D), c = dot(O, O) - R2
+             * d = b^2 - 4ac
+             */
+            float a = dot(D, D);
+            float b = 2 * dot(O, D);
+            float c = dot(O, O) - radius * radius;
 
             float d = b * b - 4 * a * c;
 
-            if (d <= 0)
-                return 0;
+            if (d <= 0) return 0;
 
-            float dSqrt = sqrt(d);
-            float dist = max((-b - dSqrt) / 2 * a, 0);
-            float dist2 = max((-b + dSqrt) / 2 * a, 0);
+            float entryPoint = max((-b + sqrt(d)) / 2 * a, 0);
+            float exitPoint = max((-b - sqrt(d)) / 2 * a, 0);
 
-            float backDepth = min(maxDistance, dist2);
-            //float sample = dist;
-            float stepDist = (backDepth - dist) / 10;
-            float stepContribution = density;
+            float setDis = min(exitPoint, maxDistance);
 
+            float stepDist = (setDis - entryPoint) / 10;
+            
             float centerValue = 1 / (1 - innerRatio);
-
             float clarity = 1;
+
+            float sample = entryPoint;
             for (int i = 0; i < 10; i++)
             {
-                float3 position = localCam + viewDir * dist;
-                float val = saturate(centerValue * (1 - length(position) / sphereRadius));
-                float fogAmount = saturate(val * stepContribution);
-                clarity *= (1 - fogAmount);
-                dist += stepDist;
+                float3 positionOnRay = O + D * entryPoint;
+                float val = saturate(centerValue * (1-length(positionOnRay) / radius));
+
+                float fogIntensity = saturate(val * density);
+                clarity *= 1 - fogIntensity;
+                sample += stepDist;
             }
 
             return 1 - clarity;
@@ -92,9 +98,6 @@ Shader "Custom/CloudFog"
             float depth = LinearEyeDepth(
                 UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(IN.projPos))));
             float3 viewDir = normalize(IN.viewDir);
-            float fog = CalculateFogIntensity(_FogCenter.xyz, _FogCenter.w, _InnerRatio, _Density,
-                                                               _WorldSpaceCameraPos, viewDir, depth);
-
 
             col.rgb = _FogColor.rgb;
             col.a = fog;
