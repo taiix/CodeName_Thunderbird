@@ -2,8 +2,8 @@ Shader "Custom/Water_Lit"
 {
     Properties
     {
-        _DeepColor ("Deep Color", Color) = (0, 0.5, 1, 1) // Default deep color
-        _ShallowColor ("Shallow Color", Color) = (0, 0.2, 0.5, 1) // Default shallow color
+        _DeepColor ("Deep Color", Color) = (0, 0.5, 1, 1)
+        _ShallowColor ("Shallow Color", Color) = (0, 0.2, 0.5, 1)
 
         _NormalMap1 ("Normal map 1", 2D) = "bump" {}
         _NormalMap2 ("Normal map 2", 2D) = "bump" {}
@@ -11,6 +11,9 @@ Shader "Custom/Water_Lit"
         _Metallic ("Metallic", Range(0, 1)) = 0.0
 
         _WaveHeight ("Wave Height", Float) = 0.1
+        _WaveSpeed ("Wave Speed", Float) = 0.1
+        _WaveFrequency ("Wave Frequency", Float) = 0.1
+        _WaveLenght ("Wave Lenght", Float) = 0.1
 
         _SpeedMap1 ("Wave Speed 1", Float) = 0.1
         _SpeedMap2 ("Wave Speed 2", Float) = 0.2
@@ -74,18 +77,14 @@ Shader "Custom/Water_Lit"
         float4 _DeepColor;
         float4 _ShallowColor;
 
-        float _WaveHeight;
+        float _WaveHeight, _WaveSpeed, _WaveFrequency, _WaveLenght;
 
-        float _SpeedMap1;
-        float _SpeedMap2;
-        float _Scale;
-        float _Amplitude;
+
+        float _SpeedMap1, _SpeedMap2, _Scale, _Amplitude;
 
         float4 _FoamColor;
 
-        float _FoamIntensity;
-        float _FoamScale;
-        float _FoamCutoff;
+        float _FoamIntensity, _FoamScale, _FoamCutoff;
 
         float _DepthFactor;
 
@@ -99,22 +98,18 @@ Shader "Custom/Water_Lit"
             UNITY_INITIALIZE_OUTPUT(Input, i);
             i.screenPos = ComputeScreenPos(v.vertex);
 
-            float t1 = _Time * _SpeedMap1;
-            float t2 = _Time * _SpeedMap2;
-
-            float2 offset1 = float2(t1 * _Scale, 0);
-            float2 offset2 = float2(0, t2 * _Scale);
-
-            float2 uv1 = i.uv_NormalMap1 + offset1;
-            float2 uv2 = i.uv_NormalMap2 + offset2;
-
-            float3 normal1 = UnpackNormal(tex2Dlod(_NormalMap1, float4(uv1, 0, 0)));
-            float3 normal2 = UnpackNormal(tex2Dlod(_NormalMap2, float4(uv2, 0, 0)));
-
-            float3 blendedNormal = normalize(normal1 + normal2);
-            float displacement = _WaveHeight * blendedNormal.y;
-
-            //v.vertex += float4(0, displacement, 0, 0);
+            float3 p = v.vertex.xyz;
+            
+            float k = 2 * UNITY_PI / _WaveLenght;
+            float c = sqrt(9.8 / k); 
+            float f = k * (p.x - c * _Time.y);
+            float a = _WaveHeight / k;
+            p.x += a * cos(f);
+            p.y = a * sin(f);
+            
+            
+            //v.vertex.xyz = p;
+           
         }
 
         ///////////////////////////////////////////HELPERS////////////////////////////////////////////
@@ -247,9 +242,9 @@ Shader "Custom/Water_Lit"
             float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * 0.02;
 
             float3 refractedColor = tex2D(_GrabTexture, distortedUV);
-            
+
             float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
-            
+
             float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
             float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
 

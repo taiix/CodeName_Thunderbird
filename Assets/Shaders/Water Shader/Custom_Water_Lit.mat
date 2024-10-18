@@ -14,7 +14,7 @@ Material:
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -24,11 +24,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _NormalMap1:
-        m_Texture: {fileID: 2800000, guid: e0ff7d1d868dea740b4858c4794967e8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 76cfa49344ed2c849bf13a55bb037ed2, type: 3}
         m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
     - _NormalMap2:
-        m_Texture: {fileID: 2800000, guid: 76cfa49344ed2c849bf13a55bb037ed2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4a2e0a72b21a48a47af8bb5de9a565c9, type: 3}
         m_Scale: {x: 100, y: 100}
         m_Offset: {x: 0, y: 0}
     - _RefractoringNormal:
@@ -51,7 +51,10 @@ Material:
     - _Scale: 0.277
     - _SpeedMap1: 1.56
     - _SpeedMap2: 1
-    - _WaveHeight: -2.24
+    - _WaveFrequency: 0
+    - _WaveHeight: 0
+    - _WaveLenght: 0
+    - _WaveSpeed: 0
     m_Colors:
     - _CenterPoint: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0, g: 0.5, b: 1, a: 1}
