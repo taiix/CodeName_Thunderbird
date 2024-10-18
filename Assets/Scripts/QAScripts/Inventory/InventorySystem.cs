@@ -120,7 +120,7 @@ public class InventorySystem : MonoBehaviour
             isInventoryOpen = !isInventoryOpen;
             if (isInventoryOpen)
             {
-                GameManager.Instance.DisablePlayerControls();
+                GameManager.Instance.DisablePlayerControls(true);
                 inventoryUI.SetActive(true);
             }
             else

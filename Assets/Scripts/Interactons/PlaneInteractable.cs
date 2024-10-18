@@ -64,7 +64,7 @@ public class PlaneInteractable : Interactable
 
     private void EnterPlane()
     {
-        GameManager.Instance.DisablePlayerControls();
+        GameManager.Instance.DisablePlayerControls(false);
         Cursor.visible = false;
 
         inPlaneUi.SetActive(true);
@@ -75,6 +75,7 @@ public class PlaneInteractable : Interactable
 
         isPlayerInPlane = true;
 
+        GameManager.Instance.PlayerInPlane(isPlayerInPlane);
         InteractionHandler.Instance.UpdateInteractionText("Press 'Escape' to exit the plane");
         //Debug.Log("Player has entered the plane.");
     }
@@ -88,6 +89,7 @@ public class PlaneInteractable : Interactable
         player.SetActive(true);
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
+        GameManager.Instance.PlayerInPlane(isPlayerInPlane);
         GameManager.Instance.EnablePlayerControls();
 
         Debug.Log("Player has exited the plane.");
