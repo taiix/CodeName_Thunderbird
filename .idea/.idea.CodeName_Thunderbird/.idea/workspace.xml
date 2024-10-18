@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45c446dc-41bc-4f4e-836e-39ac1d4a6920" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeName_Thunderbird/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/New Terrain 3.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/New Terrain 3.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/Custom_TerrainTextureBlend.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/Custom_TerrainTextureBlend.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/TerrainTextureBlend.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Procedural/TextureBlendShader/TerrainTextureBlend.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/ComputeShaderTerrain.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/ComputeShaderTerrain.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water Shader/Custom_Water_Lit.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water Shader/Custom_Water_Lit.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Water Shader/WaterLit.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Water Shader/WaterLit.shader" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/test.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/test.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +31,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "FoamShader",
+    "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -101,6 +95,7 @@
       <workItem from="1728919945404" duration="11819000" />
       <workItem from="1728993351516" duration="6559000" />
       <workItem from="1729083309847" duration="24499000" />
+      <workItem from="1729196357139" duration="4635000" />
     </task>
     <servers />
   </component>
