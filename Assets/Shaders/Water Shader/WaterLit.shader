@@ -214,7 +214,7 @@ Shader "Custom/Water_Lit"
 
 
         ///////////////////////////////////////////REFRACTION////////////////////////////////////////////
-
+        //Snell's Law
         float3 Refraction(Input IN)
         {
             float n1 = 1.0; // air
