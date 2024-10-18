@@ -15,6 +15,8 @@ public class AirplaneController : RigidBodyController
 
     public List<AirplaneEngine> engines = new List<AirplaneEngine>();
     public List<AirplaneWheels> wheels = new List<AirplaneWheels>();
+    public List<FlightControlSurface> controlSurfaces = new List<FlightControlSurface>();
+
 
     private bool canControlPlane = false;
 
@@ -59,6 +61,7 @@ public class AirplaneController : RigidBodyController
             HandleEngines();
             HandleAerodynamics();
             HandleWheel();
+            HandleControlSurfaces();
             HandleAltitude();
         }
         else
@@ -105,6 +108,18 @@ public class AirplaneController : RigidBodyController
     void HandleAltitude()
     {
         //TODO
+    }
+
+    void HandleControlSurfaces()
+    {
+        if(controlSurfaces.Count > 0)
+        {
+            foreach(FlightControlSurface controlSurface in controlSurfaces)
+            {
+                //Debug.Log($"Updating control surface of type: {controlSurface.type} with input Flaps: {Input.Flaps}");
+                controlSurface.HandleControlSurface(Input);
+            }
+        }
     }
 
     public void ActivateControls()

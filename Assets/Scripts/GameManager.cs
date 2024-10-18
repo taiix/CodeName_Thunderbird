@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager Instance {  get; private set; }
+    public static GameManager Instance { get; private set; }
 
 
     [SerializeField] private GameObject crosshair;
@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     private AirplaneAerodynamics airplaneAerodynamics;
     private CharacterMovement playerController;
     private InventorySystem inventorySystem;
+
+    private bool isPLayerInPlane = false;
     private void Awake()
     {
         Instance = this;
@@ -32,10 +34,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DisablePlayerControls()
+    public void DisablePlayerControls(bool showVirtualMouse)
     {
+        Debug.Log("Should hide crosshair");
+        if (virtualMouseUI != null && showVirtualMouse)
+        {
+            virtualMouseUI.SetActive(true);
+        }
         crosshair.SetActive(false);
-        virtualMouseUI.SetActive(true);
         playerController?.DisableControls();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -43,7 +49,10 @@ public class GameManager : MonoBehaviour
 
     public void EnablePlayerControls()
     {
-        virtualMouseUI.SetActive(false);
+        if (virtualMouseUI != null)
+        {
+            virtualMouseUI.SetActive(false);
+        }
         crosshair.SetActive(true);
         playerController?.EnableControls();
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,5 +68,15 @@ public class GameManager : MonoBehaviour
     public AirplaneAerodynamics GetAirplaneAerodynamics()
     {
         return airplaneAerodynamics;
+    }
+
+    public void PlayerInPlane(bool state)
+    {
+        isPLayerInPlane = state;
+    }
+
+    public bool IsPLayerInPlane()
+    {
+        return isPLayerInPlane;
     }
 }
