@@ -31,6 +31,7 @@ public class AirplaneAerodynamics : MonoBehaviour
 
     //DRAG
     public float dragFactor = 0.01f;
+    public float flapDragFactor = 0.005f;
 
     //ANGLE OF ATTACK
     private float angleOfAttack;
@@ -64,7 +65,6 @@ public class AirplaneAerodynamics : MonoBehaviour
             Roll();
             Yaw();
             Banking();
-
             RigibodyTransform();
         }
     }
@@ -130,11 +130,18 @@ public class AirplaneAerodynamics : MonoBehaviour
         }
     }
 
+
+    //Drag force to keep the plane stable in the air 
     void Drag()
     {
+        //Speed drag
+        float speedDrag = forwardSpeed * dragFactor * flapDragFactor;
 
-        float speedDrag = forwardSpeed * dragFactor;
-        float finalDrag = startDrag + speedDrag;
+        //Flap drag
+        float flapDrag = airplaneInputs.Flaps * flapDragFactor;
+
+
+        float finalDrag = startDrag + speedDrag + flapDrag;
 
         rb.drag = finalDrag;
         rb.angularDrag = startAngularDrag * forwardSpeed;

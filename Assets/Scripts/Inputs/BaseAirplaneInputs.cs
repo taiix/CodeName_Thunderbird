@@ -32,7 +32,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     private float throttle = 0f;
     private float breaks = 0f;
 
-    private int maxFlapsIncrement = 3;
+    public int maxFlapsIncrement = 2;
     private int flaps = 0;
 
     private bool positiveFlapsPressedLastFrame = false;
@@ -69,7 +69,7 @@ public class BaseAirplaneInputs : MonoBehaviour
         yawAction.Disable();
         throttleAction.Disable();
         breakAction.Disable();
-        flapsAction.Disable(); 
+        flapsAction.Disable();
     }
 
 
@@ -77,7 +77,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     #region Properties
     public float Pitch
     {
-        get{ return pitch;}
+        get { return pitch; }
     }
     public float Roll
     {
@@ -89,11 +89,11 @@ public class BaseAirplaneInputs : MonoBehaviour
     }
     public float Throttle
     {
-        get { return throttle;}
+        get { return throttle; }
     }
     public int Flaps
     {
-        get { return flaps;}
+        get { return flaps; }
     }
     public float Break
     {
@@ -101,24 +101,23 @@ public class BaseAirplaneInputs : MonoBehaviour
     }
     public float StickyThrottle
     {
-        get { return stickyThrottle;}
+        get { return stickyThrottle; }
     }
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-     
+
     }
 
     // Update is called once per frame
     void Update()
     {
- 
-
-        HandleInput();
-
-        
+        if (GameManager.Instance.IsPLayerInPlane())
+        {
+            HandleInput();
+        }
     }
 
 
@@ -138,19 +137,19 @@ public class BaseAirplaneInputs : MonoBehaviour
 
         if (positiveFlapsPressed && !positiveFlapsPressedLastFrame)
         {
-            flaps = Mathf.Clamp(flaps + 1, 0, maxFlapsIncrement);
+            flaps = Mathf.Clamp(flaps + 1, -1, maxFlapsIncrement);
         }
 
         if (negativeFlapsPressed && !negativeFlapsPressedLastFrame)
         {
-            flaps = Mathf.Clamp(flaps - 1, 0, maxFlapsIncrement);
+            flaps = Mathf.Clamp(flaps - 1, -1, maxFlapsIncrement);
         }
 
         // Update the last frame states
         positiveFlapsPressedLastFrame = positiveFlapsPressed;
         negativeFlapsPressedLastFrame = negativeFlapsPressed;
 
-        //Debug.Log("Throttle input value: " + throttle);
+        //Debug.Log("Current Flaps value: " + flaps);
     }
 
     void StickyThrottleControl()

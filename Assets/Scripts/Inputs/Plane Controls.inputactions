@@ -36,7 +36,7 @@
                     "name": "Flaps",
                     "type": "Button",
                     "id": "1f9e3c38-0abc-460d-a4be-99a879973be2",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

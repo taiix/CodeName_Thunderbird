@@ -85,7 +85,7 @@ public class Workbench : Interactable
     {
         if (isInteracting)
         {
-            GameManager.Instance.DisablePlayerControls();
+            GameManager.Instance.DisablePlayerControls(true);
             Cursor.lockState = CursorLockMode.None;
             interactionText = string.Empty;
         }
