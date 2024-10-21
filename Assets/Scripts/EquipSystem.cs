@@ -8,14 +8,18 @@ public class EquipSystem : MonoBehaviour
     private GameObject equippedItemInstance = null;
     private Item currentEquippedItem = null;
 
-    private void OnEnable()
+
+
+    private void Start()
     {
-        InventorySystem.OnItemUsed += HandleItemUsed; // Subscribe to the item used event
+        InventorySystem.OnItemUsed += HandleItemUsed;
+        GameManager.Instance.OnPlayerEnterPlane += UnequipItem;
     }
 
     private void OnDisable()
     {
-        InventorySystem.OnItemUsed -= HandleItemUsed; // Unsubscribe to avoid memory leaks
+        InventorySystem.OnItemUsed -= HandleItemUsed;
+        GameManager.Instance.OnPlayerEnterPlane -= UnequipItem;
     }
 
     // Method to handle item usage from the inventory
@@ -45,6 +49,7 @@ public class EquipSystem : MonoBehaviour
             if (equippedItemInstance.gameObject.GetComponent<Collider>() != null)
             {
                 equippedItemInstance.gameObject.GetComponent<Collider>().enabled = false;
+                Destroy(equippedItemInstance.gameObject.GetComponent<Rigidbody>());
             }
             currentEquippedItem = item;        
         }
@@ -54,6 +59,7 @@ public class EquipSystem : MonoBehaviour
     {
         if (equippedItemInstance != null)
         {
+            Debug.Log("Unequip item called");
             Destroy(equippedItemInstance);
             currentEquippedItem = null;
         }

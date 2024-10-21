@@ -97,7 +97,6 @@ public class InventorySystem : MonoBehaviour
                 {
                     slots[i].transform.GetChild(j).gameObject.SetActive(false);
                 }
-
             }
             else
             {
@@ -178,7 +177,6 @@ public class InventorySystem : MonoBehaviour
 
                 emptySlot.SetStats();
                 emptySlot.gameObject.SetActive(true);
-
             }
             else
             {
@@ -186,8 +184,6 @@ public class InventorySystem : MonoBehaviour
                 return;
             }
         }
-
-
     }
 
     public void OnSlotClicked(InventorySlot slot)
@@ -213,15 +209,16 @@ public class InventorySystem : MonoBehaviour
         {
             itemsInInventory.Remove(selectedSlot.itemInSlot);
             selectedSlot.amountInSlot--;
+            Instantiate(selectedSlot.itemInSlot.itemPrefab, gameObject.transform.position + new Vector3(0,1,1.5f), Quaternion.identity);
 
             if (selectedSlot.amountInSlot <= 0)
             {
                 selectedSlot.itemInSlot = null;
                 itemPanelUI.SetActive(false);
-                //selectedSlot.gameObject.SetActive(false);
                 Debug.Log("Slot is now empty.");
             }
             selectedSlot.SetStats();
+            CloseInventory();
         }
     }
 
@@ -279,8 +276,53 @@ public class InventorySystem : MonoBehaviour
         if (selectedSlot != null && selectedSlot.amountInSlot > 0)
         {
             bool isEquipping = selectedSlot.itemInSlot != equippedItem;
-            OnItemUsed?.Invoke(selectedSlot.itemInSlot, isEquipping);
-            equippedItem = isEquipping ? selectedSlot.itemInSlot : null;
+
+            if (isEquipping)
+            {
+                // Equip the item and remove one from the inventory
+                OnItemUsed?.Invoke(selectedSlot.itemInSlot, true);
+                equippedItem = selectedSlot.itemInSlot;
+
+                // Remove one item from the slot and update stats
+                selectedSlot.amountInSlot--;
+                if (selectedSlot.amountInSlot <= 0)
+                {
+                    selectedSlot.itemInSlot = null;
+                    itemPanelUI.SetActive(false);
+                    Debug.Log("Slot is now empty.");
+                }
+
+                selectedSlot.SetStats();
+            }
+            else
+            {
+                // Unequip the item and add it back to the inventory
+                OnItemUsed?.Invoke(selectedSlot.itemInSlot, false);
+                equippedItem = null;
+
+                // Find the slot with the same item or an empty slot to add the item back
+                InventorySlot slotToAdd = slots.Find(slot => slot.itemInSlot == selectedSlot.itemInSlot);
+
+                if (slotToAdd != null)
+                {
+                    // Add the item back to the same slot
+                    slotToAdd.amountInSlot++;
+                    slotToAdd.SetStats();
+                }
+                else
+                {
+                    // Find an empty slot to add the item back
+                    InventorySlot emptySlot = slots.Find(slot => slot.itemInSlot == null);
+                    if (emptySlot != null)
+                    {
+                        emptySlot.itemInSlot = selectedSlot.itemInSlot;
+                        emptySlot.amountInSlot = 1;
+                        emptySlot.SetStats();
+                        emptySlot.gameObject.SetActive(true);
+                    }
+                }
+            }
+
             CloseInventory();
         }
     }
@@ -302,7 +344,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Use";
+            useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip";
         }
     }
 
