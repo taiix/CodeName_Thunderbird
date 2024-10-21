@@ -207,6 +207,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1649234506181427348}
     - target: {fileID: 6928674494952683036, guid: 51bf8694a4f92c34bac9d991d94f4114, type: 3}
+      propertyPath: maxLiftPower
+      value: 4100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6928674494952683036, guid: 51bf8694a4f92c34bac9d991d94f4114, type: 3}
       propertyPath: flapDragFactor
       value: 0.5
       objectReference: {fileID: 0}
