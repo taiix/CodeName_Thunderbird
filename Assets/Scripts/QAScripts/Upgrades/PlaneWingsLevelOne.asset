@@ -17,4 +17,6 @@ MonoBehaviour:
     amount: 1
   - item: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
     amount: 1
-  upgradePower: 10
+  upgradePower: 100
+  healthUpgrade: 10
+  damageReduction: 1

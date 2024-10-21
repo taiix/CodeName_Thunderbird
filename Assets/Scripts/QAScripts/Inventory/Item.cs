@@ -15,7 +15,6 @@ public class Item : ScriptableObject
 
     public int maxStack;
     public int inventorySize;
-    public float weight;
 
     //FOR ORES ONLY
     public float miningTime;
