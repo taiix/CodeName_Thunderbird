@@ -25,10 +25,13 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _DensityScale: 1
-    - _NumSteps: 200
-    - _SphereRadius: 0.5
-    - _StepSize: 0.01
+    - _DensityScale: 0.272
+    - _InnerRatio: 0.5
+    - _MaxDistance: 0.5
+    - _NumSteps: 188
+    - _SphereRadius: 2.99
+    - _StepSize: 1
     m_Colors:
+    - _FogColor: {r: 1, g: 1, b: 1, a: 1}
     - _SphereCenter: {r: 0, g: 0, b: 0, a: 0.5}
   m_BuildTextureStacks: []

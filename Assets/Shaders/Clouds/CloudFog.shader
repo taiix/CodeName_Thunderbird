@@ -50,25 +50,24 @@ Shader "Custom/CloudFog"
 
             if (d <= 0) return 0;
 
-            float entryPoint = max((-b + sqrt(d)) / 2 * a, 0);
-            float exitPoint = max((-b - sqrt(d)) / 2 * a, 0);
+            float entryPoint = max((-b + sqrt(d)) / (2 * a), 0);
+            float exitPoint = max((-b - sqrt(d)) / (2 * a), 0);
 
-            float setDis = min(exitPoint, maxDistance);
 
-            float stepDist = (setDis - entryPoint) / 10;
-            
-            float centerValue = 1 / (1 - innerRatio);
+            float backDepth = min(maxDistance, exitPoint );
+            float sample1 = entryPoint; // march from start to end
+            float stepDist = (exitPoint - entryPoint) / 10;
+            float stepContribution = density;
             float clarity = 1;
-
-            float sample = entryPoint;
+             float centerValue = 1 / (1 - innerRatio);
             for (int i = 0; i < 10; i++)
             {
-                float3 positionOnRay = O + D * entryPoint;
-                float val = saturate(centerValue * (1-length(positionOnRay) / radius));
+                float3 positionOnRay = O + D * sample1; // Use 'sample' instead of 'entryPoint'
+                float val = saturate(centerValue * (1 - length(positionOnRay) / radius));
 
                 float fogIntensity = saturate(val * density);
                 clarity *= 1 - fogIntensity;
-                sample += stepDist;
+                sample1 += stepDist;
             }
 
             return 1 - clarity;
@@ -99,8 +98,12 @@ Shader "Custom/CloudFog"
                 UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(IN.projPos))));
             float3 viewDir = normalize(IN.viewDir);
 
+            float fog = CalculateFogIntensity(_WorldSpaceCameraPos, _FogCenter.xyz, _FogCenter.w, 0.1, 100.0,
+                                    _InnerRatio, _Density);
+
             col.rgb = _FogColor.rgb;
-            col.a = fog;
+            col.a = fog; // Apply fog intensity to alpha
+
             o.Albedo = col.rgb;
             o.Alpha = col.a;
         }
