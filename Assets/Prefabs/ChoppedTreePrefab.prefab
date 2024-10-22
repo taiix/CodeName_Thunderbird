@@ -343,5 +343,5 @@ MonoBehaviour:
   woodLogPrefab: {fileID: 7744048200847661142, guid: 27fe8091088b0e84fa77849657f92449, type: 3}
   minLogs: 1
   maxLogs: 5
-  gatherParticles: {fileID: 5958478975733516079, guid: 24fa55c4f1386e04ea2800527f88c4e1, type: 3}
+  gatherParticles: {fileID: 6650199810314842004, guid: 3b7f2c753d435d647a80f1f047a113e3, type: 3}
   particleDuration: 1.5

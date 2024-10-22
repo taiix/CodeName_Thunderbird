@@ -15,14 +15,15 @@ public class EquipableItem : MonoBehaviour
     {
         if (GetComponent<Animator>() != null)
         {
-            
+
             animator = GetComponent<Animator>();
         }
     }
 
     private void OnEnable()
     {
-        if(actions != null)
+        //Assign the hitAction and subscribe to it
+        if (actions != null)
         {
             hitAction = actions.FindAction("Hit");
         }
@@ -37,12 +38,17 @@ public class EquipableItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void PerformHit(InputAction.CallbackContext context)
+    public void ReduceHealth()
     {
-        Debug.Log("Hit");
+
+    }
+
+    private void PerformHit(InputAction.CallbackContext context)
+    {
+        //Debug.Log("Hit");
         if (animator == null) return;
         if (hitAction.WasPressedThisFrame() && !InventorySystem.Instance.IsInventoryOpen())
         {
@@ -52,7 +58,8 @@ public class EquipableItem : MonoBehaviour
 
             if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
             {
-                treeInteractable.GetHit();
+                
+              treeInteractable.GetHit();
             }
             animator.SetTrigger("hit");
         }

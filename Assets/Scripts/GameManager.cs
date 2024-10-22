@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +20,10 @@ public class GameManager : MonoBehaviour
     private InventorySystem inventorySystem;
 
     private bool isPLayerInPlane = false;
+
+    public UnityAction OnPlayerEnterPlane;
+    public UnityAction OnPlayerExitPlane;
+
     private void Awake()
     {
         Instance = this;

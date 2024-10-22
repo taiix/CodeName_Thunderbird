@@ -97,7 +97,6 @@ public class InventorySystem : MonoBehaviour
                 {
                     slots[i].transform.GetChild(j).gameObject.SetActive(false);
                 }
-
             }
             else
             {
@@ -178,7 +177,6 @@ public class InventorySystem : MonoBehaviour
 
                 emptySlot.SetStats();
                 emptySlot.gameObject.SetActive(true);
-
             }
             else
             {
@@ -186,8 +184,6 @@ public class InventorySystem : MonoBehaviour
                 return;
             }
         }
-
-
     }
 
     public void OnSlotClicked(InventorySlot slot)
@@ -211,17 +207,31 @@ public class InventorySystem : MonoBehaviour
     {
         if (selectedSlot != null && selectedSlot.amountInSlot > 0)
         {
-            itemsInInventory.Remove(selectedSlot.itemInSlot);
+            if (equippedItem == selectedSlot.itemInSlot)
+            {
+                if (selectedSlot.amountInSlot == 1)
+                {
+                    OnItemUsed?.Invoke(selectedSlot.itemInSlot, false);
+                    equippedItem = null;
+                }
+                else
+                {
+                    itemsInInventory.Remove(selectedSlot.itemInSlot);
+                }
+            }
+
             selectedSlot.amountInSlot--;
+            Instantiate(selectedSlot.itemInSlot.itemPrefab, gameObject.transform.position + new Vector3(0, 1, 1.5f), Quaternion.identity);
 
             if (selectedSlot.amountInSlot <= 0)
             {
                 selectedSlot.itemInSlot = null;
                 itemPanelUI.SetActive(false);
-                //selectedSlot.gameObject.SetActive(false);
                 Debug.Log("Slot is now empty.");
             }
+
             selectedSlot.SetStats();
+            CloseInventory();
         }
     }
 
@@ -279,8 +289,18 @@ public class InventorySystem : MonoBehaviour
         if (selectedSlot != null && selectedSlot.amountInSlot > 0)
         {
             bool isEquipping = selectedSlot.itemInSlot != equippedItem;
-            OnItemUsed?.Invoke(selectedSlot.itemInSlot, isEquipping);
-            equippedItem = isEquipping ? selectedSlot.itemInSlot : null;
+
+            if (isEquipping)
+            {
+                OnItemUsed?.Invoke(selectedSlot.itemInSlot, true);
+                equippedItem = selectedSlot.itemInSlot;
+            }
+            else
+            {
+                OnItemUsed?.Invoke(selectedSlot.itemInSlot, false);
+                equippedItem = null;
+            }
+
             CloseInventory();
         }
     }
@@ -302,7 +322,7 @@ public class InventorySystem : MonoBehaviour
         }
         else
         {
-            useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Use";
+            useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip";
         }
     }
 

@@ -6,7 +6,7 @@ public class PlanePart : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth = 50;
-    [SerializeField] private Rigidbody planeRb;
+    private Rigidbody planeRb;
     [SerializeField] private float damageFactor = 1f;
 
 
@@ -106,7 +106,8 @@ public class PlanePart : MonoBehaviour
 
     public void PartUpgrade(PartUpgrade upgrade)
     {
-        this.maxHealth += upgrade.upgradePower;
+        this.maxHealth += upgrade.healthUpgrade;
+        this.damageFactor -= upgrade.damageReduction;
         GameManager.Instance.GetAirplaneAerodynamics().maxLiftPower += upgradePower;
         currentUpgradeLevel++;
 

@@ -39,10 +39,12 @@ public class ChoppedTreeInteractable : Interactable
 
         if (gatherParticles != null)
         {
-            gatherParticles.Play();
+            ParticleSystem particles = Instantiate(gatherParticles,gameObject.transform.position,Quaternion.identity);
+            particles.Play();
+            Debug.Log("playing particle ");
         }
 
-        yield return new WaitForSeconds(particleDuration);
+        yield return new WaitForSeconds(0);
 
         int numberOfLogs = Random.Range(minLogs, maxLogs);
 
@@ -50,7 +52,7 @@ public class ChoppedTreeInteractable : Interactable
         {
 
             Vector3 spawnPosition = transform.position + Random.insideUnitSphere * 0.5f;
-            Instantiate(woodLogPrefab, spawnPosition,Quaternion.Euler(-90,0,0));
+            Instantiate(woodLogPrefab, spawnPosition + new Vector3(0,0.5f,0),Quaternion.Euler(-90,0,0));
         }
 
         Destroy(gameObject);

@@ -20,6 +20,7 @@ public class PlaneInteractable : Interactable
     [SerializeField] private Rigidbody planeRigidbody;
 
 
+
     private void Start()
     {
         if (planeCamera != null)
@@ -64,6 +65,8 @@ public class PlaneInteractable : Interactable
 
     private void EnterPlane()
     {
+        GameManager.Instance?.OnPlayerEnterPlane.Invoke();
+
         GameManager.Instance.DisablePlayerControls(false);
         Cursor.visible = false;
 
