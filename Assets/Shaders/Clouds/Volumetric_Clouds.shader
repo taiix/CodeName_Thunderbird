@@ -8,6 +8,9 @@ Shader "Unlit/Volumetric_Clouds"
         _DensityScale ("Density Scale", Range(0, 1)) = 0.5
         _SphereCenter ("Sphere Center", Vector) = (0, 0, 0, 1)
         _InnerRatio ("Inner Ratio", Float) = 0.5
+
+        _Cloud3D ("Cloud 3d texture", 3D) = ""{}
+        _CloudScale ("Cloud Scale", Float) = 0.5
     }
     SubShader
     {
@@ -40,7 +43,22 @@ Shader "Unlit/Volumetric_Clouds"
             float4 _FogColor;
 
             sampler2D _CameraDepthTexture;
+            sampler3D _Cloud3D;
 
+            float _CloudScale;
+
+            float CloudDensity(float3 position)
+            {
+                // Scale the 3D texture coordinates based on the size of the cloud
+                float3 scaledPos = position * _CloudScale;
+
+                // Sample the cloud density from the 3D texture
+                float density = tex3D(_Cloud3D, scaledPos).r;
+
+                // Apply density scaling factor
+                return density * _DensityScale;
+            }
+            
             struct v2f
             {
                 float3 wPos : TEXCOORD0;
@@ -54,7 +72,7 @@ Shader "Unlit/Volumetric_Clouds"
                 //RayOrigin = O, RayDirection = D
                 float3 _rayOrigin = rayOrigin;
                 float3 _viewDir = viewDir;
-                
+
                 float radius = sphereCenter.w;
                 //P^2 - R^2 expressed as (O + tD)^2 - R^2 = 0
                 /*
@@ -81,15 +99,17 @@ Shader "Unlit/Volumetric_Clouds"
                 float stepSize = (maximumDepth - entryPoint) / 10;
                 float densityFactor = density;
 
-                float fogGradient = 1 / (1 - innerRatio);   //Center to outer
+                float fogGradient = 1 / (1 - innerRatio); //Center to outer
 
                 float fogTransparency = 1;
 
                 for (int i = 0; i < 10; i++)
                 {
-                    float3 positionOnRay = _rayOrigin + _viewDir * rayMarchingStartingPoint; // Use 'sample' instead of 'entryPoint'
+                    float3 positionOnRay = _rayOrigin + _viewDir * rayMarchingStartingPoint;
+                    // Use 'sample' instead of 'entryPoint'
+                     float cloudDensity = CloudDensity(positionOnRay);
                     float distanceFactor = saturate(fogGradient * (1 - length(positionOnRay) / radius));
-                    float fogAccumulation = saturate(distanceFactor * densityFactor);
+                    float fogAccumulation = saturate(distanceFactor * densityFactor * cloudDensity);
 
                     fogTransparency *= 1 - fogAccumulation;
 
@@ -120,8 +140,8 @@ Shader "Unlit/Volumetric_Clouds"
                 float3 viewDir = normalize(i.wPos - _WorldSpaceCameraPos);
 
                 float fogDensity = FogDensity(_WorldSpaceCameraPos,
-                                              _SphereCenter, depth,
-                                              _DensityScale, _InnerRatio, viewDir);
+                                                _SphereCenter, depth,
+                                                _DensityScale, _InnerRatio, viewDir);
 
                 half4 color = half4(1, 1, 1, 1);
 

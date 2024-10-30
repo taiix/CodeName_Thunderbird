@@ -13,6 +13,9 @@ public class CloudsEditor : Editor
         if (GUILayout.Button("Generate Texture"))
         {
             clouds.GenerateTexture();
+        }if (GUILayout.Button("Save Texture"))
+        {
+            clouds.SaveTexture();
         }
 
         if (DrawDefaultInspector())
