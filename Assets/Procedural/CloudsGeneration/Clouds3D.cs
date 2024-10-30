@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class Clouds3D : MonoBehaviour
@@ -10,6 +11,11 @@ public class Clouds3D : MonoBehaviour
     private void Start()
     {
         GenerateTexture();
+    }
+
+    public void SaveTexture() {
+        GenerateTexture();
+        AssetDatabase.CreateAsset(cloudTexture, "Assets/Example3DTexture.asset");
     }
 
     public void GenerateTexture()
@@ -31,16 +37,25 @@ public class Clouds3D : MonoBehaviour
             {
                 for (int x = 0; x < textureSize; x++)
                 {
-                    // Calculate coordinates for noise
+                    // Calculate coordinates for multiple layers of noise
                     float xCoord = (float)x / textureSize * scale;
                     float yCoord = (float)y / textureSize * scale;
                     float zCoord = (float)z / textureSize * scale;
 
-                    // Generate Perlin noise value
-                    float noiseValue = Mathf.PerlinNoise(xCoord, yCoord) * Mathf.PerlinNoise(yCoord, zCoord);
+                    // Generate multiple layers of Perlin noise
+                    float noiseValue1 = Mathf.PerlinNoise(xCoord * 0.5f, yCoord * 0.5f); // Layer 1 (larger scale)
+                    float noiseValue2 = Mathf.PerlinNoise(xCoord * 2.0f, yCoord * 2.0f); // Layer 2 (smaller scale)
+                    float noiseValue3 = Mathf.PerlinNoise(xCoord * 4.0f, yCoord * 4.0f); // Layer 3 (even smaller scale)
 
-                    // Store color based on noise value
-                    colors[x + y * textureSize + z * textureSize * textureSize] = new Color(noiseValue, noiseValue, noiseValue, 1.0f);
+                    // Combine the noise values for a cloud-like appearance
+                    float combinedNoise = (noiseValue1 + noiseValue2 * 0.5f + noiseValue3 * 0.25f) / 1.75f;
+
+                    // Set alpha based on a threshold to create soft edges
+                    float alpha = Mathf.Clamp01(combinedNoise * 2.0f - 0.5f); // Adjust alpha threshold
+
+                    // Store color based on noise value (more white for clouds)
+                    colors[x + y * textureSize + z * textureSize * textureSize] = new Color(combinedNoise, combinedNoise, combinedNoise, alpha);
+
                 }
             }
         }

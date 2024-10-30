@@ -69,8 +69,8 @@ Shader "Custom/CloudFog"
                 clarity *= 1 - fogIntensity;
                 sample1 += stepDist;
             }
-
-            return 1 - clarity;
+            float fogIntensity = 1 - clarity;
+            return fogIntensity;
         }
 
         struct Input
