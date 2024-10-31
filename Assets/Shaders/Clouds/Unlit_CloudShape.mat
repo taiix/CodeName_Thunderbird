@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_Volumetric_Clouds
-  m_Shader: {fileID: 4800000, guid: 1b770c3df9e96a148b24f65e73a5df02, type: 3}
+  m_Name: Unlit_CloudShape
+  m_Shader: {fileID: 4800000, guid: b4b056d676eb0e742bbe25a5e4fb1e70, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,22 +23,18 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Cloud3D:
-        m_Texture: {fileID: 11700000, guid: 92685dfd25778114bba8b7eeab6c5fe2, type: 2}
+    - _MainTex:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CloudDensity: 0.7
-    - _CloudNoiseFrequency: 1
-    - _CloudScale: 1.88
-    - _DensityScale: 0.272
-    - _InnerRatio: 0.85
-    - _MaxDistance: 0.5
-    - _NumSteps: 188
-    - _SphereRadius: 2.99
-    - _StepSize: 1
+    - _FadeDist: 8
+    - _MaxHeight: 10
+    - _MinHeight: 5
+    - _Scale: 0.1
+    - _StepScale: 1
+    - _Steps: 200
     m_Colors:
-    - _FogColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SphereCenter: {r: 0, g: 0, b: 0, a: 0.55}
+    - _SunDir: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

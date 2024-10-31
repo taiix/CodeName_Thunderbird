@@ -49,13 +49,8 @@ Shader "Unlit/Volumetric_Clouds"
 
             float CloudDensity(float3 position)
             {
-                // Scale the 3D texture coordinates based on the size of the cloud
                 float3 scaledPos = position * _CloudScale;
-
-                // Sample the cloud density from the 3D texture
                 float density = tex3D(_Cloud3D, scaledPos).r;
-
-                // Apply density scaling factor
                 return density * _DensityScale;
             }
             
