@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
+  m_Name: Generated3DCloudTexture
   m_Shader: {fileID: 4800000, guid: e4bf005117bffd149946cece4686b146, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -28,7 +28,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Cloud3D:
-        m_Texture: {fileID: 11700000, guid: 92685dfd25778114bba8b7eeab6c5fe2, type: 2}
+        m_Texture: {fileID: 11700000, guid: bb76d2c1e92676c47abe3608df1b8a97, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudNoiseTex:
+        m_Texture: {fileID: 11700000, guid: bb76d2c1e92676c47abe3608df1b8a97, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudTexture:
+        m_Texture: {fileID: 11700000, guid: bb76d2c1e92676c47abe3608df1b8a97, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -65,9 +73,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BlendFactor: 0.521
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Density: 1
+    - _Density: 3.47
+    - _DensityThreshold: 0.5
+    - _Depth: 26.47
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -75,16 +86,21 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NumSteps: 100
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Scale: 36.57
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Steps: 64
+    - _StepCount: 8.02
+    - _StepSize: 15.3
+    - _Steps: 9.52
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BoundsMax: {r: 50, g: 50, b: 50, a: 1}
+    - _BoundsMin: {r: -50, g: -50, b: -50, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

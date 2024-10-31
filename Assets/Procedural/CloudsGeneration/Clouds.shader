@@ -6,16 +6,16 @@ Shader "Unlit/Clouds"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+        Tags { "Queue"="Transparent" }
+          Blend SrcAlpha OneMinusSrcAlpha
+        Cull Off Lighting Off ZWrite Off
+        ZTest Always
 
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
-            #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
 
@@ -44,9 +44,9 @@ Shader "Unlit/Clouds"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float3 uv = float3(i.uv, 0.5); // Sample at the middle slice
-                float cloudDensity = tex3D(_Cloud3D, uv).r; // Sample the 3D texture
-                return float4(cloudDensity, cloudDensity, cloudDensity, 1.0);
+                float3 uv = float3(i.uv, 0.5);
+                float cloudDensity = tex3D(_Cloud3D, uv).r;
+                return float4(cloudDensity, cloudDensity, cloudDensity, cloudDensity);
             }
             ENDCG
         }
