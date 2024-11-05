@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProceduralVegetation : MonoBehaviour
 {
     private Texture2D tex;
-
+    public GameObject customAreaObjects;
     private List<Vector3> availablePositions = new();
     [SerializeField] private List<Vegetation> vegetations = new();
 
@@ -23,7 +23,20 @@ public class ProceduralVegetation : MonoBehaviour
 
         tex = _mapGenerator.GetHeightmapTexture();
 
+        PopulateCustomAreaObjects(customAreaObjects);
         PopulateTreeObjects();
+    }
+
+    public void PopulateCustomAreaObjects(GameObject customObjectPrefab)
+    {
+        List<Vector3> pos = _mapGenerator.GetCustomAreaPosition();
+
+        int randIndex = Random.Range(0, pos.Count);
+        Vector3 randPos = pos[randIndex];
+
+        Vector3 worldPosition = ConvertTerrainToWorldPosition(randPos);
+        GameObject go = Instantiate(customObjectPrefab, worldPosition, Quaternion.identity, this.transform);
+        go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, go.transform.localScale.z);
     }
 
     public void PopulateTreeObjects()
