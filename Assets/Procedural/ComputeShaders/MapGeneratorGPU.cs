@@ -57,9 +57,9 @@ public class MapGeneratorGPU : MonoBehaviour
 
     [SerializeField] private int interpolationNeightbours; //Number of neightbours to check 
 
-    [SerializeField] private float targetHeight; 
+    [SerializeField] private float targetHeight;
     [SerializeField] private AnimationCurve customAreaCurve;
-    
+
     private void Awake()
     {
         terrain = GetComponent<Terrain>();
@@ -197,7 +197,7 @@ public class MapGeneratorGPU : MonoBehaviour
 
         computeShader.Dispatch(kernelIndexSmoothingCustomArea, width / 8, height / 8, 1);
         customAreaData.GetData(data);
-        
+
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -206,6 +206,8 @@ public class MapGeneratorGPU : MonoBehaviour
                 noiseHeights[x, y] = (data[index]);
             }
         }
+
+
     }
 
     #endregion
@@ -352,6 +354,28 @@ public class MapGeneratorGPU : MonoBehaviour
     public Texture2D GetHeightmapTexture()
     {
         return chunkTexture;
+    }
+
+    public List<Vector3> GetCustomAreaPosition()
+    {
+        List<Vector3> customAreaPositions = new();
+
+        int startPosX = width / 2;
+        int startPosY = height / 2;
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                float distance = Vector2.Distance(new Vector2(x, y), new Vector2(startPosX, startPosY));
+                if (distance <= innerRadius)
+                {
+                    customAreaPositions.Add(new Vector3(x, 0, y));
+                }
+            }
+        }
+
+        return customAreaPositions;
     }
 
 }
