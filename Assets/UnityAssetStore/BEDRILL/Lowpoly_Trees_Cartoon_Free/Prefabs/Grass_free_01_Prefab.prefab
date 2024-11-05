@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7416462973192844379}
   - component: {fileID: 4686108173506953361}
   - component: {fileID: 5578081133331144594}
+  - component: {fileID: 2267179367448831058}
   m_Layer: 0
   m_Name: Grass_free_01_Prefab
   m_TagString: Untagged
@@ -106,3 +107,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4879274415113596234, guid: b13399e1824a6244e9681e7a380e8034, type: 3}
+--- !u!114 &2267179367448831058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487605680856392004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: 00000000
