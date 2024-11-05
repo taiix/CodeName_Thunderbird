@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     public void DisablePlayerControls(bool showVirtualMouse)
     {
-        Debug.Log("Should hide crosshair");
+        //Debug.Log("Should hide crosshair");
         if (virtualMouseUI != null && showVirtualMouse)
         {
             virtualMouseUI.SetActive(true);
