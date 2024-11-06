@@ -11,15 +11,19 @@ public class EnemyAI : MonoBehaviour
     State currentState;
 
     private bool canPatrol = true;
-    [SerializeField] private bool canAttack = false;
-    [SerializeField] private bool canRunAway = false;
-    [SerializeField] private bool canPursue;
-    [SerializeField] private bool canRandomPatrol = false;
+
+    [SerializeField] private GameObject stonePrefab; // Prefab for the stone projectile
+    [SerializeField] private float attackSpeed = 2f;
+    [SerializeField] private float spottingRange = 15f; 
+    [SerializeField] private float meleeRange = 2f; 
+    [SerializeField] private float rangedAttackRange = 10f; 
+    [SerializeField] private float tauntRange = 3f;
 
     [SerializeField] Light lightSource;
     bool isInShadow = false;
 
-
+    [SerializeField]
+    private float enemyHeight = 2.0f;
     void Start()
     {
        
@@ -42,74 +46,61 @@ public class EnemyAI : MonoBehaviour
         currentState = state;
         currentState.Enter();
     }
-    public bool CanBeScared()
+    public float SpottingRange()
     {
-        return canRunAway;
+        return spottingRange;
     }
 
-    public bool CanPatrol()
+    public float MeleeRange()
     {
-        return canPatrol;
+        return meleeRange;
     }
 
-
-
-    public bool CanAttack()
+    public float RangedAttackRange()
     {
-        return canAttack;
+        return rangedAttackRange;
     }
 
-    void TurnOnRandomPatrol()
+    public float TauntRange()
     {
-        canRandomPatrol = !canRandomPatrol;
+        return tauntRange;
     }
 
-    private bool IsInShadow()
+    public bool IsInShadow()
     {
-        Vector3 lightDirection = -lightSource.transform.forward; // Negative because we want the direction the light is shining towards
-
-        RaycastHit hit;
-
-        // Cast the ray from the enemy's position in the direction opposite to the light
-        if (Physics.Raycast(transform.position, lightDirection, out hit))
-        {
-            if (hit.collider != null && hit.collider.gameObject != gameObject) // Ensure it doesn't hit the enemy itself
-            {
-                isInShadow = true;
-                Debug.Log("Enemy is in shadow");
-            }
-            else
-            {
-                isInShadow = false;
-            }
-        }
-
-        return isInShadow;
+        return IsPointInShadow(transform.position);
     }
 
+    public GameObject StonePrefab()
+    {
+        return stonePrefab;
+    }
+
+    public float AttackSpeed()
+    {
+        return attackSpeed;
+    }
     public bool IsPointInShadow(Vector3 point)
     {
-        // Use the light's forward direction for directional light
         Vector3 lightDirection = -lightSource.transform.forward;
 
+        Vector3 adjustedPoint = point + Vector3.up * enemyHeight;
+
         RaycastHit hit;
-        // Cast the ray from the given point in the direction opposite to the light
-        if (Physics.Raycast(point, lightDirection, out hit))
+        if (Physics.Raycast(adjustedPoint, lightDirection, out hit))
         {
             if (hit.collider != null && hit.collider.gameObject != gameObject)
             {
-                return true; // Point is in shadow
+                return true; 
             }
         }
 
-        return false; // Point is not in shadow
+        return false; 
     }
 
-    // Update is called once per frame
     void Update()
     {
         IsInShadow();
-
         if (currentState != null)
         {
             currentState.Update();
