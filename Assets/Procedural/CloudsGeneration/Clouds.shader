@@ -46,7 +46,7 @@ Shader "Unlit/Clouds"
             {
                 float3 uv = float3(i.uv, 0.5);
                 float cloudDensity = tex3D(_Cloud3D, uv).r;
-                return float4(cloudDensity, cloudDensity, cloudDensity, cloudDensity);
+                return float4(cloudDensity, cloudDensity, cloudDensity, 1);
             }
             ENDCG
         }
