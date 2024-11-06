@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Cloud3D:
-        m_Texture: {fileID: 11700000, guid: bb76d2c1e92676c47abe3608df1b8a97, type: 2}
+        m_Texture: {fileID: 11700000, guid: 4bd8d3b74a1ce3343b3941f83ca13ef4, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CloudNoiseTex:
