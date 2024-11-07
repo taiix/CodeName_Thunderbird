@@ -45,6 +45,7 @@ public class MapGeneratorGPU : MonoBehaviour
     [SerializeField] private List<TerrainTexture> terrainDataList = new();
 
     [SerializeField] private Texture2D chunkTexture = null;
+    [SerializeField] private RenderTexture slopeTexture = null;
 
     [Space]
     [Header("Smoothing Terrain")]
@@ -206,8 +207,20 @@ public class MapGeneratorGPU : MonoBehaviour
                 noiseHeights[x, y] = (data[index]);
             }
         }
+    }
 
+    void CalculateSlope()
+    {
+        slopeTexture = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
+        slopeTexture.enableRandomWrite = true;
+        slopeTexture.Create();
 
+        int kernelHandle = computeShader.FindKernel("CalculateSlope");
+        computeShader.SetTexture(kernelHandle, "SlopeTexture", slopeTexture);
+
+        computeShader.Dispatch(kernelHandle, width / 8, height / 8, 1);
+
+        terrainMaterial.SetTexture("_SlopeTexture", slopeTexture);
     }
 
     #endregion
@@ -341,6 +354,7 @@ public class MapGeneratorGPU : MonoBehaviour
         if (smoothingData != null) smoothingData.Release();
         if (terrainHeightsData != null) terrainHeightsData.Release();
         if (customAreaData != null) customAreaData.Release();
+        if (slopeTexture != null) slopeTexture.Release();
     }
 
     [Serializable]
