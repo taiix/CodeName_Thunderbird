@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 8359617416533083249}
   - component: {fileID: 5975943415722783709}
   - component: {fileID: 7793498491322552210}
+  - component: {fileID: 3646437915416053012}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -261,6 +262,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 365594fc-fa32-4381-88ee-2337192c3b75
     m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 70584340-aac1-4602-8456-8e43c7f59d0b
+    m_ActionName: Player/Hit[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -287,6 +292,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 3654959161182211359}
   interactionUI: {fileID: 0}
   treeUI: {fileID: 0}
+  treeInteractable: {fileID: 0}
 --- !u!114 &5975943415722783709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,6 +338,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
+--- !u!114 &3646437915416053012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502479564273512209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2fe50db3ddab8f43bd6f38b6d8bf612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 0}
+  text: {fileID: 0}
+  planePosition: {fileID: 0}
 --- !u!1 &5811664459883230587
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +760,9 @@ PrefabInstance:
       value: 0.0029
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4424396828587804706, guid: 886aa7bf5f80a5c49b3f0fe8adacf343, type: 3}
+    - {fileID: -1018664272722485354, guid: 886aa7bf5f80a5c49b3f0fe8adacf343, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 886aa7bf5f80a5c49b3f0fe8adacf343, type: 3}

@@ -19,7 +19,7 @@ public class PursueState : State
 
     public override void Enter()
     {
-        agent.speed = 20.5f;
+        agent.speed = 6.5f;
         Debug.Log("Agent speed set to: " + agent.speed);
         anim.SetTrigger("isRunning");
         agent.SetDestination(player.position);
