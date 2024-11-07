@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6c89aeea5a784fa09fe03bdc235cd84538abf470d689f56d16815ba14cf96bde
-size 840
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a659e60a8cf90fa4a96f8125b945f6a2, type: 3}
+  m_Name: PlaneWingsLevelTwo
+  m_EditorClassIdentifier: 
+  requiredItemsList:
+  - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
+    amount: 3
+  - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
+    amount: 10
+  upgradePower: 20

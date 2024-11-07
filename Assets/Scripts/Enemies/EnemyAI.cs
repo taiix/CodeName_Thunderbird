@@ -1,118 +1,103 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class EnemyAI : MonoBehaviour
 {
-
-
     NavMeshAgent agent;
     Animator anim;
     public Transform player;
     State currentState;
 
-    private bool canPatrol = true;
-    [SerializeField] private bool canAttack = false;
-    [SerializeField] private bool canRunAway = false;
-    [SerializeField] private bool canPursue;
-    [SerializeField] private bool canRandomPatrol = false;
+    public EnemyData enemyData;
 
     [SerializeField] Light lightSource;
-    bool isInShadow = false;
 
+    private float sunExposureTimer = 0f;
+    private bool needsToRetreat = false;
+
+    private Vector3 lastKnownShadowPosition;
+    [SerializeField]
+    private float enemyHeight = 2.0f;
 
     void Start()
     {
-       
-       
-
-    }
-
-    private void OnEnable()
-    {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        Debug.Log("Enemy is enabled");
         currentState = new PatrolState(this.gameObject, agent, anim, player);
         currentState.Enter();
     }
 
     public void ChangeCurrentState(State state)
     {
-        currentState.Exit();
+        if (currentState != null)
+            currentState.Exit();
         currentState = state;
         currentState.Enter();
     }
-    public bool CanBeScared()
+
+    public bool IsInShadow()
     {
-        return canRunAway;
+        return IsPointInShadow(transform.position);
     }
 
-    public bool CanPatrol()
+    public bool NeedsToRetreat()
     {
-        return canPatrol;
-    }
-
-
-
-    public bool CanAttack()
-    {
-        return canAttack;
-    }
-
-    void TurnOnRandomPatrol()
-    {
-        canRandomPatrol = !canRandomPatrol;
-    }
-
-    private bool IsInShadow()
-    {
-        Vector3 lightDirection = -lightSource.transform.forward; // Negative because we want the direction the light is shining towards
-
-        RaycastHit hit;
-
-        // Cast the ray from the enemy's position in the direction opposite to the light
-        if (Physics.Raycast(transform.position, lightDirection, out hit))
-        {
-            if (hit.collider != null && hit.collider.gameObject != gameObject) // Ensure it doesn't hit the enemy itself
-            {
-                isInShadow = true;
-                Debug.Log("Enemy is in shadow");
-            }
-            else
-            {
-                isInShadow = false;
-            }
-        }
-
-        return isInShadow;
+        return needsToRetreat;
     }
 
     public bool IsPointInShadow(Vector3 point)
     {
-        // Use the light's forward direction for directional light
         Vector3 lightDirection = -lightSource.transform.forward;
+        Vector3 adjustedPoint = point + Vector3.up * enemyHeight;
 
         RaycastHit hit;
-        // Cast the ray from the given point in the direction opposite to the light
-        if (Physics.Raycast(point, lightDirection, out hit))
+        if (Physics.Raycast(adjustedPoint, lightDirection, out hit))
         {
             if (hit.collider != null && hit.collider.gameObject != gameObject)
             {
-                return true; // Point is in shadow
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void UpdateSunExposure()
+    {
+        bool currentlyInShadow = IsInShadow();
+
+        if (currentlyInShadow)
+        {
+            // Update the last known shadow position when the enemy is in shadow
+            lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;  
+            sunExposureTimer = 0f;
+            needsToRetreat = false;
+        }
+        else
+        {
+            sunExposureTimer += Time.deltaTime;
+            if (sunExposureTimer >= enemyData.timeInSun)
+            {
+                needsToRetreat = true;
             }
         }
 
-        return false; // Point is not in shadow
+        if (needsToRetreat && !(currentState is ReturnToShadowState))
+        {
+            ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, player, lastKnownShadowPosition));
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        IsInShadow();
+        UpdateSunExposure();
+
+
 
         if (currentState != null)
         {
-            currentState.Update();
+            currentState.Process();
         }
+        Debug.Log(currentState.ToString());
     }
 }
