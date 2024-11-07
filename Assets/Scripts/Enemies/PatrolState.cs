@@ -68,6 +68,10 @@ public class PatrolState : State
         {
             AdjustAnimationAndSpeedBasedOnShadow();
         }
+        if (!isIdling)
+        {
+            AdjustAnimationAndSpeedBasedOnShadow();
+        }
     }
 
     private void StartIdle()
@@ -101,6 +105,10 @@ public class PatrolState : State
             {
                 AdjustDirection(targetPosition);
             }
+        }
+        else
+        {
+            StartIdle();
         }
     }
 
