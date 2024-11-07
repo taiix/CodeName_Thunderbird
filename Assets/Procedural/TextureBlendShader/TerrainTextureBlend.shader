@@ -27,7 +27,7 @@ Shader "Custom/TerrainTextureBlend"
 
         _blendFactorGrassToRock("Blend factor grass to rock", Float) = 0.1
         _blendFactorSandToGrass("_blendFactorSandToGrass", Float) = 0.1
-        
+
         _blendLine("Blend Line", Float) = 2
     }
     SubShader
@@ -44,6 +44,7 @@ Shader "Custom/TerrainTextureBlend"
         #pragma target 3.0
         ///////////////////////////////////////Properties//////////////////////////////////////
         sampler2D _HeightmapTexture;
+        sampler2D _SlopeTexture;
 
         sampler2D _LayerTexture1, _LayerNormal1;
         float _LayerMetallic1, _LayerSmoothness1;
@@ -104,19 +105,22 @@ Shader "Custom/TerrainTextureBlend"
             float finalMetallic = 0;
             float finalSmoothness = 0;
             float noiseFactor = tex2D(_HeightmapTexture, IN.uv_HeightmapTexture).r;
+
+
             if (terrainHeight >= _MinHeights[0] && terrainHeight <= _MaxHeights[0])
             {
                 finalColor = sandTex;
                 finalNormal = sandNormal;
                 finalMetallic = _LayerMetallic1;
                 finalSmoothness = _LayerSmoothness1;
-                
+
                 if (terrainHeight >= _MaxHeights[0] - _blendFactorSandToGrass / 5000 && terrainHeight < _MinHeights[1] +
                     _blendFactorSandToGrass / 5000)
                 {
-                    float blend = smoothstep(_MaxHeights[0] - _blendFactorSandToGrass / 5000, _MinHeights[1] + _blendFactorSandToGrass / 5000,
-                                             terrainHeight + noiseFactor * 0.05);
-                    
+                    float blend = smoothstep(_MaxHeights[0] - _blendFactorSandToGrass / 5000,
+         _MinHeights[1] + _blendFactorSandToGrass / 5000,
+         terrainHeight + noiseFactor * 0.05);
+
                     blend = pow(blend, _blendLine);
 
                     finalColor = lerp(sandTex, grassTex, blend);
@@ -135,9 +139,10 @@ Shader "Custom/TerrainTextureBlend"
                 if (terrainHeight >= _MaxHeights[1] - _blendFactorGrassToRock / 5000 && terrainHeight < _MinHeights[2] +
                     _blendFactorGrassToRock / 5000)
                 {
-                    float blend = smoothstep(_MaxHeights[1] - _blendFactorGrassToRock / 5000, _MinHeights[2] + _blendFactorGrassToRock / 5000,
-                                             terrainHeight + noiseFactor * 0.05);
-                    
+                    float blend = smoothstep(_MaxHeights[1] - _blendFactorGrassToRock / 5000,
+                                                               _MinHeights[2] + _blendFactorGrassToRock / 5000,
+                                                               terrainHeight + noiseFactor * 0.05);
+
                     blend = pow(blend, _blendLine);
 
                     finalColor = lerp(grassTex, rockTex, blend);

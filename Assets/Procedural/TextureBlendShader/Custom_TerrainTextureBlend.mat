@@ -59,8 +59,17 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7e231ffcfb0356e40b329f504be60a55, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 2800000, guid: 2dcfd6c0a2c2e624285cc6047f0a25b2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SlopeTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BlendVariation: -11.07
     - _LayerMetallic1: 0
     - _LayerMetallic2: 0
     - _LayerMetallic3: 0
@@ -69,10 +78,13 @@ Material:
     - _LayerSmoothness2: 0
     - _LayerSmoothness3: 0
     - _LayerSmoothness4: 0.5
+    - _NoiseScale: 2.32
+    - _SlopeBlendWidth: -49.7
+    - _SlopeTextureThreshold: 34.85
     - _blendFactor: 146.7
-    - _blendFactorGrassToRock: 151.5
-    - _blendFactorSandToGrass: 29.44
-    - _blendLine: 4.24
+    - _blendFactorGrassToRock: 40.9
+    - _blendFactorSandToGrass: 30.93
+    - _blendLine: 5.3
     - _maxHeight1: 1
     - _minHeight1: 0
     m_Colors:

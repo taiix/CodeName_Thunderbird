@@ -1,6 +1,7 @@
 #pragma kernel CSMain
 #pragma kernel SmoothingWholeTerrain
 #pragma kernel SmoothingCustomArea
+#pragma kernel CalculateSlope
 
 inline float unity_noise_randomValue(float2 uv)
 {
@@ -184,4 +185,27 @@ void SmoothingCustomArea(uint3 id : SV_DispatchThreadID)
         customAreaData[index] = blended;
     }
     else customAreaData[index] = terrainHeightsData[index];
+}
+
+RWTexture2D<float> SlopeTexture;
+[numthreads(8,8,1)]
+void CalculateSlope(uint3 id : SV_DispatchThreadID)
+{
+    int x = id.x;
+    int y = id.y;
+
+    int index = x + y * width;
+    float heightCenter = terrainHeightsData[index];
+    float heightRight = (x < width - 1) ? terrainHeightsData[index + 1] : heightCenter;
+    float heightUp = (y < height - 1) ? terrainHeightsData[index + width] : heightCenter;
+
+    // Calculate differences in height (deltaX, deltaZ)
+    float deltaX = heightRight - heightCenter;
+    float deltaZ = heightUp - heightCenter;
+
+    // Estimate slope as the angle in degrees
+    float slopeAngle = atan(sqrt(deltaX * deltaX + deltaZ * deltaZ)) * (180.0 / 3.14159);
+
+    // Store slope in slopeData buffer
+    SlopeTexture[uint2(x, y)] = slopeAngle;
 }
