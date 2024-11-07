@@ -6,7 +6,7 @@ public class State
 
     public enum STATE
     {
-        IDLE, PATROl, PURSUE, RANGE_ATTACK, MELEE_ATTACK, SLEEP, RUNAWAY
+        IDLE, PATROl, PURSUE, RANGE_ATTACK, MELEE_ATTACK, SLEEP, RUNAWAY, RETREAT
     };
 
     public enum EVENT

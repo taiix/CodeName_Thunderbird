@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2af7af68e5fb8c408f489dac080fa32, type: 3}
+  m_Name: RangedEnemy
+  m_EditorClassIdentifier: 
+  enemyName: RangedImp
+  enemyType: 0
+  health: 10
+  attackSpeed: 1.5
+  spottingRange: 20
+  attackRange: 15
+  optimalAttackDistance: 10
+  timeInSun: 8
+  stonePrefab: {fileID: 7965251156713109854, guid: 1dcd79e0d2d675c499c401c8a372b234, type: 3}

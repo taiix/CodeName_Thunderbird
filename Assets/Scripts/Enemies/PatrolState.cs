@@ -12,6 +12,8 @@ public class PatrolState : State
     private bool isRunning = false;
     private bool isWalking = false;
 
+    private EnemyData enemyData;
+
     public PatrolState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
         : base(_npc, _agent, _anim, _player)
     {
@@ -20,10 +22,15 @@ public class PatrolState : State
         agent.speed = 2;
         agent.isStopped = false;
         npcScript = _npc.GetComponent<EnemyAI>();
+        enemyData = npcScript.enemyData;
     }
 
     public override void Enter()
     {
+        agent.isStopped = false;
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+        agent.ResetPath(); 
         anim.SetTrigger("isWalking");
         idleTimer = 0f;
         isIdling = false;
@@ -33,22 +40,21 @@ public class PatrolState : State
 
     public override void Update()
     {
-
-        if (Vector3.Distance(npc.transform.position, player.position) <= npcScript.SpottingRange())
+        if (npcScript.IsInShadow())
         {
-            // Transition to PursueState
-            State pursueState = new PursueState(npc, agent, anim, player);
-            npcScript.ChangeCurrentState(pursueState);
-            return;
-        }
 
-        // If currently idling, update the timer
+            if (Vector3.Distance(npc.transform.position, player.position) <= enemyData.spottingRange)
+            {
+                State pursueState = new PursueState(npc, agent, anim, player);
+                npcScript.ChangeCurrentState(pursueState);
+                return;
+            }
+        }
         if (isIdling)
         {
             idleTimer += Time.deltaTime;
             if (idleTimer >= idleTime)
             {
-                // Idle time is over, continue patrolling
                 isIdling = false;
                 Patrol();
 
@@ -76,7 +82,7 @@ public class PatrolState : State
 
     private void Patrol()
     {
-        float randomDistance = Random.Range(10.0f, 35.0f);
+        float randomDistance = Random.Range(10.0f, 25.0f);
         Vector3 randomDirection = Random.insideUnitSphere * randomDistance;
         randomDirection += npcScript.transform.position;
 
@@ -96,15 +102,11 @@ public class PatrolState : State
                 AdjustDirection(targetPosition);
             }
         }
-        else
-        {
-            StartIdle();
-        }
     }
 
     private void AdjustDirection(Vector3 targetPosition)
     {
-        float randomDistance = Random.Range(10.0f, 35.0f);
+        float randomDistance = Random.Range(10.0f, 25.0f);
         for (int i = 0; i < 5; i++)
         {
             Vector3 adjustedDirection = Quaternion.Euler(0, Random.Range(-15.0f, 15.0f), 0) * (targetPosition - npcScript.transform.position).normalized;
@@ -113,6 +115,7 @@ public class PatrolState : State
             if (npcScript.IsPointInShadow(newTarget))
             {
                 agent.isStopped = false;
+                anim.SetTrigger("isWalking");
                 agent.SetDestination(newTarget);
                 return;
             }
@@ -123,30 +126,25 @@ public class PatrolState : State
     private void AdjustAnimationAndSpeedBasedOnShadow()
     {
         bool isCurrentlyInShadow = npcScript.IsInShadow();
-
-        // If the enemy is moving towards a patrol point, adjust its animation and speed
-        if (agent.velocity.magnitude > 0f)  // Only adjust if the enemy is moving
+        if (agent.velocity.magnitude > 0f)
         {
             if (isCurrentlyInShadow && !isWalking)
             {
-                // Switch to walking if in shadow
                 anim.SetTrigger("isWalking");
-                agent.speed = 3.5f; // Walking speed
+                agent.speed = 3.5f; 
                 isWalking = true;
                 isRunning = false;
             }
             else if (!isCurrentlyInShadow && !isRunning)
             {
-                // Switch to running if not in shadow
                 anim.SetTrigger("isRunning");
-                agent.speed = 6.5f; // Running speed
+                agent.speed = 6.5f;
                 isWalking = false;
                 isRunning = true;
             }
         }
         else
         {
-            // If the enemy is not moving, reset to idle animation
             if (!isWalking && !isRunning)
             {
                 anim.SetTrigger("isIdle");

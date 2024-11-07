@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2af7af68e5fb8c408f489dac080fa32, type: 3}
+  m_Name: MeleeEnemy
+  m_EditorClassIdentifier: 
+  enemyName: MeleeImp
+  enemyType: 1
+  health: 20
+  attackSpeed: 2
+  spottingRange: 20
+  attackRange: 5
+  optimalAttackDistance: 3
+  timeInSun: 15
+  stonePrefab: {fileID: 0}
