@@ -1,3 +1,49 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b4b4ca3afb4ffb27a5415196fab5cf9ae7d11d0a8848dc2c3fa4768ab7a43b5a
-size 498
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ring
+  - LeftWing
+  - RightWing
+  - Rudder
+  - Damageable
+  - WaterSurface
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Wing
+  - Water
+  - UI
+  - PlaneBody
+  - Interactable
+  - Post
+  - Equippable
+  - Water
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

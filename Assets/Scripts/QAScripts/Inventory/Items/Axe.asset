@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ca249d2ae7524fb78822a53711679d337ef4a2b2fa5f3da38f8ade96fd159f3f
-size 762
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aabe4d06f0f5b944a2f82764f523209, type: 3}
+  m_Name: Axe
+  m_EditorClassIdentifier: 
+  id: 3
+  itemName: Axe
+  itemIcon: {fileID: 21300000, guid: 14e4cfdb03ac7074ebac5711d3fb6cdc, type: 3}
+  itemDescription: Axe made for chopping downs stuff
+  itemPrefab: {fileID: 2081985540835368900, guid: 78f51c355e736cb4fb8a2c24eb343793, type: 3}
+  maxStack: 1
+  inventorySize: 1
+  weight: 2
+  miningTime: 0
+  minigameDifficulty: 0
+  type: 2
