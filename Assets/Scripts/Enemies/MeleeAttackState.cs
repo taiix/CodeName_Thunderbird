@@ -37,6 +37,7 @@ public class MeleeAttackState : State
 
         if (distanceToPlayer <= enemyData.attackRange)
         {
+            FacePlayer();
             HandleMeleeAttack();
         }
         else
@@ -56,7 +57,7 @@ public class MeleeAttackState : State
 
     public override void Exit()
     {
-        anim.ResetTrigger("isMelee");  
+        anim.ResetTrigger("isMelee");
         base.Exit();
     }
 }

@@ -87,6 +87,12 @@ public class State
         return false;
     }
 
+    public void FacePlayer()
+    {
+        Vector3 directionToPlayer = (player.position - npc.transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+        npc.transform.rotation = lookRotation;
+    }
 
 }
 

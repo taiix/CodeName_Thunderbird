@@ -19,7 +19,7 @@ public class PursueState : State
 
     public override void Enter()
     {
-        agent.speed = 6.5f;
+        agent.speed = 20.5f;
         Debug.Log("Agent speed set to: " + agent.speed);
         anim.SetTrigger("isRunning");
         agent.SetDestination(player.position);
@@ -52,28 +52,17 @@ public class PursueState : State
         {
             npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
         }
-        //else
-        //{
-        //    agent.SetDestination(player.position);
-        //}
-    }
-
-    private void FacePlayer()
-    {
-        Vector3 directionToPlayer = (player.position - npc.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
-
-        // Only rotate if the angle between the current and desired rotation is significant
-        float angle = Quaternion.Angle(npc.transform.rotation, lookRotation);
-        if (angle > 1f) 
+        else
         {
-            npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, 1f * Time.deltaTime);
+            agent.SetDestination(player.position);
         }
     }
 
     public override void Exit()
     {
         anim.ResetTrigger("isRunning");
+        anim.ResetTrigger("isWalking");
+        anim.ResetTrigger("isIdle");
         agent.speed = 3.5f;
         agent.ResetPath();
         base.Exit();

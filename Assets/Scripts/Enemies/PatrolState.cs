@@ -30,7 +30,7 @@ public class PatrolState : State
         agent.isStopped = false;
         agent.updatePosition = true;
         agent.updateRotation = true;
-        agent.ResetPath(); 
+        agent.ResetPath();
         anim.SetTrigger("isWalking");
         idleTimer = 0f;
         isIdling = false;
@@ -154,9 +154,9 @@ public class PatrolState : State
 
     public override void Exit()
     {
+        //anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
-        agent.isStopped = false;
         base.Exit();
     }
 }
