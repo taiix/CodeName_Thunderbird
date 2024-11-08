@@ -105,6 +105,6 @@ public class EnemyAI : MonoBehaviour
         {
             currentState.Process();
         }
-        Debug.Log(currentState.ToString());
+        //Debug.Log(currentState.ToString());
     }
 }
