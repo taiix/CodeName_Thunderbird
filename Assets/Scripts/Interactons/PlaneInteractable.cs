@@ -65,7 +65,7 @@ public class PlaneInteractable : Interactable
 
     private void EnterPlane()
     {
-        GameManager.Instance?.OnPlayerEnterPlane.Invoke();
+        GameManager.Instance.OnPlayerEnterPlane.Invoke();
 
         GameManager.Instance.DisablePlayerControls(false);
         Cursor.visible = false;
@@ -85,11 +85,11 @@ public class PlaneInteractable : Interactable
 
     private void ExitPlane()
     {
+        player.SetActive(true);
         inPlaneUi.SetActive(false);
         airplaneController.ActivateControls();
         planeCamera.gameObject.SetActive(false);
 
-        player.SetActive(true);
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
         GameManager.Instance.PlayerInPlane(isPlayerInPlane);

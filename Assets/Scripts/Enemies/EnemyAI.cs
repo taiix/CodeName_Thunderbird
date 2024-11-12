@@ -1,6 +1,8 @@
+using System;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.Events;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -11,13 +13,6 @@ public class EnemyAI : MonoBehaviour
 
     public EnemyData enemyData;
 
-    [SerializeField] private GameObject stonePrefab; // Prefab for the stone projectile
-    [SerializeField] private float attackSpeed = 2f;
-    [SerializeField] private float spottingRange = 15f; 
-    [SerializeField] private float meleeRange = 2f; 
-    [SerializeField] private float rangedAttackRange = 10f; 
-    [SerializeField] private float tauntRange = 3f;
-
     [SerializeField] Light lightSource;
 
     private float sunExposureTimer = 0f;
@@ -26,6 +21,10 @@ public class EnemyAI : MonoBehaviour
     private Vector3 lastKnownShadowPosition;
     [SerializeField]
     private float enemyHeight = 2.0f;
+
+    public  UnityAction<int> OnHealthChanged;
+    private int currentHealth;
+    public bool isDead = false;
 
     void Start()
     {
@@ -37,6 +36,8 @@ public class EnemyAI : MonoBehaviour
 
     public void ChangeCurrentState(State state)
     {
+        if (isDead) return;
+
         if (currentState != null)
             currentState.Exit();
         currentState = state;
@@ -46,6 +47,11 @@ public class EnemyAI : MonoBehaviour
     public bool IsInShadow()
     {
         return IsPointInShadow(transform.position);
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 
     public bool NeedsToRetreat()
@@ -75,7 +81,6 @@ public class EnemyAI : MonoBehaviour
 
         if (currentlyInShadow)
         {
-            // Update the last known shadow position when the enemy is in shadow
             lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;  
             sunExposureTimer = 0f;
             needsToRetreat = false;
@@ -95,16 +100,25 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int amount)
+    {
+        currentHealth -= amount;
+        OnHealthChanged?.Invoke(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            ChangeCurrentState(new DeadState(gameObject, agent, anim, player));
+            isDead = true;
+        }
+    }
+
     void Update()
     {
         UpdateSunExposure();
-
-
-
         if (currentState != null)
         {
             currentState.Process();
         }
-        //Debug.Log(currentState.ToString());
+       //Debug.Log(currentState.name);
     }
 }
