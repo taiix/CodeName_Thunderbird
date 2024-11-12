@@ -63,22 +63,25 @@ public class MapGeneratorGPU : MonoBehaviour
 
     private void Awake()
     {
-        terrain = GetComponent<Terrain>();
-        terrainData = terrain.terrainData;
+       
+        seed = UnityEngine.Random.Range(-1000, 1000);
 
+        UnityEngine.Random.InitState(seed);
+        terrainData = terrain.terrainData;
+        terrain = GetComponent<Terrain>();
         Calculate();
     }
 
     public void Calculate()
     {
+        computeShader = Instantiate(computeShader);
         noiseHeights = new float[width, height];
-
+        
         perlinData = new ComputeBuffer(width * height, sizeof(float));
         smoothingData = new ComputeBuffer(width * height, sizeof(float));
         terrainHeightsData = new ComputeBuffer(width * height, sizeof(float));
         customAreaData = new ComputeBuffer(width * height, sizeof(float));
 
-        UnityEngine.Random.InitState(seed);
 
         GeneratePerlin();
 
@@ -207,20 +210,6 @@ public class MapGeneratorGPU : MonoBehaviour
                 noiseHeights[x, y] = (data[index]);
             }
         }
-    }
-
-    void CalculateSlope()
-    {
-        slopeTexture = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
-        slopeTexture.enableRandomWrite = true;
-        slopeTexture.Create();
-
-        int kernelHandle = computeShader.FindKernel("CalculateSlope");
-        computeShader.SetTexture(kernelHandle, "SlopeTexture", slopeTexture);
-
-        computeShader.Dispatch(kernelHandle, width / 8, height / 8, 1);
-
-        terrainMaterial.SetTexture("_SlopeTexture", slopeTexture);
     }
 
     #endregion

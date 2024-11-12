@@ -16,8 +16,6 @@ Shader "Unlit/OutlineShader"
                 "Queue"="Transparent"
             }
             Cull Front
-            Blend SrcAlpha OneMinusSrcAlpha
-            ZWrite Off
             
             CGPROGRAM
             #pragma vertex vert
