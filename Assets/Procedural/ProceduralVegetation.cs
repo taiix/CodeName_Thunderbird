@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProceduralVegetation : MonoBehaviour
 {
     private Texture2D tex;
-    public GameObject customAreaObjects;
+    [SerializeField] private List<GameObject> customAreaObjects;
     private List<Vector3> availablePositions = new();
     [SerializeField] private List<Vegetation> vegetations = new();
 
@@ -23,28 +23,48 @@ public class ProceduralVegetation : MonoBehaviour
 
         tex = _mapGenerator.GetHeightmapTexture();
 
-        PopulateCustomAreaObjects(customAreaObjects);
+        if(customAreaObjects.Count > 0) PopulateCustomAreaObjects(customAreaObjects);
+
         PopulateTreeObjects();
     }
 
-    public void PopulateCustomAreaObjects(GameObject customObjectPrefab)
+    public void PopulateCustomAreaObjects(List<GameObject> customObjectsPrefab)
     {
         List<Vector3> pos = _mapGenerator.GetCustomAreaPosition();
 
-        int randIndex = Random.Range(0, pos.Count);
-        Vector3 randPos = pos[randIndex];
+        int numPositions = Mathf.Min(customObjectsPrefab.Count, pos.Count);
 
-        Vector3 worldPosition = ConvertTerrainToWorldPosition(randPos);
-        GameObject go = Instantiate(customObjectPrefab, worldPosition, Quaternion.identity, this.transform);
-        go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, go.transform.localScale.z);
+        pos = ShufflePositions(pos);
+
+        for (int i = 0; i < numPositions; i++)
+        {
+            Vector3 worldPosition = ConvertTerrainToWorldPosition(pos[i]);
+            GameObject go = Instantiate(customObjectsPrefab[i], worldPosition, Quaternion.identity, this.transform);
+            Vector3 adjustedPosition = go.transform.position;
+            adjustedPosition.y += terrain.GetPosition().y;
+            go.transform.position = adjustedPosition;
+
+            go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, go.transform.localScale.z);
+        }
     }
+
+    private List<Vector3> ShufflePositions(List<Vector3> positions)
+    {
+        for (int i = 0; i < positions.Count; i++)
+        {
+            int randIndex = Random.Range(i, positions.Count);
+            Vector3 temp = positions[i];
+            positions[i] = positions[randIndex];
+            positions[randIndex] = temp;
+        }
+        return positions;
+    }
+
 
     public void PopulateTreeObjects()
     {
         GetAvailableRegions();
         List<Vector3> placedVegetation = new();
-
-        Debug.Log($"terrainData.size.x : {terrainData.heightmapResolution}");
 
         foreach (var vegetation in vegetations)
         {
@@ -82,15 +102,17 @@ public class ProceduralVegetation : MonoBehaviour
 
                     if (canPlace)
                     {
-                        GameObject go = Instantiate
-                            (vegetation.prefab, vegetationWorldPosition,
-                            Quaternion.identity, this.gameObject.transform);
+                        GameObject go = Instantiate(vegetation.prefab, vegetationWorldPosition, Quaternion.identity, this.gameObject.transform);
 
-                        go.transform.localScale = new Vector3
-                            (go.transform.localScale.x, 2, go.transform.localScale.z);
+                        Vector3 adjustedPosition = go.transform.position;
+                        adjustedPosition.y += terrain.GetPosition().y;
+                        go.transform.position = adjustedPosition;
+
+                        go.transform.localScale = new Vector3(go.transform.localScale.x, 2, go.transform.localScale.z);
 
                         placedVegetation.Add(go.transform.position);
                     }
+
                 }
             }
         }

@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Unlit_DayNightShader
+  m_Shader: {fileID: 4800000, guid: 1391f639521896547b65996095b9780c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainBeforeDay:
+        m_Texture: {fileID: 8900000, guid: 2c16763809945d548be1e515988603c5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainBeforeNight:
+        m_Texture: {fileID: 8900000, guid: 49ce4ab6bbea4844cbd2d355a1ea7d3a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainDay:
+        m_Texture: {fileID: 8900000, guid: d45aa454407d957408111a84a8eb758e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainEarlyNight:
+        m_Texture: {fileID: 8900000, guid: a34c68a2703d35545ba93c6b37ee2a2b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainMidDay:
+        m_Texture: {fileID: 8900000, guid: 373591d5338f41a4cbfd57aa2297916c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainMidNight:
+        m_Texture: {fileID: 8900000, guid: 10ec4a921dc2efd49b7b11afe75e4b7a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 8900000, guid: d45aa454407d957408111a84a8eb758e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _TimeOfDay: 0.115952164
+    m_Colors: []
+  m_BuildTextureStacks: []

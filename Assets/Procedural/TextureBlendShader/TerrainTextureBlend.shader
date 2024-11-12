@@ -29,6 +29,7 @@ Shader "Custom/TerrainTextureBlend"
         _blendFactorSandToGrass("_blendFactorSandToGrass", Float) = 0.1
 
         _blendLine("Blend Line", Float) = 2
+        _b("e", Float) = 2
     }
     SubShader
     {
@@ -74,6 +75,7 @@ Shader "Custom/TerrainTextureBlend"
         float _blendFactorSandToGrass;
         float _blendFactorGrassToRock;
         float _blendLine;
+        float _b;
 
         ///////////////////////////////////////////////////////////////////////////////////////
         struct Input

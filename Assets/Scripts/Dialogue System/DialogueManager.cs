@@ -8,7 +8,7 @@ public class DialogueManager : MonoBehaviour
 {
     public static UnityAction<Dialogue> sendDialogue;
     private Queue<string> sentences = new();
-
+    
     [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI dialogueTextBox;
 
