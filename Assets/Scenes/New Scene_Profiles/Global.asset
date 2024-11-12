@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a79b01ea5641d4aa6daa2e23605641, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
   intensity:
     overrideState: 1
-    value: 6.6
+    value: 2.8
   threshold:
     overrideState: 1
     value: 1
@@ -64,32 +64,32 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   mode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   color:
-    overrideState: 1
+    overrideState: 0
     value: {r: 0, g: 0, b: 0, a: 1}
   center:
-    overrideState: 1
+    overrideState: 0
     value: {x: 0.5, y: 0.5}
   intensity:
-    overrideState: 1
-    value: 0.415
+    overrideState: 0
+    value: 0.436
   smoothness:
-    overrideState: 1
+    overrideState: 0
     value: 0.2
   roundness:
-    overrideState: 1
+    overrideState: 0
     value: 1
   rounded:
-    overrideState: 1
+    overrideState: 0
     value: 0
   mask:
-    overrideState: 1
+    overrideState: 0
     value: {fileID: 0}
     defaultState: 1
   opacity:
-    overrideState: 1
+    overrideState: 0
     value: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -108,6 +108,7 @@ MonoBehaviour:
   - {fileID: 498346781788806221}
   - {fileID: -8439643501471422994}
   - {fileID: -2602949973256934887}
+  - {fileID: 4912224638056064235}
 --- !u!114 &498346781788806221
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1419,6 +1420,28 @@ MonoBehaviour:
       - 0.5
       - 0.5
       - 0.5
+--- !u!114 &4912224638056064235
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
+  m_Name: MotionBlur
+  m_EditorClassIdentifier: 
+  active: 0
+  enabled:
+    overrideState: 1
+    value: 1
+  shutterAngle:
+    overrideState: 1
+    value: 0
+  sampleCount:
+    overrideState: 1
+    value: 10
 --- !u!114 &6978469112034130872
 MonoBehaviour:
   m_ObjectHideFlags: 3
