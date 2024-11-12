@@ -20,4 +20,5 @@ MonoBehaviour:
   attackRange: 15
   optimalAttackDistance: 10
   timeInSun: 8
+  deadTimer: 5
   stonePrefab: {fileID: 4393100979532919358, guid: b62bb85ad7d747a409cf045ba5ebcf4a, type: 3}
