@@ -58,32 +58,6 @@ public class PursueState : State
         }
     }
 
-    private void RetreatToShadow()
-    {
-        // Calculate direction opposite to the player to move back into shadow
-        Vector3 directionAwayFromPlayer = npc.transform.position - player.position;
-        Vector3 retreatPosition = npc.transform.position + directionAwayFromPlayer.normalized * retreatDistance;
-
-        // Set destination for retreat
-        agent.SetDestination(retreatPosition);
-        anim.SetTrigger("isRunning");
-
-        // Check if back in shadow and immediately face the player
-        if (npcScript.IsInShadow())
-        {
-            agent.ResetPath(); // Stop moving once back in shadow
-            FacePlayer();
-        }
-    }
-
-    private void FacePlayer()
-    {
-        // Rotate to face the player
-        Vector3 directionToPlayer = (player.position - npc.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
-        npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, Time.deltaTime * 5f);
-    }
-
     public override void Exit()
     {
         anim.ResetTrigger("isRunning");

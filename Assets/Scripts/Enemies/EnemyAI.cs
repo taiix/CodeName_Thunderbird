@@ -11,13 +11,6 @@ public class EnemyAI : MonoBehaviour
 
     public EnemyData enemyData;
 
-    [SerializeField] private GameObject stonePrefab; // Prefab for the stone projectile
-    [SerializeField] private float attackSpeed = 2f;
-    [SerializeField] private float spottingRange = 15f; 
-    [SerializeField] private float meleeRange = 2f; 
-    [SerializeField] private float rangedAttackRange = 10f; 
-    [SerializeField] private float tauntRange = 3f;
-
     [SerializeField] Light lightSource;
 
     private float sunExposureTimer = 0f;
@@ -75,7 +68,6 @@ public class EnemyAI : MonoBehaviour
 
         if (currentlyInShadow)
         {
-            // Update the last known shadow position when the enemy is in shadow
             lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;  
             sunExposureTimer = 0f;
             needsToRetreat = false;
@@ -98,13 +90,10 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         UpdateSunExposure();
-
-
-
         if (currentState != null)
         {
             currentState.Process();
         }
-        Debug.Log(currentState.ToString());
+       //Debug.Log(currentState.name);
     }
 }

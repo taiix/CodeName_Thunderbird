@@ -16,7 +16,7 @@ public class EquipSystem : MonoBehaviour
         GameManager.Instance.OnPlayerEnterPlane += UnequipItem;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         InventorySystem.OnItemUsed -= HandleItemUsed;
         GameManager.Instance.OnPlayerEnterPlane -= UnequipItem;
