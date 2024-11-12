@@ -87,6 +87,8 @@ public class MapGeneratorGPU : MonoBehaviour
 
         CreateTerrain(noiseHeights);
         CreateHeightmapTexture(noiseHeights);
+
+        Destroy(computeShader);
     }
 
     private void OnValidate()

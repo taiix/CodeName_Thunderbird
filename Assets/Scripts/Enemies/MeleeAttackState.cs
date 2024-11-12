@@ -21,6 +21,7 @@ public class MeleeAttackState : State
 
     public override void Enter()
     {
+        agent.ResetPath();
         agent.isStopped = true;
         base.Enter();
     }

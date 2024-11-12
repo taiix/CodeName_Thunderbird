@@ -53,6 +53,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _TimeOfDay: 0.115952164
+    - _TimeOfDay: 0.0671617
     m_Colors: []
   m_BuildTextureStacks: []
