@@ -93,7 +93,6 @@ public class State
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
         npc.transform.rotation = lookRotation;
     }
-
 }
 
 

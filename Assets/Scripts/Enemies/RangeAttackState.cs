@@ -40,7 +40,7 @@ public class RangeAttackState : State
         }
         else if (distanceToPlayer > enemyData.attackRange)
         {
-            npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
+            npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
         }
 
         if (npcScript.NeedsToRetreat())

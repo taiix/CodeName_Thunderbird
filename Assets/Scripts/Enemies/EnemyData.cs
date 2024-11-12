@@ -19,5 +19,6 @@ public class EnemyData : ScriptableObject
     public float attackRange;
     public float optimalAttackDistance;
     public float timeInSun;
+    public float deadTimer;
     public GameObject stonePrefab;
 }
