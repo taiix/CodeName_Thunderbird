@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: MeleeImp
   enemyType: 1
-  health: 20
+  health: 5
   attackSpeed: 2
   spottingRange: 20
   attackRange: 5
   optimalAttackDistance: 3
   timeInSun: 15
+  deadTimer: 6
   stonePrefab: {fileID: 0}

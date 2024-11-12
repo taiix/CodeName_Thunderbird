@@ -1,6 +1,8 @@
+using System;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.Events;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -20,6 +22,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private float enemyHeight = 2.0f;
 
+    public  UnityAction<int> OnHealthChanged;
+    private int currentHealth;
+    public bool isDead = false;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -30,6 +36,8 @@ public class EnemyAI : MonoBehaviour
 
     public void ChangeCurrentState(State state)
     {
+        if (isDead) return;
+
         if (currentState != null)
             currentState.Exit();
         currentState = state;
@@ -39,6 +47,11 @@ public class EnemyAI : MonoBehaviour
     public bool IsInShadow()
     {
         return IsPointInShadow(transform.position);
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 
     public bool NeedsToRetreat()
@@ -84,6 +97,18 @@ public class EnemyAI : MonoBehaviour
         if (needsToRetreat && !(currentState is ReturnToShadowState))
         {
             ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, player, lastKnownShadowPosition));
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        currentHealth -= amount;
+        OnHealthChanged?.Invoke(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            ChangeCurrentState(new DeadState(gameObject, agent, anim, player));
+            isDead = true;
         }
     }
 
