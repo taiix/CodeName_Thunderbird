@@ -26,7 +26,7 @@ public class RangeAttackState : State
 
     public override void Enter()
     {
-        agent.isStopped = true;
+        StopAgent();
         base.Enter();
     }
 
@@ -34,8 +34,9 @@ public class RangeAttackState : State
     {
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
 
-        if (distanceToPlayer <= comfortZone)
+        if (distanceToPlayer <= enemyData.attackRange)
         {
+           
             HandleThrowAttack();
         }
         else if (distanceToPlayer > enemyData.attackRange)
@@ -55,6 +56,7 @@ public class RangeAttackState : State
 
     private void HandleThrowAttack()
     {
+        FacePlayer();
         if (Time.time >= lastAttackTime + attackCooldown)
         {
             anim.SetTrigger("isThrowing");

@@ -6,26 +6,27 @@ using UnityEngine.Events;
 
 public class EnemyAI : MonoBehaviour
 {
-    NavMeshAgent agent;
-    Animator anim;
+
+    //SERIALIZED
+    [SerializeField] private Light lightSource;
+
+    //PUBLIC
     public Transform player;
-    State currentState;
-
     public EnemyData enemyData;
-
-    [SerializeField] Light lightSource;
-
-    private float sunExposureTimer = 0f;
-    private bool needsToRetreat = false;
-
-    private Vector3 lastKnownShadowPosition;
-    [SerializeField]
-    private float enemyHeight = 2.0f;
-
-    public  UnityAction<int> OnHealthChanged;
-    private int currentHealth;
     public bool isDead = false;
 
+    //PRIVATE 
+    private NavMeshAgent agent;
+    private Animator anim;
+    private float sunExposureTimer = 0f;
+    private bool needsToRetreat = false;
+    private Vector3 lastKnownShadowPosition;
+    private int currentHealth;
+    private State currentState;
+    private float enemyHeight = 2.0f;
+
+    //ACTIONS
+    public UnityAction<int> OnHealthChanged;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -81,7 +82,7 @@ public class EnemyAI : MonoBehaviour
 
         if (currentlyInShadow)
         {
-            lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;  
+            lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;
             sunExposureTimer = 0f;
             needsToRetreat = false;
         }
@@ -119,6 +120,6 @@ public class EnemyAI : MonoBehaviour
         {
             currentState.Process();
         }
-       //Debug.Log(currentState.name);
+        //Debug.Log(currentState.name);
     }
 }
