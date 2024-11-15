@@ -64,7 +64,7 @@ public class MapGeneratorGPU : MonoBehaviour
     private void Awake()
     {
        
-        seed = UnityEngine.Random.Range(-1000, 1000);
+        if(seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
 
         UnityEngine.Random.InitState(seed);
         terrainData = terrain.terrainData;
