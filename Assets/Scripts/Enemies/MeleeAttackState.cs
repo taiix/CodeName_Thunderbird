@@ -21,8 +21,8 @@ public class MeleeAttackState : State
 
     public override void Enter()
     {
+        StopAgent();
         agent.ResetPath();
-        agent.isStopped = true;
         base.Enter();
     }
 
@@ -54,6 +54,13 @@ public class MeleeAttackState : State
             anim.SetTrigger("isMelee");
             lastAttackTime = Time.time;
         }
+    }
+
+    private bool CheckForHit()
+    {
+        
+
+        return false;
     }
 
     public override void Exit()

@@ -93,6 +93,23 @@ public class State
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
         npc.transform.rotation = lookRotation;
     }
+
+    public void StopAgent()
+    {
+        agent.isStopped = true;
+        agent.updatePosition = false;
+        agent.updateRotation = false;
+        agent.velocity = Vector3.zero;
+        anim.applyRootMotion = false;
+    }
+
+    public void StartAgent()
+    {
+        agent.isStopped = false;
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+        anim.applyRootMotion = true;
+    }
 }
 
 
