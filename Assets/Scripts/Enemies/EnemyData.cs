@@ -13,12 +13,12 @@ public class EnemyData : ScriptableObject
 {
     public string enemyName;
     public EnemyType enemyType;
-    public float health;
+    public int health;
     public float attackSpeed;
     public float spottingRange;
     public float attackRange;
     public float optimalAttackDistance;
     public float timeInSun;
     public float deadTimer;
-    public GameObject stonePrefab;
+    public GameObject weaponPrefab;
 }
