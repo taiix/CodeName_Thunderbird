@@ -8,7 +8,8 @@ public class EnemyAI : MonoBehaviour
 {
 
     //SERIALIZED
-    [SerializeField] private Light lightSource;
+    [SerializeField] private TimeController timeController;
+
 
     //PUBLIC
     public Transform player;
@@ -16,6 +17,7 @@ public class EnemyAI : MonoBehaviour
     public bool isDead = false;
 
     //PRIVATE 
+    private Light lightSource;
     private NavMeshAgent agent;
     private Animator anim;
     private float sunExposureTimer = 0f;
@@ -24,13 +26,17 @@ public class EnemyAI : MonoBehaviour
     private int currentHealth;
     private State currentState;
     private float enemyHeight = 2.0f;
+    
 
     //ACTIONS
     public UnityAction<int> OnHealthChanged;
     void Start()
     {
+        lightSource = timeController.Sun;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        currentHealth = enemyData.health;
+        Debug.Log(enemyData.enemyName + " current health = " + currentHealth);
         currentState = new PatrolState(this.gameObject, agent, anim, player);
         currentState.Enter();
     }
@@ -40,9 +46,14 @@ public class EnemyAI : MonoBehaviour
         if (isDead) return;
 
         if (currentState != null)
+        {
+
             currentState.Exit();
-        currentState = state;
-        currentState.Enter();
+            currentState = state;
+            currentState.Enter();
+
+            Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);
+        }
     }
 
     public bool IsInShadow()
@@ -101,10 +112,21 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private void OnSunrise()
+    {
+
+    }
+
+    private void OnSunset()
+    {
+
+    }
+
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
         OnHealthChanged?.Invoke(currentHealth);
+        Debug.Log(enemyData.enemyName + " health = " + currentHealth);
 
         if (currentHealth <= 0)
         {
@@ -120,6 +142,5 @@ public class EnemyAI : MonoBehaviour
         {
             currentState.Process();
         }
-        //Debug.Log(currentState.name);
     }
 }
