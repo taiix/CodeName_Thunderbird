@@ -29,6 +29,7 @@ public class CharacterMovement : MonoBehaviour
     public static event Action OnDisableControls;
     public static event Action OnEnableControls;
 
+    bool isMoving;
     public InputActionMap PlayerAction
     {
         get
@@ -43,7 +44,6 @@ public class CharacterMovement : MonoBehaviour
     }
 
     //[SerializeField] bool canJump = false;
-
     private void Awake()
     {
         playerInput = this.GetComponent<PlayerInput>();
@@ -84,8 +84,11 @@ public class CharacterMovement : MonoBehaviour
         if (activateControls)
         {
             Movement();
+
         }
-            GroundCheck();
+        GroundCheck();
+
+        FootstepsFX();
 
     }
 
@@ -110,15 +113,13 @@ public class CharacterMovement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
-       
+        isMoving = context.performed;
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
         look = context.ReadValue<Vector2>();
     }
-
-
 
     void Movement()
     {
@@ -138,6 +139,7 @@ public class CharacterMovement : MonoBehaviour
         Vector3.ClampMagnitude(velocityChange, maxForce);
 
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
+
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -168,5 +170,14 @@ public class CharacterMovement : MonoBehaviour
     public void EnableControls()
     {
         activateControls = true;
+    }
+
+
+    void FootstepsFX()
+    {
+        if (isGrounded && isMoving)
+        {
+            AudioManager.instance?.onPlayFootstep?.Invoke(0, speed);
+        }
     }
 }
