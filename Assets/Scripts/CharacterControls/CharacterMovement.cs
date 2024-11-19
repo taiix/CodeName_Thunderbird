@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 
 public class CharacterMovement : MonoBehaviour
 {
-    private Rigidbody rb;
-    float speed;
     public float sensitivity;
     public float maxForce;
+
+    private Rigidbody rb;
+    private float speed;
 
     public float sprintSpeed;
     public float normalSpeed;
@@ -49,6 +50,7 @@ public class CharacterMovement : MonoBehaviour
         playerInput = this.GetComponent<PlayerInput>();
         player = playerInput.currentActionMap;
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,8 +66,13 @@ public class CharacterMovement : MonoBehaviour
 
         jumpAction.Enable();
 
-        OnDisableControls += DisableControls;
         OnEnableControls += EnableControls;
+        OnDisableControls += DisableControls;
+
+
+        DialogueManager.OnDialogueStarted += DisableControls;
+        DialogueManager.OnDialogueEnded += EnableControls;
+
     }
 
     private void OnDisable()
@@ -76,6 +83,9 @@ public class CharacterMovement : MonoBehaviour
 
         OnDisableControls -= DisableControls;
         OnEnableControls -= EnableControls;
+
+        DialogueManager.OnDialogueStarted -= DisableControls;
+        DialogueManager.OnDialogueEnded -= EnableControls;
     }
 
     // Update is called once per frame
@@ -84,8 +94,8 @@ public class CharacterMovement : MonoBehaviour
         if (activateControls)
         {
             Movement();
-
         }
+
         GroundCheck();
 
         FootstepsFX();
