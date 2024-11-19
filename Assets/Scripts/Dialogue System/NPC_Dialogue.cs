@@ -1,14 +1,26 @@
 using UnityEngine;
 
-public class NPC_Dialogue : MonoBehaviour
+public class NPC_Dialogue : Interactable
 {
     [SerializeField] private Dialogue dialogue;
 
-    private void Start()
+    public override void OnFocus()
     {
-        //TODO: Now it sends the dioalogue at start. Make it to send it on interaction
-        TriggerDialogue();
+        interactionText = $"Press 'F' to speak with {dialogue.npcName}";
     }
+
+    public override void OnInteract()
+    {
+        InteractionHandler.Instance?.UpdateInteractionText(string.Empty);
+        TriggerDialogue();
+
+    }
+
+    public override void OnLoseFocus()
+    {
+        interactionText = string.Empty;
+    }
+
 
     void TriggerDialogue()
     {
