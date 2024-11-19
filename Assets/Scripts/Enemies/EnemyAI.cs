@@ -124,6 +124,8 @@ public class EnemyAI : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        if (isDead) return;
+
         currentHealth -= amount;
         OnHealthChanged?.Invoke(currentHealth);
         Debug.Log(enemyData.enemyName + " health = " + currentHealth);

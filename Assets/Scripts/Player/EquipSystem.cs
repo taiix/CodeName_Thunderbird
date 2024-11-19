@@ -51,7 +51,8 @@ public class EquipSystem : MonoBehaviour
                 equippedItemInstance.gameObject.GetComponent<Collider>().enabled = false;
                 Destroy(equippedItemInstance.gameObject.GetComponent<Rigidbody>());
             }
-            currentEquippedItem = item;        
+            currentEquippedItem = item;
+            InventorySystem.Instance.UpdateEquippedItem(currentEquippedItem);
         }
     }
 

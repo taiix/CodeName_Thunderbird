@@ -153,7 +153,6 @@ public class PatrolState : State
 
     public override void Exit()
     {
-        anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
         base.Exit();
