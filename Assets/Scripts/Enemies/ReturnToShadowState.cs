@@ -48,7 +48,6 @@ public class ReturnToShadowState : State
             }
         }
 
-
         // Deal 1 health damage every 2 seconds
         damageTimer += Time.deltaTime;
         if (damageTimer >= 2f)
@@ -62,8 +61,8 @@ public class ReturnToShadowState : State
 
     private Vector3 FindNextShadowPosition(Vector3 currentPosition)
     {
-        float maxSearchDistance = 50f;
-        float stepSize = 2f;
+        float maxSearchDistance = 100f;
+        float stepSize = 1f;
         Vector3 direction = targetShadowPosition - currentPosition;
 
         for (float i = stepSize; i <= maxSearchDistance; i += stepSize)
@@ -76,6 +75,7 @@ public class ReturnToShadowState : State
         }
 
         //If no point in shadow is found 
+        Debug.Log("No new position found");
         return currentPosition;
     }
 
