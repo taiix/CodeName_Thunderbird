@@ -12,6 +12,7 @@ public class ReturnToShadowState : State
     public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player, Vector3 _shadowPosition)
         : base(_npc, _agent, _anim, null)
     {
+        name = STATE.RETREAT;
         npc = _npc;
         player = _player;
         anim = _anim;
@@ -22,8 +23,7 @@ public class ReturnToShadowState : State
 
     public override void Enter()
     {
-        agent.isStopped = false;
-        agent.ResetPath();
+        StartAgent();
         agent.SetDestination(targetShadowPosition);
         anim.SetTrigger("isRunning");
         base.Enter();
@@ -41,6 +41,7 @@ public class ReturnToShadowState : State
             damageTimer += Time.deltaTime;
             if (damageTimer >= 1f)
             {
+                Debug.Log("Take Damage");
                 enemyScript.TakeDamage(1);
                 damageTimer = 0f;
             }
@@ -52,7 +53,6 @@ public class ReturnToShadowState : State
         anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
-        agent.isStopped = false;
         base.Exit();
     }
 }

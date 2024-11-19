@@ -12,6 +12,7 @@ public class DeadState : State
 
     public DeadState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player) : base(_npc, _agent, _anim, _player)
     {
+        name = STATE.DEAD;
         npc = _npc;
         agent = _agent;
         anim = _anim;

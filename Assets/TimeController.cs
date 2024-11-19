@@ -1,10 +1,11 @@
+using JetBrains.Annotations;
 using System;
 using TMPro;
 using UnityEngine;
 
 public class TimeController : MonoBehaviour
 {
-    [SerializeField] private float sunriseHour = 8; //lets say 8 am
+    [SerializeField] private float sunriseHour = 8; //lets say 8 am 
     [SerializeField] private float sundownHour = 20; //lets say 20 pm
 
     [SerializeField] private float timeMultiplier;
@@ -27,6 +28,9 @@ public class TimeController : MonoBehaviour
     private TimeSpan sunriseTime;
     private TimeSpan sunsetTime;
 
+    //PUBLIC
+    public DateTime CurrentTime => currentTime;
+    public Light Sun => sun;
 
 
     private void Start()
@@ -82,6 +86,8 @@ public class TimeController : MonoBehaviour
 
         RenderSettings.ambientLight = Color.Lerp(nightAmbientLight, dayAmbientLight, lightCurve.Evaluate(dotProduct));
     }
+
+
 }
 
 
