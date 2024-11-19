@@ -12,6 +12,7 @@ public class ReturnToShadowState : State
     public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player, Vector3 _shadowPosition)
         : base(_npc, _agent, _anim, null)
     {
+        name = STATE.RETREAT;
         npc = _npc;
         player = _player;
         anim = _anim;
@@ -22,8 +23,7 @@ public class ReturnToShadowState : State
 
     public override void Enter()
     {
-        agent.isStopped = false;
-        agent.ResetPath();
+        StartAgent();
         agent.SetDestination(targetShadowPosition);
         anim.SetTrigger("isRunning");
         base.Enter();
@@ -31,28 +31,60 @@ public class ReturnToShadowState : State
 
     public override void Update()
     {
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance && enemyScript.GetHealth() > 0)
-        {
-            enemyScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
-        }
-        else
-        {
-            // Deal 1 health damage every second
-            damageTimer += Time.deltaTime;
-            if (damageTimer >= 1f)
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {      
+            if (enemyScript.IsPointInShadow(npc.transform.position))
             {
-                enemyScript.TakeDamage(1);
-                damageTimer = 0f;
+                enemyScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
+            }
+            else
+            {
+                Vector3 newShadowPosition = FindNextShadowPosition(npc.transform.position);
+                if (newShadowPosition != npc.transform.position)
+                {
+                    targetShadowPosition = newShadowPosition;
+                    agent.SetDestination(targetShadowPosition);
+                }
             }
         }
+
+        // Deal 1 health damage every 2 seconds
+        damageTimer += Time.deltaTime;
+        if (damageTimer >= 2f)
+        {
+            Debug.Log("Take Damage");
+            enemyScript.TakeDamage(1);
+            damageTimer = 0f;
+        }
+
     }
+
+    private Vector3 FindNextShadowPosition(Vector3 currentPosition)
+    {
+        float maxSearchDistance = 100f;
+        float stepSize = 1f;
+        Vector3 direction = targetShadowPosition - currentPosition;
+
+        for (float i = stepSize; i <= maxSearchDistance; i += stepSize)
+        {
+            Vector3 testPosition = currentPosition + direction * i;
+            if (enemyScript.IsPointInShadow(testPosition))
+            {
+                return testPosition;
+            }
+        }
+
+        //If no point in shadow is found 
+        Debug.Log("No new position found");
+        return currentPosition;
+    }
+
 
     public override void Exit()
     {
         anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
-        agent.isStopped = false;
         base.Exit();
     }
 }

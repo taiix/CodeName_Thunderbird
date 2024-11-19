@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 
 public class CharacterMovement : MonoBehaviour
 {
-    private Rigidbody rb;
-    float speed;
     public float sensitivity;
     public float maxForce;
+
+    private Rigidbody rb;
+    private float speed;
 
     public float sprintSpeed;
     public float normalSpeed;
@@ -29,6 +30,7 @@ public class CharacterMovement : MonoBehaviour
     public static event Action OnDisableControls;
     public static event Action OnEnableControls;
 
+    bool isMoving;
     public InputActionMap PlayerAction
     {
         get
@@ -43,12 +45,12 @@ public class CharacterMovement : MonoBehaviour
     }
 
     //[SerializeField] bool canJump = false;
-
     private void Awake()
     {
         playerInput = this.GetComponent<PlayerInput>();
         player = playerInput.currentActionMap;
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,8 +66,13 @@ public class CharacterMovement : MonoBehaviour
 
         jumpAction.Enable();
 
-        OnDisableControls += DisableControls;
         OnEnableControls += EnableControls;
+        OnDisableControls += DisableControls;
+
+
+        DialogueManager.OnDialogueStarted += DisableControls;
+        DialogueManager.OnDialogueEnded += EnableControls;
+
     }
 
     private void OnDisable()
@@ -76,6 +83,9 @@ public class CharacterMovement : MonoBehaviour
 
         OnDisableControls -= DisableControls;
         OnEnableControls -= EnableControls;
+
+        DialogueManager.OnDialogueStarted -= DisableControls;
+        DialogueManager.OnDialogueEnded -= EnableControls;
     }
 
     // Update is called once per frame
@@ -85,7 +95,10 @@ public class CharacterMovement : MonoBehaviour
         {
             Movement();
         }
-            GroundCheck();
+
+        GroundCheck();
+
+        FootstepsFX();
 
     }
 
@@ -110,15 +123,13 @@ public class CharacterMovement : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
-       
+        isMoving = context.performed;
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
         look = context.ReadValue<Vector2>();
     }
-
-
 
     void Movement()
     {
@@ -138,6 +149,7 @@ public class CharacterMovement : MonoBehaviour
         Vector3.ClampMagnitude(velocityChange, maxForce);
 
         rb.AddForce(velocityChange, ForceMode.VelocityChange);
+
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -168,5 +180,14 @@ public class CharacterMovement : MonoBehaviour
     public void EnableControls()
     {
         activateControls = true;
+    }
+
+
+    void FootstepsFX()
+    {
+        if (isGrounded && isMoving)
+        {
+            AudioManager.instance?.onPlayFootstep?.Invoke(0, speed);
+        }
     }
 }

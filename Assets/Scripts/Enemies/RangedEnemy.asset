@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: RangedImp
   enemyType: 0
-  health: 3
+  health: 10
   attackSpeed: 1.5
   spottingRange: 20
   attackRange: 15
   optimalAttackDistance: 10
-  timeInSun: 8
-  deadTimer: 5
-  stonePrefab: {fileID: 4393100979532919358, guid: b62bb85ad7d747a409cf045ba5ebcf4a, type: 3}
+  timeInSun: 3
+  deadTimer: 4
+  weaponPrefab: {fileID: 4393100979532919358, guid: b62bb85ad7d747a409cf045ba5ebcf4a, type: 3}

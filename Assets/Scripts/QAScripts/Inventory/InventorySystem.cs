@@ -200,6 +200,10 @@ public class InventorySystem : MonoBehaviour
             UpdateUseButtonText();
             //Debug.Log("Showing details for " + slot.itemInSlot.itemName);
         }
+        else
+        {
+            itemPanelUI.SetActive(false);
+        }
     }
 
 
@@ -324,6 +328,23 @@ public class InventorySystem : MonoBehaviour
         {
             useButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip";
         }
+    }
+
+    public void SwapItems(InventorySlot slot1, InventorySlot slot2)
+    {
+        Item tempItem = slot1.itemInSlot;
+        int tempAmount = slot1.amountInSlot;
+
+        slot1.itemInSlot = slot2.itemInSlot;
+        slot1.amountInSlot = slot2.amountInSlot;
+
+        slot2.itemInSlot = tempItem;
+        slot2.amountInSlot = tempAmount;
+    }
+
+    public void UpdateEquippedItem(Item pEquippedItem)
+    {
+        equippedItem = pEquippedItem;
     }
 
     public bool IsInventoryOpen()

@@ -27,10 +27,7 @@ public class PatrolState : State
 
     public override void Enter()
     {
-        agent.isStopped = false;
-        agent.updatePosition = true;
-        agent.updateRotation = true;
-        agent.ResetPath();
+        StartAgent();
         anim.SetTrigger("isWalking");
         idleTimer = 0f;
         isIdling = false;
@@ -45,8 +42,7 @@ public class PatrolState : State
 
             if (Vector3.Distance(npc.transform.position, player.position) <= enemyData.spottingRange)
             {
-                State pursueState = new PursueState(npc, agent, anim, player);
-                npcScript.ChangeCurrentState(pursueState);
+                npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
                 return;
             }
         }
@@ -55,7 +51,6 @@ public class PatrolState : State
             idleTimer += Time.deltaTime;
             if (idleTimer >= idleTime)
             {
-                isIdling = false;
                 Patrol();
 
             }
@@ -68,38 +63,33 @@ public class PatrolState : State
         {
             AdjustAnimationAndSpeedBasedOnShadow();
         }
-        if (!isIdling)
-        {
-            AdjustAnimationAndSpeedBasedOnShadow();
-        }
     }
 
     private void StartIdle()
     {
+        StopAgent();
         //Random Idle time
         idleTime = Random.Range(2f, 4.5f);
         idleTimer = 0f;
         isIdling = true;
         anim.SetTrigger("isIdle");
-        agent.isStopped = true;
     }
 
     private void Patrol()
     {
+        isIdling = false;
         float randomDistance = Random.Range(10.0f, 25.0f);
         Vector3 randomDirection = Random.insideUnitSphere * randomDistance;
         randomDirection += npcScript.transform.position;
-
         NavMeshHit navHit;
+        StartAgent();
         if (NavMesh.SamplePosition(randomDirection, out navHit, randomDistance, NavMesh.AllAreas))
         {
             Vector3 targetPosition = navHit.position;
             anim.SetTrigger("isWalking");
             if (npcScript.IsPointInShadow(targetPosition))
             {
-                agent.isStopped = false;
                 agent.SetDestination(targetPosition);
-                //Debug.Log($"Patrolling to new shadow point: {targetPosition}");
             }
             else
             {
@@ -114,7 +104,8 @@ public class PatrolState : State
 
     private void AdjustDirection(Vector3 targetPosition)
     {
-        float randomDistance = Random.Range(10.0f, 25.0f);
+        Debug.Log("Adjust Direction");
+        float randomDistance = Random.Range(10.0f, 35.0f);
         for (int i = 0; i < 5; i++)
         {
             Vector3 adjustedDirection = Quaternion.Euler(0, Random.Range(-15.0f, 15.0f), 0) * (targetPosition - npcScript.transform.position).normalized;
@@ -122,7 +113,7 @@ public class PatrolState : State
 
             if (npcScript.IsPointInShadow(newTarget))
             {
-                agent.isStopped = false;
+                StartAgent();
                 anim.SetTrigger("isWalking");
                 agent.SetDestination(newTarget);
                 return;
@@ -162,7 +153,6 @@ public class PatrolState : State
 
     public override void Exit()
     {
-        //anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
         base.Exit();

@@ -10,7 +10,7 @@ public class RangeAttackState : State
     private float sunTimer;
     private float comfortZone; 
     private EnemyAI npcScript;
-    private GameObject stonePrefab;
+    private GameObject weaponPrefab;
     private EnemyData enemyData;
 
     public RangeAttackState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
@@ -19,14 +19,14 @@ public class RangeAttackState : State
         name = STATE.RANGE_ATTACK;
         npcScript = _npc.GetComponent<EnemyAI>();
         enemyData = npcScript.enemyData;
-        stonePrefab = enemyData.stonePrefab;
+        weaponPrefab = enemyData.weaponPrefab;
         attackCooldown = enemyData.attackSpeed;
         comfortZone = enemyData.attackRange * 0.8f; 
     }
 
     public override void Enter()
     {
-        agent.isStopped = true;
+        StopAgent();
         base.Enter();
     }
 
@@ -34,8 +34,9 @@ public class RangeAttackState : State
     {
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
 
-        if (distanceToPlayer <= comfortZone)
+        if (distanceToPlayer <= enemyData.attackRange)
         {
+           
             HandleThrowAttack();
         }
         else if (distanceToPlayer > enemyData.attackRange)
@@ -55,12 +56,13 @@ public class RangeAttackState : State
 
     private void HandleThrowAttack()
     {
+        FacePlayer();
         if (Time.time >= lastAttackTime + attackCooldown)
         {
             anim.SetTrigger("isThrowing");
 
             Vector3 throwDirection = (player.position - npc.transform.position).normalized;
-            GameObject thrownStone = GameObject.Instantiate(stonePrefab, npc.transform.position + Vector3.up * 1.5f, Quaternion.identity);
+            GameObject thrownStone = GameObject.Instantiate(weaponPrefab, npc.transform.position + Vector3.up * 1.5f, Quaternion.identity);
 
             Rigidbody stoneRb = thrownStone.GetComponent<Rigidbody>();
             if (stoneRb != null)

@@ -64,7 +64,7 @@ public class MapGeneratorGPU : MonoBehaviour
     private void Awake()
     {
        
-        seed = UnityEngine.Random.Range(-1000, 1000);
+        if(seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
 
         UnityEngine.Random.InitState(seed);
         terrainData = terrain.terrainData;
@@ -74,7 +74,7 @@ public class MapGeneratorGPU : MonoBehaviour
 
     public void Calculate()
     {
-        computeShader = Instantiate(computeShader);
+        ComputeShader comp = Instantiate(computeShader);
         noiseHeights = new float[width, height];
         
         perlinData = new ComputeBuffer(width * height, sizeof(float));
@@ -88,7 +88,7 @@ public class MapGeneratorGPU : MonoBehaviour
         CreateTerrain(noiseHeights);
         CreateHeightmapTexture(noiseHeights);
 
-        Destroy(computeShader);
+        DestroyImmediate(comp);
     }
 
     private void OnValidate()
