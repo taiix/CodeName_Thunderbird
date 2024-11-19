@@ -43,7 +43,7 @@ public class DeadState : State
         }
 
 
-        //base.Update();
+        base.Update();
     }
 
     public override void Exit()
