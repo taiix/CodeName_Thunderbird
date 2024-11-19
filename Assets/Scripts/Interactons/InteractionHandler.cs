@@ -43,10 +43,7 @@ public class InteractionHandler : MonoBehaviour
 
         mainCamera = Camera.main;
     }
-    void Start()
-    {
 
-    }
 
     private void OnEnable()
     {
