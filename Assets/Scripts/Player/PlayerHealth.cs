@@ -1,17 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public float maxHealth = 100f; 
-    public float currentHealth;    
-    public Slider healthBar;
+    [SerializeField] private float maxHealth = 100f; 
+    [SerializeField] private float currentHealth;    
+    [SerializeField] private Slider healthBar;
+
+    public static UnityAction<float> OnPlayerDamaged;
     private void Start()
     {
         currentHealth = maxHealth;
         UpdateHealthBar();
+    }
+
+    private void OnEnable()
+    {
+        OnPlayerDamaged += TakeDamage;
+    }
+
+    private void OnDestroy()
+    {
+        OnPlayerDamaged -= TakeDamage;
     }
 
     private void Update()

@@ -68,10 +68,12 @@ public class ProceduralVegetation : MonoBehaviour
 
         foreach (var vegetation in vegetations)
         {
+            int spawnObjects = 0;
             for (int y = 0; y < terrainData.size.z; y += vegetation.spacing)
             {
                 for (int x = 0; x < terrainData.size.x; x += vegetation.spacing)
                 {
+                    if (spawnObjects >= vegetation.numberOfObjectsToSpawn) continue;
                     //normalized to world height. minHeight = 0.2 and terrainData.size.y = 100 is 20%
                     //returns heights in world space
                     float minHeight = vegetation.minHeight * terrainData.size.y;
@@ -108,9 +110,10 @@ public class ProceduralVegetation : MonoBehaviour
                         adjustedPosition.y += terrain.GetPosition().y;
                         go.transform.position = adjustedPosition;
 
-                        go.transform.localScale = new Vector3(go.transform.localScale.x, 2, go.transform.localScale.z);
+                        go.transform.localScale = new Vector3(go.transform.localScale.x, vegetation.objectHeight, go.transform.localScale.z);
 
                         placedVegetation.Add(go.transform.position);
+                        spawnObjects++;
                     }
 
                 }
@@ -159,10 +162,12 @@ public class ProceduralVegetation : MonoBehaviour
     [System.Serializable]
     public struct Vegetation
     {
+        public int numberOfObjectsToSpawn;
         public GameObject prefab;
         public float minHeight;
         public float maxHeight;
         public float radius;
         public int spacing;
+        public float objectHeight;
     }
 }

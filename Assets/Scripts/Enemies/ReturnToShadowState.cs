@@ -8,8 +8,10 @@ public class ReturnToShadowState : State
     private Vector3 targetShadowPosition;
     private EnemyAI enemyScript;
     private float damageTimer = 0f;
+    private bool wasInShelter = false;
+    private Transform shelterLocation;
 
-    public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player, Vector3 _shadowPosition)
+    public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _shelterPosition, Transform _player, Vector3 _shadowPosition, bool isInShelter)
         : base(_npc, _agent, _anim, null)
     {
         name = STATE.RETREAT;
@@ -18,6 +20,8 @@ public class ReturnToShadowState : State
         anim = _anim;
         agent = _agent;
         targetShadowPosition = _shadowPosition;
+        wasInShelter = isInShelter;
+        shelterLocation = _shelterPosition;
         enemyScript = _npc.GetComponent<EnemyAI>();
     }
 
@@ -32,10 +36,14 @@ public class ReturnToShadowState : State
     public override void Update()
     {
         if (agent.remainingDistance <= agent.stoppingDistance)
-        {      
+        {
             if (enemyScript.IsPointInShadow(npc.transform.position))
             {
                 enemyScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
+            }
+            if (wasInShelter)
+            {
+                enemyScript.ChangeCurrentState(new ReturnToShelter(npc,agent,anim,player,shelterLocation)); 
             }
             else
             {

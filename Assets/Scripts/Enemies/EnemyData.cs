@@ -17,6 +17,7 @@ public class EnemyData : ScriptableObject
     public float attackSpeed;
     public float spottingRange;
     public float attackRange;
+    public float attackDamage;
     public float optimalAttackDistance;
     public float timeInSun;
     public float deadTimer;
