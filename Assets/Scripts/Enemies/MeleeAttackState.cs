@@ -10,6 +10,10 @@ public class MeleeAttackState : State
     private EnemyAI npcScript;
     private EnemyData enemyData;
 
+    private Collider attackRangeCollider;
+    private bool isPlayerInRange = false;
+
+
     public MeleeAttackState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
         : base(_npc, _agent, _anim, _player)
     {
@@ -54,13 +58,6 @@ public class MeleeAttackState : State
             anim.SetTrigger("isMelee");
             lastAttackTime = Time.time;
         }
-    }
-
-    private bool CheckForHit()
-    {
-        
-
-        return false;
     }
 
     public override void Exit()

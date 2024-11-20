@@ -1,4 +1,4 @@
-Shader "Skybox/DayNightShader"
+Shader "Skybox/DayNightShaderWithSun"
 {
     Properties
     {
@@ -8,6 +8,9 @@ Shader "Skybox/DayNightShader"
         _MainEarlyNight ("Main Early Night", Cube) = "" {}
         _MainMidNight ("Main Mid Night", Cube) = "" {}
         _MainBeforeDay ("Main Before Day", Cube) = "" {}
+        _DefaultSkybox ("Default Skybox", Cube) = "" {}
+        _SunColor ("Sun Color", Color) = (1, 1, 0.8, 1)
+        _SunSize ("Sun Size", Range(0.01, 0.1)) = 0.02
         _TimeOfDay ("Time of Day", Range(0,1)) = 0
     }
     SubShader
@@ -31,7 +34,11 @@ Shader "Skybox/DayNightShader"
             samplerCUBE _MainEarlyNight;
             samplerCUBE _MainMidNight;
             samplerCUBE _MainBeforeDay;
+            samplerCUBE _DefaultSkybox;
 
+            float4 _SunColor;
+            float _SunSize;
+            float3 _SunDirection;
             float _TimeOfDay;
 
             struct v2f
@@ -44,9 +51,7 @@ Shader "Skybox/DayNightShader"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(vertex);
-
                 float3 worldDir = mul(unity_ObjectToWorld, vertex).xyz;
-
                 o.direction = worldDir;
                 return o;
             }
@@ -67,7 +72,7 @@ Shader "Skybox/DayNightShader"
                 float blendB = frac(t);
                 float blendA = 1.0 - blendB;
 
-                // Initialize blend factors for each cubemap
+                // Blend factors for each cubemap
                 float blend0 = step(0.0, 1.0 - abs(index - 0.0)) * blendA;
                 float blend1 = step(0.0, 1.0 - abs(index - 1.0)) * blendA;
                 float blend2 = step(0.0, 1.0 - abs(index - 2.0)) * blendA;
@@ -94,7 +99,13 @@ Shader "Skybox/DayNightShader"
                 // Blend the sampled colors
                 fixed4 col = col0 * blend0 + col1 * blend1 + col2 * blend2 + col3 * blend3 + col4 * blend4 + col5 * blend5;
 
-                return col;
+                // Sun rendering
+                float sunIntensity = saturate(dot(dir, _SunDirection)); // Dot with sun direction
+                float sunDisk = smoothstep(1.0 - _SunSize, 1.0, sunIntensity);
+                fixed4 sunColor = _SunColor * sunDisk;
+
+                // Combine custom skybox with the sun
+                return col + sunColor;
             }
             ENDCG
         }

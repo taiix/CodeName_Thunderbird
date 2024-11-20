@@ -135,15 +135,3 @@ public enum DialogueState
     Talking,
     EndDialogue
 }
-#if UNITY_EDITOR
-
-
-public class LightBakingUtility
-{
-    [MenuItem("Tools/Bake Lights After Spawning")]
-    public static void BakeLighting()
-    {
-        Lightmapping.Bake();
-    }
-}
-#endif

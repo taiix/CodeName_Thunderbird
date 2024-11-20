@@ -12,21 +12,28 @@ public class EnemyAI : MonoBehaviour
 
 
     //PUBLIC
+    public Transform shelterLocation;
     public Transform player;
     public EnemyData enemyData;
     public bool isDead = false;
+
+    public IAttackStrategy attackStrategy;
 
     //PRIVATE 
     private Light lightSource;
     private NavMeshAgent agent;
     private Animator anim;
     private float sunExposureTimer = 0f;
-    private bool needsToRetreat = false;
     private Vector3 lastKnownShadowPosition;
     private int currentHealth;
     private State currentState;
     private float enemyHeight = 2.0f;
-    
+    private bool needsToRetreat = false;
+    private bool returnToShelter = false;
+
+    TimeSpan morningTime = TimeSpan.FromHours(9.5f);
+    TimeSpan eveningTime = TimeSpan.FromHours(20f);
+
 
     //ACTIONS
     public UnityAction<int> OnHealthChanged;
@@ -39,6 +46,15 @@ public class EnemyAI : MonoBehaviour
         Debug.Log(enemyData.enemyName + " current health = " + currentHealth);
         currentState = new PatrolState(this.gameObject, agent, anim, player);
         currentState.Enter();
+
+        if (enemyData.enemyType == EnemyType.Ranged)
+        {
+            attackStrategy = new RangeAttackStrategy();  
+        }
+        else if (enemyData.enemyType == EnemyType.Melee)
+        {
+            attackStrategy = new MeleeAttackStrategy();  
+        }
     }
 
     public void ChangeCurrentState(State state)
@@ -90,7 +106,6 @@ public class EnemyAI : MonoBehaviour
     private void UpdateSunExposure()
     {
         bool currentlyInShadow = IsInShadow();
-
         if (currentlyInShadow)
         {
             lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;
@@ -105,21 +120,24 @@ public class EnemyAI : MonoBehaviour
                 needsToRetreat = true;
             }
         }
-
         if (needsToRetreat && !(currentState is ReturnToShadowState))
         {
-            ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, player, lastKnownShadowPosition));
+            ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, shelterLocation, player, lastKnownShadowPosition, returnToShelter));
         }
     }
-
-    private void OnSunrise()
+    
+    private void CheckCurrentTime()
     {
-
-    }
-
-    private void OnSunset()
-    {
-
+        if (timeController.CurrentTime.TimeOfDay > morningTime && !returnToShelter)
+        {
+            returnToShelter = true;
+            Debug.Log("It's after 9:30 AM! Time to take action.");
+            ChangeCurrentState(new ReturnToShelter(this.gameObject, agent, anim, player, shelterLocation));
+        }
+        if(timeController.CurrentTime.TimeOfDay > eveningTime)
+        {
+            returnToShelter = false;
+        }
     }
 
     public void TakeDamage(int amount)
@@ -137,9 +155,46 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    public void ChooseAttackState()
+    {
+        if (enemyData.enemyType == EnemyType.Ranged)
+        {
+            ChangeCurrentState(new RangeAttackState(this.gameObject, agent, anim, player));
+        }
+        else if (enemyData.enemyType == EnemyType.Melee)
+        {
+            ChangeCurrentState(new MeleeAttackState(this.gameObject, agent, anim, player));
+        }
+    }
+
+    public void PerformAttack()
+    {
+        if (attackStrategy != null)
+        {
+            attackStrategy.PerformAttack(this); 
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (attackStrategy is MeleeAttackStrategy meleeAttack)
+        {
+            meleeAttack.OnTriggerEnter(other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (attackStrategy is MeleeAttackStrategy meleeAttack)
+        {
+            meleeAttack.OnTriggerExit(other);
+        }
+    }
+
     void Update()
     {
         UpdateSunExposure();
+        CheckCurrentTime();
         if (currentState != null)
         {
             currentState.Process();
