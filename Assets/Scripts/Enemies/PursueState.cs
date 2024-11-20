@@ -40,14 +40,7 @@ public class PursueState : State
         }
         if (distanceToPlayer <= enemyData.optimalAttackDistance)
         {
-            if (enemyData.enemyType == EnemyType.Ranged)
-            {
-                npcScript.ChangeCurrentState(new RangeAttackState(npc, agent, anim, player));
-            }
-            else if (enemyData.enemyType == EnemyType.Melee)
-            {
-                npcScript.ChangeCurrentState(new MeleeAttackState(npc, agent, anim, player));
-            }
+            npcScript.ChooseAttackState();
         }
         if (distanceToPlayer >= enemyData.spottingRange)
         {
