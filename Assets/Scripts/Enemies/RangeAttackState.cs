@@ -36,8 +36,12 @@ public class RangeAttackState : State
 
         if (distanceToPlayer <= enemyData.attackRange)
         {
-           
-            HandleThrowAttack();
+
+            if (Time.time >= lastAttackTime + attackCooldown)
+            {
+                anim.SetTrigger("isThrowing");
+                lastAttackTime = Time.time;
+            }
         }
         else if (distanceToPlayer > enemyData.attackRange)
         {
@@ -53,6 +57,7 @@ public class RangeAttackState : State
             sunTimer = 0f; 
         }
     }
+
 
     private void HandleThrowAttack()
     {

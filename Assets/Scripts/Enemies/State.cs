@@ -6,7 +6,7 @@ public class State
 
     public enum STATE
     {
-        IDLE, PATROl, PURSUE, RANGE_ATTACK, MELEE_ATTACK, DEAD, RUNAWAY, RETREAT
+        IDLE, PATROl, PURSUE, RANGE_ATTACK, MELEE_ATTACK, DEAD, RUNAWAY, RETREAT, SHELTER
     };
 
     public enum EVENT
@@ -53,12 +53,12 @@ public class State
         return this;
     }
 
-    public bool CanSeePlayer()
+    public bool CanSeePlayer(float _visDistance, float _visAngle)
     {
         Vector3 direction = player.position - npc.transform.position;
         float angle = Vector3.Angle(direction, npc.transform.forward);
 
-        if (direction.magnitude < visDist && angle < visAngle)
+        if (direction.magnitude < _visDistance && angle < _visAngle)
         {
             return true;
         }

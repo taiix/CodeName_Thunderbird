@@ -18,7 +18,8 @@ MonoBehaviour:
   attackSpeed: 1.5
   spottingRange: 20
   attackRange: 15
+  attackDamage: 1
   optimalAttackDistance: 10
-  timeInSun: 3
+  timeInSun: 10
   deadTimer: 4
   weaponPrefab: {fileID: 4393100979532919358, guid: b62bb85ad7d747a409cf045ba5ebcf4a, type: 3}
