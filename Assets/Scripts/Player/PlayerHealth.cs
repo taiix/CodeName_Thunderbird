@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 100f; 
-    [SerializeField] private float currentHealth;    
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float currentHealth;
     [SerializeField] private Slider healthBar;
 
     public static UnityAction<float> OnPlayerDamaged;
@@ -29,7 +29,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-         //if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
+        //if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
     }
 
     public void TakeDamage(float damageAmount)
@@ -45,10 +45,11 @@ public class PlayerHealth : MonoBehaviour
         currentHealth += healAmount;
         if (currentHealth > maxHealth) currentHealth = maxHealth;
 
-        UpdateHealthBar(); 
+        UpdateHealthBar();
     }
     private void UpdateHealthBar()
     {
-        healthBar.value = currentHealth / maxHealth;
+        if (healthBar != null)
+            healthBar.value = currentHealth / maxHealth;
     }
 }

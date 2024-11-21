@@ -9,9 +9,9 @@ public class ReturnToShadowState : State
     private EnemyAI enemyScript;
     private float damageTimer = 0f;
     private bool wasInShelter = false;
-    private Transform shelterLocation;
+    private Vector3 shelterLocation;
 
-    public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _shelterPosition, Transform _player, Vector3 _shadowPosition, bool isInShelter)
+    public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Vector3 _shelterPosition, Transform _player, Vector3 _shadowPosition, bool isInShelter)
         : base(_npc, _agent, _anim, null)
     {
         name = STATE.RETREAT;
@@ -83,8 +83,8 @@ public class ReturnToShadowState : State
         }
 
         //If no point in shadow is found 
-        Debug.Log("No new position found");
-        return currentPosition;
+        Debug.Log("No new position found going to shelter");
+        return shelterLocation;
     }
 
 

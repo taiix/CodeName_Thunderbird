@@ -46,10 +46,11 @@ public class EquipSystem : MonoBehaviour
         if (item != null && item.itemPrefab != null)
         {
             equippedItemInstance = Instantiate(item.itemPrefab, handTransform);
-            if (equippedItemInstance.gameObject.GetComponent<Collider>() != null)
+            equippedItemInstance.GetComponent<ItemInteractable>().isHeld = true;
+            if (equippedItemInstance.gameObject.GetComponent<Collider>() != null && equippedItemInstance.gameObject.GetComponent<Rigidbody>() != null)
             {
                 equippedItemInstance.gameObject.GetComponent<Collider>().enabled = false;
-                Destroy(equippedItemInstance.gameObject.GetComponent<Rigidbody>());
+                equippedItemInstance.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             }
             currentEquippedItem = item;
             InventorySystem.Instance.UpdateEquippedItem(currentEquippedItem);
@@ -61,6 +62,7 @@ public class EquipSystem : MonoBehaviour
         if (equippedItemInstance != null)
         {
             Debug.Log("Unequip item called");
+            equippedItemInstance.GetComponent<ItemInteractable>().isHeld = false;
             Destroy(equippedItemInstance);
             currentEquippedItem = null;
         }
