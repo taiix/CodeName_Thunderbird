@@ -147,7 +147,7 @@ public class Workbench : Interactable
         if (planeParts.Count == 0 || currentPart > planeParts.Count) return;
 
         selectedPart = planeParts[currentPart];
-        Debug.Log("Selected Part: " + selectedPart.partName);
+        //Debug.Log("Selected Part: " + selectedPart.partName);
 
         upgradeSystem.SelectPlanePart(selectedPart);
     }

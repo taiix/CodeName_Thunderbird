@@ -31,7 +31,7 @@ public class ReturnToShelter : State
         StartAgent();
         anim.SetTrigger("isRunning");
         agent.speed = 7;
-        agent.SetDestination(shelterLocation.position);
+        if (shelterLocation != null) agent.SetDestination(shelterLocation.position);
         Debug.Log("AGENT REMAINING DISTANCE = " + agent.remainingDistance);
 
         base.Enter();
