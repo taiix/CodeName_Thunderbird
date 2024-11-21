@@ -6,14 +6,14 @@ using UnityEngine.AI;
 public class ReturnToShelter : State
 {
     private Transform locationBeforeShelter;
-    private Transform shelterLocation;
+    private Vector3 shelterLocation;
     private EnemyAI npcScript;
     private EnemyData enemyData;
 
     private float insultRange = 20f;
     private bool isInShelter = false;
 
-    public ReturnToShelter(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player, Transform _shelterLocation) : base(_npc, _agent, _anim, _shelterLocation)
+    public ReturnToShelter(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player, Vector3 _shelterLocation) : base(_npc, _agent, _anim, _player)
     {
         name = STATE.SHELTER;
         npc = _npc;
@@ -31,7 +31,7 @@ public class ReturnToShelter : State
         StartAgent();
         anim.SetTrigger("isRunning");
         agent.speed = 7;
-        if (shelterLocation != null) agent.SetDestination(shelterLocation.position);
+        agent.SetDestination(shelterLocation);
         Debug.Log("AGENT REMAINING DISTANCE = " + agent.remainingDistance);
 
         base.Enter();
@@ -60,7 +60,7 @@ public class ReturnToShelter : State
 
             if (distanceToPlayer <= enemyData.spottingRange)
             {
-                FacePlayer();
+                npc.transform.LookAt(player.position);
                 anim.ResetTrigger("isSitting");
                 anim.SetTrigger("isInsulting");
                 Debug.Log("Enemy is insulting the player!");
