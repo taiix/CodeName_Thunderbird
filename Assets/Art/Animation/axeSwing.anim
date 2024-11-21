@@ -551,8 +551,8 @@ AnimationClip:
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 1
-    functionName: ReduceHealth
+  - time: 0.5
+    functionName: PerformHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
