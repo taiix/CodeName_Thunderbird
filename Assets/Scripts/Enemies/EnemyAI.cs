@@ -43,7 +43,7 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentHealth = enemyData.health;
-        Debug.Log(enemyData.enemyName + " current health = " + currentHealth);
+        //Debug.Log(enemyData.enemyName + " current health = " + currentHealth);
         currentState = new PatrolState(this.gameObject, agent, anim, player);
         currentState.Enter();
 
