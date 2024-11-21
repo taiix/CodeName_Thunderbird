@@ -27,12 +27,12 @@ public class EquipableItem : MonoBehaviour
         {
             hitAction = actions.FindAction("Hit");
         }
-        hitAction.performed += PerformHit;
+        hitAction.performed += TriggerAnimation;
     }
 
     private void OnDisable()
     {
-        hitAction.performed -= PerformHit;
+        hitAction.performed -= TriggerAnimation;
     }
 
     // Update is called once per frame
@@ -41,16 +41,16 @@ public class EquipableItem : MonoBehaviour
 
     }
 
-    public void ReduceHealth()
+    private void TriggerAnimation(InputAction.CallbackContext context)
     {
-
+        animator.SetTrigger("hit");
     }
 
-    private void PerformHit(InputAction.CallbackContext context)
+    public void PerformHit()
     {
-        //Debug.Log("Hit");
+        Debug.Log("Hit");
         if (animator == null) return;
-        if (hitAction.WasPressedThisFrame() && !InventorySystem.Instance.IsInventoryOpen())
+        if (!InventorySystem.Instance.IsInventoryOpen())
         {
             TreeInteractable treeInteractable = InteractionHandler.Instance.treeInteractable;
 
@@ -61,7 +61,6 @@ public class EquipableItem : MonoBehaviour
                 
               treeInteractable.GetHit();
             }
-            animator.SetTrigger("hit");
         }
     }
 }
