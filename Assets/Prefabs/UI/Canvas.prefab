@@ -1893,8 +1893,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7324233290540193942}
   - component: {fileID: 2836122367359286982}
-  - component: {fileID: 5655160389502643620}
-  - component: {fileID: 2318582396435569846}
   m_Layer: 5
   m_Name: TreeHealthbar
   m_TagString: Untagged
@@ -1974,32 +1972,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5655160389502643620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3154869352256342185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 167e76b33ac01bb4c87f3e5a0500b6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalTreeHealthbar: {fileID: 0}
---- !u!114 &2318582396435569846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3154869352256342185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 167e76b33ac01bb4c87f3e5a0500b6a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  globalTreeHealthbar: {fileID: 0}
 --- !u!1 &3448636106372324401
 GameObject:
   m_ObjectHideFlags: 0

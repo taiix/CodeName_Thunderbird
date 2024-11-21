@@ -16,6 +16,7 @@ public class ItemInteractable : Interactable
     {
         if (highlightShader == null) Debug.LogError($"No highlight matterial assigned {this.gameObject.name}");
 
+        //if(itemSO.itemName != "A")
         rend = GetComponent<MeshRenderer>();
         originalMaterials.AddRange(rend.materials);
     }

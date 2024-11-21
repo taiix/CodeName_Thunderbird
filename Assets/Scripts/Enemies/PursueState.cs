@@ -35,7 +35,7 @@ public class PursueState : State
         if (distanceToPlayer <= enemyData.attackRange &&
             distanceToPlayer > enemyData.optimalAttackDistance)
         {
-            FacePlayer();
+            LookAt(player.transform.position);
             agent.SetDestination(player.position);
         }
         if (distanceToPlayer <= enemyData.optimalAttackDistance)
