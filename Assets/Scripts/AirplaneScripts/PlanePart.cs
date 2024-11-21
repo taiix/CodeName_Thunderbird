@@ -114,6 +114,8 @@ public class PlanePart : MonoBehaviour
         UpgradePower = upgradePower;
     }
 
+
+
     public PartUpgrade GetCurrentUpgrade()
     {
         if (currentUpgradeLevel < upgrades.Count)
