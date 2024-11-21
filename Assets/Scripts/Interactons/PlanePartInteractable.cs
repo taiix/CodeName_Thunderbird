@@ -21,7 +21,7 @@ public class PlanePartInteractable : Interactable
     }
     public override void OnFocus()
     {
-        interactionText = planePart.IsDamaged ? RepairMessage() : string.Empty;
+        interactionText = planePart.IsDamaged ? "Press F to Repair " + planePart.partName : string.Empty;
     }
 
     public override void OnInteract()
@@ -46,19 +46,5 @@ public class PlanePartInteractable : Interactable
 
     public override void OnLoseFocus()
     {
-    }
-
-    private string RepairMessage()
-    {
-
-
-        string itemsRequired = string.Empty;
-
-        for (int i = 0; i < planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix.Count; i++)
-        {
-            itemsRequired += " " + planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix[i].item.itemName + "x" + planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix[i].amount + "\n";
-        }
-
-        return "You need " + itemsRequired + " to repair the " + planePart.partName;
     }
 }

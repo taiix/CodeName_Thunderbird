@@ -22,7 +22,6 @@ public class HotbarManager : MonoBehaviour
             return;
         }
 
-        InventorySystem.Instance.OnItemThrown += UpdateHotbarAfterThrow;
         UpdateHotbar();
     }
 
@@ -75,25 +74,8 @@ public class HotbarManager : MonoBehaviour
             Item itemToEquip = hotbarSlots[slotIndex].itemInSlot;
 
             equipSystem.EquipItem(itemToEquip);
-            inventorySystem.RemoveItem(itemToEquip, 1);
+            //inventorySystem.RemoveItem(itemToEquip, 1);
 
         }
     }
-    private void UpdateHotbarAfterThrow(Item thrownItem)
-    {
-        for (int i = 0; i < hotbarSlots.Length; i++)
-        {
-            if (hotbarSlots[i].itemInSlot == thrownItem)
-            {
-                hotbarSlots[i].amountInSlot--;
-                if (hotbarSlots[i].amountInSlot <= 0)
-                {
-                    hotbarSlots[i].itemInSlot = null; 
-                }
-                hotbarSlots[i].SetStats();
-                break;
-            }
-        }
-    }
-
 }

@@ -7,8 +7,6 @@ using UnityEngine.UI;
 public class PartUpgrade : ScriptableObject
 {
     public List<RequiredItem> requiredItemsList = new List<RequiredItem>();
-
-    public List<RequiredItem> itemsForFix = new List<RequiredItem>();
     public int upgradePower;
     public int healthUpgrade;
     public int damageReduction;

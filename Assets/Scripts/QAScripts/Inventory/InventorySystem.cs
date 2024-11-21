@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Runtime.InteropServices.WindowsRuntime;
-using static UnityEditor.Progress;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -28,16 +27,12 @@ public class InventorySystem : MonoBehaviour
 
     private InventorySlot selectedSlot;
     private Item equippedItem;
-    private HotbarManager hotbarManager;
 
     [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
 
     public List<Item> itemsInInventory = new List<Item>();
 
     public static event Action<Item, bool> OnItemUsed;
-
-    public event Action<Item> OnItemThrown;
-
 
     private void Awake()
     {
@@ -73,6 +68,7 @@ public class InventorySystem : MonoBehaviour
             Debug.LogError("The 'Inventory' action was not found in the PlayerAction map.");
             yield break;
         }
+
         openInventory.performed += InventoryUIController;
         openInventory.Enable();
     }
@@ -81,6 +77,7 @@ public class InventorySystem : MonoBehaviour
     {
 
         openInventory.Disable();
+
         openInventory.performed -= InventoryUIController;
     }
 
@@ -353,11 +350,6 @@ public class InventorySystem : MonoBehaviour
     public bool IsInventoryOpen()
     {
         return isInventoryOpen;
-    }
-
-    public void InvokeItemThrown(Item item)
-    {
-        OnItemThrown?.Invoke(item);
     }
 
     public Item GetEquippedItem()

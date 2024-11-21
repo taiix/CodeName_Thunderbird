@@ -13,9 +13,6 @@ public class MeleeAttackState : State
     private Collider attackRangeCollider;
     private bool isPlayerInRange = false;
 
-    private float heightDifferenceThreshold = 2f;
-
-
 
     public MeleeAttackState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
         : base(_npc, _agent, _anim, _player)
@@ -42,21 +39,11 @@ public class MeleeAttackState : State
         }
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
-        float heightDifference = player.position.y - npc.transform.position.y;
-        //Debug.Log(heightDifference);
 
-        if (distanceToPlayer <= enemyData.attackRange || heightDifference > heightDifferenceThreshold)
+        if (distanceToPlayer <= enemyData.attackRange)
         {
-            LookAt(player.transform.position);
-            if (heightDifference > heightDifferenceThreshold)
-            {
-                Debug.Log("handle above attack");
-                HandleAbovePlayerAttack();
-            }
-            else
-            {
-                HandleMeleeAttack();
-            }
+            FacePlayer();
+            HandleMeleeAttack();
         }
         else
         {
@@ -73,15 +60,9 @@ public class MeleeAttackState : State
         }
     }
 
-    private void HandleAbovePlayerAttack()
-    {
-        anim.SetTrigger("upAttack");
-    }
-
     public override void Exit()
     {
         anim.ResetTrigger("isMelee");
-        anim.ResetTrigger("upAttack");
         base.Exit();
     }
 }
