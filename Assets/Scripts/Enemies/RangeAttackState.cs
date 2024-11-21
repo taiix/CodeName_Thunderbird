@@ -58,26 +58,6 @@ public class RangeAttackState : State
         }
     }
 
-
-    private void HandleThrowAttack()
-    {
-        FacePlayer();
-        if (Time.time >= lastAttackTime + attackCooldown)
-        {
-            anim.SetTrigger("isThrowing");
-
-            Vector3 throwDirection = (player.position - npc.transform.position).normalized;
-            GameObject thrownStone = GameObject.Instantiate(weaponPrefab, npc.transform.position + Vector3.up * 1.5f, Quaternion.identity);
-
-            Rigidbody stoneRb = thrownStone.GetComponent<Rigidbody>();
-            if (stoneRb != null)
-            {
-                stoneRb.AddForce(throwDirection * 20, ForceMode.VelocityChange);
-            }
-            lastAttackTime = Time.time;
-        }
-    }
-
     private void RetreatToShadow()
     {
         npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
