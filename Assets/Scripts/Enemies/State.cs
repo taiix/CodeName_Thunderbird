@@ -87,13 +87,11 @@ public class State
         return false;
     }
 
-    public void LookAt(Vector3 target)
+    public void FacePlayer()
     {
-        Vector3 directionToTarget = (target - npc.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
+        Vector3 directionToPlayer = (player.position - npc.transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
         npc.transform.rotation = lookRotation;
-
-
     }
 
     public void StopAgent()

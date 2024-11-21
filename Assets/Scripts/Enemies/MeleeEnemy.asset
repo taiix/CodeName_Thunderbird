@@ -16,8 +16,8 @@ MonoBehaviour:
   enemyType: 1
   health: 10
   attackSpeed: 2
-  spottingRange: 15
-  attackRange: 3
+  spottingRange: 10
+  attackRange: 5
   attackDamage: 4
   optimalAttackDistance: 3
   timeInSun: 15

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,6 +12,7 @@ public class EnemyAI : MonoBehaviour
 
 
     //PUBLIC
+    public Transform shelterLocation;
     public Transform player;
     public EnemyData enemyData;
     public bool isDead = false;
@@ -30,9 +30,6 @@ public class EnemyAI : MonoBehaviour
     private float enemyHeight = 2.0f;
     private bool needsToRetreat = false;
     private bool returnToShelter = false;
-    private Vector3 shelterLocation;
-
-    private Dictionary<EnemyType, IAttackStrategy> attackStrategies;
 
     TimeSpan morningTime = TimeSpan.FromHours(9.5f);
     TimeSpan eveningTime = TimeSpan.FromHours(20f);
@@ -42,7 +39,6 @@ public class EnemyAI : MonoBehaviour
     public UnityAction<int> OnHealthChanged;
     void Start()
     {
-        shelterLocation = gameObject.transform.position;
         lightSource = timeController.Sun;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
@@ -193,21 +189,15 @@ public class EnemyAI : MonoBehaviour
         {
             meleeAttack.OnTriggerExit(other);
         }
-    
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        
         UpdateSunExposure();
         CheckCurrentTime();
         if (currentState != null)
         {
             currentState.Process();
         }
-    }
-
-    void Update()
-    {
     }
 }
