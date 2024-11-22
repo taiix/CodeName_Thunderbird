@@ -29,7 +29,27 @@ Shader "Custom/TerrainTextureBlend"
         _blendFactorSandToGrass("_blendFactorSandToGrass", Float) = 0.1
 
         _blendLine("Blend Line", Float) = 2
-        _b("e", Float) = 2
+        _TopLine("_TopLine", Float) = 0.01
+
+        _NoiseTex("_NoiseTex", 2D) = "white"{}
+
+        _WaveFrequency("_WaveFrequency", Float) = 0.1
+        _WaveAmplitude("_WaveAmplitude", Float) = 0.1
+        _Threshold("_Threshold", Float) = 0.1
+
+        //SNOW
+        _SnowDirection("Snow Direction", Vector) = (0,1,0)
+
+        _SnowHeightStart ("_SnowHeightStart", Range(0,1)) = 1.0
+
+        _SnowTexture("Snow texture", 2D) = "white"{}
+        _SnowNormal("Snow normal", 2D) = "bumb"{}
+
+        _SnowMetallic("Snow Metallic", Float) = 0
+        _SnowSmoothness("Snow Smoothness", Float) = 0.5
+
+        _SnowBlend("Snow Blend", Float) = 0.5
+        _SnowStrenght("Snow Strenght", Float) = 0.5
     }
     SubShader
     {
@@ -75,94 +95,202 @@ Shader "Custom/TerrainTextureBlend"
         float _blendFactorSandToGrass;
         float _blendFactorGrassToRock;
         float _blendLine;
-        float _b;
+
+        float _TopLine;
+        float _WaveFrequency;
+        float _WaveAmplitude;
+        float _Threshold;
+        sampler2D _NoiseTex;
+
+        //Snow
+        float _SnowHeightStart, _SnowBlend, _SnowStrenght;
+        sampler2D _SnowTexture, _SnowNormal;
+        float _SnowMetallic, _SnowSmoothness;
+        float3 _SnowDirection;
 
         ///////////////////////////////////////////////////////////////////////////////////////
         struct Input
         {
+            INTERNAL_DATA
             float2 uv_HeightmapTexture;
+            float2 uv_NoiseTex;
+            float2 uv_SnowTexture;
+            float3 worldNormal;
         };
 
-        void surf(Input IN, inout SurfaceOutputStandard o)
+        void initProperties(Input IN, out float terrainHeight,
+                            out float4 sandTex, out float3 sandNormal,
+                            out float4 grassTex, out float3 grassNormal,
+                            out float4 rockTex, out float3 rockNormal,
+                            out float4 snowTex, out float3 snowNormal,
+                            out float noiseFactor)
         {
-            float terrainHeight = saturate(tex2D(_HeightmapTexture, IN.uv_HeightmapTexture).r);
+            terrainHeight = saturate(tex2D(_HeightmapTexture, IN.uv_HeightmapTexture).r);
 
-            // Independent UVs for each texture
             float2 uvSand = IN.uv_HeightmapTexture * _LayerTexTilingOffset1.xy + _LayerTexTilingOffset1.zw;
             float2 uvGrass = IN.uv_HeightmapTexture * _LayerTexTilingOffset2.xy + _LayerTexTilingOffset2.zw;
             float2 uvRock = IN.uv_HeightmapTexture * _LayerTexTilingOffset3.xy + _LayerTexTilingOffset3.zw;
 
-            // Sample textures using their individual UVs
-            float4 sandTex = tex2D(_LayerTexture1, uvSand);
-            float3 sandNormal = UnpackNormal(tex2D(_LayerNormal1, uvSand));
+            sandTex = tex2D(_LayerTexture1, uvSand);
+            sandNormal = UnpackNormal(tex2D(_LayerNormal1, uvSand));
 
-            float4 grassTex = tex2D(_LayerTexture2, uvGrass);
-            float3 grassNormal = UnpackNormal(tex2D(_LayerNormal2, uvGrass));
+            grassTex = tex2D(_LayerTexture2, uvGrass);
+            grassNormal = UnpackNormal(tex2D(_LayerNormal2, uvGrass));
 
-            float4 rockTex = tex2D(_LayerTexture3, uvRock);
-            float3 rockNormal = UnpackNormal(tex2D(_LayerNormal3, uvRock));
+            rockTex = tex2D(_LayerTexture3, uvRock);
+            rockNormal = UnpackNormal(tex2D(_LayerNormal3, uvRock));
+
+            snowTex = tex2D(_SnowTexture, IN.uv_SnowTexture);
+            snowNormal = UnpackNormal(tex2D(_SnowNormal, IN.uv_SnowTexture));
+
+            noiseFactor = tex2D(_HeightmapTexture, IN.uv_HeightmapTexture).r;
+        }
+
+        void setTexture(float4 mainTexture, float3 mainNormal, float metallic, float smoothness,
+                   out float4 finalColor,
+                   out float3 finalNormal,
+                   out float finalMetallic,
+                   out float finalSmoothness)
+        {
+            finalColor = mainTexture;
+            finalNormal = mainNormal;
+            finalMetallic = metallic;
+            finalSmoothness = smoothness;
+        }
+
+        void colorInterp(
+            float4 startTex, float3 startNormal, float metallicStart, float smoothnessStart,
+            float4 endTex, float3 endNormal, float metallicEnd, float smoothnessEnd,
+            float blendValue,
+            out float4 finalColor, out float3 finalNormal, out float finalMetallic, out float finalSmoothness)
+        {
+            blendValue = pow(blendValue, _blendLine);
+
+            finalColor = lerp(startTex, endTex, blendValue);
+            finalNormal = normalize(lerp(startNormal, endNormal, blendValue));
+            finalMetallic = lerp(metallicStart, metallicEnd, blendValue);
+            finalSmoothness = lerp(smoothnessStart, smoothnessEnd, blendValue);
+        }
+
+        void processLayers(
+            float terrainHeight, int startHeight, int endHeight,
+            float4 startTex, float3 startNormal, float metallicStart, float smoothnessStart,
+            float4 endTex, float3 endNormal, float metallicEnd, float smoothnessEnd,
+            float blendFactor, float noiseFactor, float offset, out float4 finalColor,
+            out float3 finalNormal, out float finalMetallic, out float finalSmoothness)
+        {
+            // NB!: LEAVE OFFSET 0 IF IT'S NOT NEEDED
+            if (terrainHeight >= _MaxHeights[startHeight] - blendFactor &&
+                terrainHeight < _MinHeights[endHeight] + blendFactor)
+            {
+                float blend = smoothstep(
+                    _MaxHeights[startHeight] - blendFactor,
+                    _MinHeights[endHeight] + blendFactor,
+                    terrainHeight + noiseFactor * 0.05);
+
+                colorInterp(
+                    startTex, startNormal, metallicStart, smoothnessStart,
+                    endTex, endNormal, metallicEnd, smoothnessEnd,
+                    blend,
+                    finalColor, finalNormal, finalMetallic, finalSmoothness);
+            }
+        }
+
+        void surf(Input IN, inout SurfaceOutputStandard o)
+        {
+            float terrainHeight;
+            float4 sandTex, grassTex, rockTex, snowTex;
+            float3 sandNormal, grassNormal, rockNormal, snowNormal;
+            float noiseFactor;
+
+            initProperties(IN, terrainHeight, sandTex, sandNormal, grassTex, grassNormal, rockTex, rockNormal, snowTex,
+          snowNormal,
+          noiseFactor);
 
             float4 finalColor = float4(0, 0, 0, 0);
             float3 finalNormal = float3(0, 0, 0);
             float finalMetallic = 0;
             float finalSmoothness = 0;
-            float noiseFactor = tex2D(_HeightmapTexture, IN.uv_HeightmapTexture).r;
-
 
             if (terrainHeight >= _MinHeights[0] && terrainHeight <= _MaxHeights[0])
             {
-                finalColor = sandTex;
-                finalNormal = sandNormal;
-                finalMetallic = _LayerMetallic1;
-                finalSmoothness = _LayerSmoothness1;
-
-                if (terrainHeight >= _MaxHeights[0] - _blendFactorSandToGrass / 5000 && terrainHeight < _MinHeights[1] +
-                    _blendFactorSandToGrass / 5000)
-                {
-                    float blend = smoothstep(_MaxHeights[0] - _blendFactorSandToGrass / 5000,
-         _MinHeights[1] + _blendFactorSandToGrass / 5000,
-         terrainHeight + noiseFactor * 0.05);
-
-                    blend = pow(blend, _blendLine);
-
-                    finalColor = lerp(sandTex, grassTex, blend);
-                    finalNormal = lerp(sandNormal, grassNormal, blend);
-                    finalMetallic = lerp(_LayerMetallic1, _LayerMetallic2, blend);
-                    finalSmoothness = lerp(_LayerSmoothness1, _LayerSmoothness2, blend);
-                }
+                //SAND TO GRASS
+                processLayers(
+                    terrainHeight, 0, 1,
+                    sandTex, sandNormal, _LayerMetallic1, _LayerSmoothness1,
+                    grassTex, grassNormal, _LayerMetallic2, _LayerSmoothness2,
+                    _blendFactorSandToGrass / 5000, noiseFactor, 0,
+                    finalColor, finalNormal, finalMetallic, finalSmoothness);
             }
-            else if (terrainHeight > _MinHeights[1] && terrainHeight <= _MaxHeights[1])
+            else if (terrainHeight > _MinHeights[1] - _TopLine && terrainHeight <= _MaxHeights[1] + _TopLine)
             {
-                finalColor = grassTex;
-                finalNormal = grassNormal;
-                finalMetallic = _LayerMetallic2;
-                finalSmoothness = _LayerSmoothness2;
+                //GRASS TO ROCK
+                setTexture(grassTex, grassNormal, _LayerMetallic2, _LayerSmoothness2,
+                                        finalColor, finalNormal, finalMetallic,
+                                        finalSmoothness);
 
-                if (terrainHeight >= _MaxHeights[1] - _blendFactorGrassToRock / 5000 && terrainHeight < _MinHeights[2] +
-                    _blendFactorGrassToRock / 5000)
+                if (terrainHeight >= _MaxHeights[1] - _blendFactorGrassToRock / 5000 &&
+                    terrainHeight < _MinHeights[2] + _blendFactorGrassToRock / 5000)
                 {
-                    float blend = smoothstep(_MaxHeights[1] - _blendFactorGrassToRock / 5000,
-                                                               _MinHeights[2] + _blendFactorGrassToRock / 5000,
-                                                               terrainHeight + noiseFactor * 0.05);
+                    float2 uvNoise = IN.uv_NoiseTex * _WaveFrequency;
+                    float noiseOffset = tex2D(_NoiseTex, uvNoise).r * (_Threshold / 5000);
 
-                    blend = pow(blend, _blendLine);
+                    float wave = sin(IN.uv_HeightmapTexture.x * _WaveFrequency) * (_WaveAmplitude / 5000);
 
-                    finalColor = lerp(grassTex, rockTex, blend);
-                    finalNormal = lerp(grassNormal, rockNormal, blend);
-                    finalMetallic = lerp(_LayerMetallic2, _LayerMetallic3, blend);
-                    finalSmoothness = lerp(_LayerSmoothness2, _LayerSmoothness3, blend);
+                    float combinedOffset = noiseOffset + wave;
+
+                    float blend = smoothstep(
+                        _MaxHeights[1] - _blendFactorGrassToRock / 5000 + combinedOffset,
+                        _MinHeights[2] + _blendFactorGrassToRock / 5000 + combinedOffset,
+                        terrainHeight + noiseFactor * 0.05);
+
+                    colorInterp(
+                        grassTex, grassNormal, _LayerMetallic2, _LayerSmoothness2,
+                        rockTex, rockNormal, _LayerMetallic3, _LayerSmoothness3,
+                        blend,
+                        finalColor, finalNormal, finalMetallic, finalSmoothness);
                 }
             }
             else if (terrainHeight > _MinHeights[2] && terrainHeight <= _MaxHeights[2])
             {
-                finalColor = rockTex;
-                finalNormal = rockNormal;
-                finalMetallic = _LayerMetallic3;
-                finalSmoothness = _LayerSmoothness3;
+                //ROCK TO SNOW
+
+                setTexture(snowTex, snowNormal, _SnowMetallic, _SnowSmoothness,
+                                    finalColor, finalNormal, finalMetallic,
+                                    finalSmoothness);
+
+                if (terrainHeight >= _MaxHeights[1] - _SnowBlend / 5000 &&
+                    terrainHeight < _SnowHeightStart + _SnowBlend / 5000)
+                {
+                    float2 uvNoise = IN.uv_NoiseTex * _WaveFrequency;
+                    float noiseOffset = tex2D(_NoiseTex, uvNoise).r * (_Threshold / 5000);
+
+                    float wave = sin(IN.uv_HeightmapTexture.x * _WaveFrequency) * (_WaveAmplitude / 5000);
+
+                    float combinedOffset = noiseOffset + wave;
+
+                    float blend = smoothstep(
+                        _MaxHeights[1] - _SnowBlend / 5000 + combinedOffset,
+                        _SnowHeightStart + _SnowBlend / 5000 + combinedOffset,
+                        terrainHeight + noiseFactor * _SnowStrenght);
+
+                    colorInterp(rockTex, rockNormal, _LayerMetallic3, _LayerSmoothness3,
+                                                                             snowTex, snowNormal, _SnowMetallic,
+                                                                             _SnowSmoothness,
+                                                                             blend,
+                                                                             finalColor, finalNormal, finalMetallic,
+                                                                             finalSmoothness);
+                }
+                else if (terrainHeight > _MinHeights[2] && terrainHeight <= _MaxHeights[2])
+                {
+                    setTexture(rockTex, rockNormal, _LayerMetallic3, _LayerSmoothness3,
+                                                    finalColor, finalNormal, finalMetallic,
+                                                    finalSmoothness);
+                }
             }
 
-            // Output final values
             o.Albedo = finalColor.rgb;
+
             o.Normal = finalNormal;
             o.Metallic = finalMetallic;
             o.Smoothness = finalSmoothness;
