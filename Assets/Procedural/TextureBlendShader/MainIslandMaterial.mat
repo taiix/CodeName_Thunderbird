@@ -106,7 +106,7 @@ Material:
     - _SnowStrenght: 0.2
     - _Threshold: 40
     - _TopLine: 0.01
-    - _WaveAmplitude: 46
+    - _WaveAmplitude: 24.9
     - _WaveFrequency: 270
     - _b: 0.01
     - _blendFactor: 146.7
@@ -123,7 +123,7 @@ Material:
     - _MaxHeights: {r: 0.33, g: 0.66, b: 1, a: 1}
     - _MinHeights: {r: 0, g: 0.33, b: 0.66, a: 1}
     - _NoiseTiling: {r: 10, g: 10, b: 0, a: 0}
-    - _SnowColor: {r: 2, g: 2, b: 2, a: 1}
+    - _SnowColor: {r: 3.9999998, g: 3.9999998, b: 3.9999998, a: 1}
     - _SnowDirection: {r: 0, g: 1, b: 0, a: 0}
     - _SnowTexture: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

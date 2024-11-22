@@ -38,7 +38,7 @@ Shader "Custom/TerrainTextureBlend"
         _Threshold("_Threshold", Float) = 0.1
 
         //SNOW
-        _SnowDirection("Snow Direction", Vector) = (0,1,0)
+        [HDR] _SnowColor ("Snow Color", Color) = (1,1,1,1)
 
         _SnowHeightStart ("_SnowHeightStart", Range(0,1)) = 1.0
 
@@ -106,7 +106,7 @@ Shader "Custom/TerrainTextureBlend"
         float _SnowHeightStart, _SnowBlend, _SnowStrenght;
         sampler2D _SnowTexture, _SnowNormal;
         float _SnowMetallic, _SnowSmoothness;
-        float3 _SnowDirection;
+        float4 _SnowColor;
 
         ///////////////////////////////////////////////////////////////////////////////////////
         struct Input
@@ -254,7 +254,6 @@ Shader "Custom/TerrainTextureBlend"
             else if (terrainHeight > _MinHeights[2] && terrainHeight <= _MaxHeights[2])
             {
                 //ROCK TO SNOW
-
                 setTexture(snowTex, snowNormal, _SnowMetallic, _SnowSmoothness,
                                     finalColor, finalNormal, finalMetallic,
                                     finalSmoothness);
@@ -275,7 +274,7 @@ Shader "Custom/TerrainTextureBlend"
                         terrainHeight + noiseFactor * _SnowStrenght);
 
                     colorInterp(rockTex, rockNormal, _LayerMetallic3, _LayerSmoothness3,
-                                                                             snowTex, snowNormal, _SnowMetallic,
+                                                                             snowTex * _SnowColor, snowNormal, _SnowMetallic,
                                                                              _SnowSmoothness,
                                                                              blend,
                                                                              finalColor, finalNormal, finalMetallic,

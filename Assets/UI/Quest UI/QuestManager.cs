@@ -17,7 +17,7 @@ public class QuestManager : MonoBehaviour
 
     [SerializeField] private Quest[] currentQuestObjectives;
 
-    private void Awake()
+    private void Start()
     {
         if (questInfo.Length == 0)
         {
@@ -51,7 +51,7 @@ public class QuestManager : MonoBehaviour
     private void OnEnable() { OnTaskCompleted += CompleteCurrentObjective; }
 
     private void OnDisable() { OnTaskCompleted -= CompleteCurrentObjective; }
-
+    
     void UpdateQuestInfo()
     {
         if (currentQuestIndex >= questInfo.Length) return;
