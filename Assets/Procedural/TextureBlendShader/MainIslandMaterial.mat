@@ -26,7 +26,7 @@ Material:
     - _HeightmapTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Offset: {x: 1, y: 0}
     - _LayerNormal1:
         m_Texture: {fileID: 2800000, guid: 082938fd2de54c945a89d984fc3db69c, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -59,8 +59,12 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7e231ffcfb0356e40b329f504be60a55, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 833cf0ab00d42ec409a91aa375a325f2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 1, y: 1}
     - _NoiseTexture:
-        m_Texture: {fileID: 2800000, guid: 2dcfd6c0a2c2e624285cc6047f0a25b2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6c74f98eddddafb46852e1598d760f0b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PerlinH:
@@ -71,8 +75,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SnowNormal:
+        m_Texture: {fileID: 2800000, guid: 36ce4476ec0d14b498591e1e0cc244dd, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 1, y: 1}
+    - _SnowTexture:
+        m_Texture: {fileID: 2800000, guid: 5e60e57c1e43a494cbe85f17c23d5b1c, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 1, y: 1}
     m_Ints: []
     m_Floats:
+    - _BlendRangeGrassToRock: 0.1
     - _BlendVariation: -11.07
     - _LayerMetallic1: 0
     - _LayerMetallic2: 0
@@ -83,13 +96,23 @@ Material:
     - _LayerSmoothness3: 0
     - _LayerSmoothness4: 0.5
     - _NoiseScale: 2.32
+    - _NoiseStrength: -0.25
     - _SlopeBlendWidth: -49.7
     - _SlopeTextureThreshold: 34.85
-    - _b: 1
+    - _SnowBlend: 1105.9
+    - _SnowHeightStart: 0.5
+    - _SnowMetallic: 0
+    - _SnowSmoothness: 0
+    - _SnowStrenght: 0.2
+    - _Threshold: 40
+    - _TopLine: 0.01
+    - _WaveAmplitude: 46
+    - _WaveFrequency: 270
+    - _b: 0.01
     - _blendFactor: 146.7
-    - _blendFactorGrassToRock: 59.7
-    - _blendFactorSandToGrass: 30.93
-    - _blendLine: 5.3
+    - _blendFactorGrassToRock: 52
+    - _blendFactorSandToGrass: 23.4
+    - _blendLine: 15
     - _maxHeight1: 1
     - _minHeight1: 0
     m_Colors:
@@ -97,4 +120,10 @@ Material:
     - _LayerTexTilingOffset2: {r: 100, g: 100, b: 100, a: 100}
     - _LayerTexTilingOffset3: {r: 100, g: 100, b: 100, a: 100}
     - _LayerTexTilingOffset4: {r: 1.51, g: 1, b: 1, a: 1}
+    - _MaxHeights: {r: 0.33, g: 0.66, b: 1, a: 1}
+    - _MinHeights: {r: 0, g: 0.33, b: 0.66, a: 1}
+    - _NoiseTiling: {r: 10, g: 10, b: 0, a: 0}
+    - _SnowColor: {r: 2, g: 2, b: 2, a: 1}
+    - _SnowDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _SnowTexture: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
