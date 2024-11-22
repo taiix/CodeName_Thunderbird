@@ -9,16 +9,24 @@ public class RangeAttackStrategy : IAttackStrategy
         if (enemyAI.player == null) return;
 
         Vector3 throwDirection = (enemyAI.player.position - enemyAI.transform.position).normalized;
+        float distanceToPlayer = Vector3.Distance(enemyAI.player.position, enemyAI.transform.position);
+
+        float adjustedForce = Mathf.Clamp(distanceToPlayer * 5f, 10f, 20f);
+
         GameObject thrownStone = Object.Instantiate(
             enemyAI.enemyData.weaponPrefab,
             enemyAI.transform.position + Vector3.up * 1.5f,
             Quaternion.identity
         );
 
-        Rigidbody stoneRb = thrownStone.GetComponent<Rigidbody>();
-        if (stoneRb != null)
+        Projectile projectile = thrownStone.GetComponent<Projectile>();
+        if (projectile != null)
         {
-            stoneRb.AddForce(throwDirection * 20, ForceMode.VelocityChange);
+            projectile.Throw(throwDirection * adjustedForce, false);
+        }
+        else
+        {
+            Debug.LogWarning("Thrown object does not have a Projectile component.");
         }
     }
 }

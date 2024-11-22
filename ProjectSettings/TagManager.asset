@@ -10,6 +10,7 @@ TagManager:
   - Rudder
   - Damageable
   - WaterSurface
+  - Enemy
   layers:
   - Default
   - TransparentFX
