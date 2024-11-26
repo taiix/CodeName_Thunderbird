@@ -63,6 +63,7 @@ public class PatrolState : State
         {
             AdjustAnimationAndSpeedBasedOnShadow();
         }
+        base.Update();
     }
 
     private void StartIdle()

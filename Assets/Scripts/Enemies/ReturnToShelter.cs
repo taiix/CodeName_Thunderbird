@@ -30,10 +30,9 @@ public class ReturnToShelter : State
     {
         StartAgent();
         anim.SetTrigger("isRunning");
-        agent.speed = 7;
+        agent.speed = enemyData.runningSpeed;
         agent.SetDestination(shelterLocation);
-        Debug.Log("AGENT REMAINING DISTANCE = " + agent.remainingDistance);
-
+        Debug.Log("Enemy returning to shelter");
         base.Enter();
     }
 
@@ -41,6 +40,7 @@ public class ReturnToShelter : State
     {
         if (agent.pathPending) return;
 
+        // Check if reached shelter
         if (!isInShelter && agent.remainingDistance <= agent.stoppingDistance + 0.5f)
         {
             anim.ResetTrigger("isRunning");
@@ -49,6 +49,7 @@ public class ReturnToShelter : State
             isInShelter = true;
         }
 
+        // Player proximity check
         if (isInShelter)
         {
             float distanceToPlayer = Vector3.Distance(player.position, npc.transform.position);
@@ -57,28 +58,24 @@ public class ReturnToShelter : State
             {
                 npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
             }
-
-            if (distanceToPlayer <= enemyData.spottingRange)
+            else if (distanceToPlayer <= enemyData.spottingRange)
             {
                 npc.transform.LookAt(player.position);
-                anim.ResetTrigger("isSitting");
                 anim.SetTrigger("isInsulting");
-                Debug.Log("Enemy is insulting the player!");
-
+                //anim.ResetTrigger("isSitting");
             }
             else
             {
-                // anim.ResetTrigger("isInsulting");
+                anim.ResetTrigger("isInsulting");
                 anim.SetTrigger("isSitting");
-                //Debug.Log("Enemy goes back to sitting.");
             }
         }
+
         base.Update();
     }
 
     public override void Exit()
     {
-
         anim.ResetTrigger("isInsulting");
         anim.ResetTrigger("isSitting");
         base.Exit();
