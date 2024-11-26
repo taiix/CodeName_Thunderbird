@@ -55,7 +55,7 @@ Shader "Custom/TerrainTextureBlend"
     {
         Tags
         {
-            "RenderType"="Opaque" "TerrainCompatible" = "true"
+            "RenderType"="Transparent" "TerrainCompatible" = "true"
         }
         LOD 200
 
@@ -212,6 +212,7 @@ Shader "Custom/TerrainTextureBlend"
             float finalMetallic = 0;
             float finalSmoothness = 0;
 
+
             if (terrainHeight >= _MinHeights[0] && terrainHeight <= _MaxHeights[0])
             {
                 //SAND TO GRASS
@@ -288,6 +289,7 @@ Shader "Custom/TerrainTextureBlend"
                 }
             }
 
+            
             o.Albedo = finalColor.rgb;
 
             o.Normal = finalNormal;
