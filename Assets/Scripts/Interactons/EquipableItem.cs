@@ -9,7 +9,8 @@ public class EquipableItem : MonoBehaviour
     [SerializeField] InputActionAsset actions;
     InputAction hitAction;
 
-
+    [SerializeField] int damageAmount = 2;
+    private List<GameObject> enemiesInRange = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +44,7 @@ public class EquipableItem : MonoBehaviour
 
     private void TriggerAnimation(InputAction.CallbackContext context)
     {
+        if (InventorySystem.Instance.IsInventoryOpen()) return;
         animator.SetTrigger("hit");
     }
 
@@ -52,15 +54,58 @@ public class EquipableItem : MonoBehaviour
         if (animator == null) return;
         if (!InventorySystem.Instance.IsInventoryOpen())
         {
+            // Handle tree interaction
             TreeInteractable treeInteractable = InteractionHandler.Instance.treeInteractable;
-
             Item equippedItem = InventorySystem.Instance.GetEquippedItem();
 
             if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
             {
-                
-              treeInteractable.GetHit();
+                treeInteractable.GetHit();
             }
+
+            // Handle enemy damage
+            if (equippedItem != null && equippedItem.type == Item.Types.axe)
+            {
+                GetComponent<Collider>().enabled = true;
+                foreach (GameObject enemy in enemiesInRange)
+                {
+                    if (enemy != null)
+                    {
+                        EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
+                        if (enemyAI != null)
+                        {
+                            Debug.Log("Do dmg to enemy");
+                            enemyAI.TakeDamage(damageAmount);
+                        }
+                    }
+                }
+                enemiesInRange.Clear();
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Detected: {other.name}");
+
+        if (other.CompareTag("Enemy"))
+        {
+            Debug.Log("Enemy in range");
+            EnemyAI enemy = other.GetComponent<EnemyAI>();
+            if (enemy != null && !enemiesInRange.Contains(other.gameObject))
+            {
+                enemiesInRange.Add(other.gameObject);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Exited trigger: " + other.name);
+
+        if (enemiesInRange.Contains(other.gameObject))
+        {
+            enemiesInRange.Remove(other.gameObject);
         }
     }
 }

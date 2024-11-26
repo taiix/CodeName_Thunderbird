@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyName: MeleeImp
   enemyType: 1
   health: 10
+  runningSpeed: 6.5
   attackSpeed: 2
   spottingRange: 15
   attackRange: 3

@@ -36,7 +36,7 @@ public class RangeAttackState : State
 
         if (distanceToPlayer <= enemyData.attackRange)
         {
-
+            LookAt(player.position);
             if (Time.time >= lastAttackTime + attackCooldown)
             {
                 anim.SetTrigger("isThrowing");
@@ -47,21 +47,8 @@ public class RangeAttackState : State
         {
             npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
         }
-
-        if (npcScript.NeedsToRetreat())
-        {
-                RetreatToShadow();
-        }
-        else
-        {
-            sunTimer = 0f; 
-        }
     }
 
-    private void RetreatToShadow()
-    {
-        npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
-    }
 
     public override void Exit()
     {

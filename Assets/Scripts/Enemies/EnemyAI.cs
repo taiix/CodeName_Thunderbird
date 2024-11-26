@@ -30,6 +30,11 @@ public class EnemyAI : MonoBehaviour
     private float enemyHeight = 2.0f;
     private bool needsToRetreat = false;
     private bool returnToShelter = false;
+
+
+    private bool isTransitioning = false;
+    private bool isReturningToShelter = false;
+    private bool isPatrolling = true;
     private Vector3 shelterLocation;
 
     private Dictionary<EnemyType, IAttackStrategy> attackStrategies;
@@ -42,14 +47,14 @@ public class EnemyAI : MonoBehaviour
     public UnityAction<int> OnHealthChanged;
     void Start()
     {
+        timeController = FindObjectOfType<TimeController>();
+        player = FindObjectOfType<PlayerHealth>().gameObject.transform;
         shelterLocation = gameObject.transform.position;
         lightSource = timeController.Sun;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentHealth = enemyData.health;
         //Debug.Log(enemyData.enemyName + " current health = " + currentHealth);
-        currentState = new PatrolState(this.gameObject, agent, anim, player);
-        currentState.Enter();
 
         if (enemyData.enemyType == EnemyType.Ranged)
         {
@@ -59,21 +64,25 @@ public class EnemyAI : MonoBehaviour
         {
             attackStrategy = new MeleeAttackStrategy();  
         }
+        currentState = new PatrolState(this.gameObject, agent, anim, player);
+        ChangeCurrentState(currentState);
     }
 
     public void ChangeCurrentState(State state)
     {
-        if (isDead) return;
+        if (isDead || isTransitioning || currentState == state) return;
+        isTransitioning = true;
 
         if (currentState != null)
         {
-
             currentState.Exit();
-            currentState = state;
-            currentState.Enter();
-
-            Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);
         }
+
+        currentState = state;
+        currentState.Enter();
+
+        Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);
+        isTransitioning = false;
     }
 
     public bool IsInShadow()
@@ -89,6 +98,11 @@ public class EnemyAI : MonoBehaviour
     public bool NeedsToRetreat()
     {
         return needsToRetreat;
+    }
+
+    public State GetCurrentState()
+    {
+        return currentState;
     }
 
     public bool IsPointInShadow(Vector3 point)
@@ -109,6 +123,8 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateSunExposure()
     {
+        if (needsToRetreat) return;
+
         bool currentlyInShadow = IsInShadow();
         if (currentlyInShadow)
         {
@@ -122,25 +138,28 @@ public class EnemyAI : MonoBehaviour
             if (sunExposureTimer >= enemyData.timeInSun)
             {
                 needsToRetreat = true;
+                ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, shelterLocation, player, lastKnownShadowPosition, isReturningToShelter));
             }
-        }
-        if (needsToRetreat && !(currentState is ReturnToShadowState))
-        {
-            ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, shelterLocation, player, lastKnownShadowPosition, returnToShelter));
         }
     }
     
     private void CheckCurrentTime()
     {
-        if (timeController.CurrentTime.TimeOfDay > morningTime && !returnToShelter)
+        TimeSpan currentTime = timeController.CurrentTime.TimeOfDay;
+
+        if (currentTime > morningTime && currentTime <= eveningTime && !isReturningToShelter)
         {
-            returnToShelter = true;
             Debug.Log("It's after 9:30 AM! Time to take action.");
+            
+            isReturningToShelter = true;
+            isPatrolling = false;
             ChangeCurrentState(new ReturnToShelter(this.gameObject, agent, anim, player, shelterLocation));
         }
-        if(timeController.CurrentTime.TimeOfDay > eveningTime)
+        if(currentTime > eveningTime && !isPatrolling)
         {
-            returnToShelter = false;
+            ChangeCurrentState(new PatrolState(this.gameObject, agent, anim, player));
+            isPatrolling = true;
+            isReturningToShelter = false;
         }
     }
 

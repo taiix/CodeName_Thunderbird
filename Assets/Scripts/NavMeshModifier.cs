@@ -9,6 +9,8 @@ public class NavMeshModifier : MonoBehaviour
 {  
     public float waterHeight = 8.19f;
 
+    public float maxHeight = 20.0f;
+
     public Terrain terrain;
 
     public NavMeshSurface navMeshSurface;
@@ -28,6 +30,7 @@ public class NavMeshModifier : MonoBehaviour
         }
 
         CreateUnderwaterNavMeshModifier();
+        CreateAboveMaxHeightNavMeshModifier();
         RebuildNavMesh();
     }
 
@@ -45,6 +48,26 @@ public class NavMeshModifier : MonoBehaviour
         modifierVolume.center = new Vector3(terrain.transform.position.x + terrainSize.x / 2,
                                     waterHeight / 2,
                                     terrain.transform.position.z + terrainSize.z / 2);
+
+        modifierVolume.area = NavMesh.GetAreaFromName("Not Walkable");
+    }
+
+    void CreateAboveMaxHeightNavMeshModifier()
+    {
+        Vector3 terrainSize = terrain.terrainData.size;
+
+        GameObject aboveHeightArea = new GameObject("AboveMaxHeightNavMeshModifier");
+        aboveHeightArea.transform.parent = this.transform;
+
+        NavMeshModifierVolume modifierVolume = aboveHeightArea.AddComponent<NavMeshModifierVolume>();
+
+        // Modifier for area above maxHeight
+        modifierVolume.size = new Vector3(terrainSize.x, Mathf.Abs(terrainSize.y - maxHeight), terrainSize.z);
+        modifierVolume.center = new Vector3(
+            terrain.transform.position.x + terrainSize.x / 2,
+            maxHeight + (terrainSize.y - maxHeight) / 2,
+            terrain.transform.position.z + terrainSize.z / 2
+        );
 
         modifierVolume.area = NavMesh.GetAreaFromName("Not Walkable");
     }
