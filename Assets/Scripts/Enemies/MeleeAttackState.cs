@@ -9,9 +9,12 @@ public class MeleeAttackState : State
     private float attackCooldown;
     private EnemyAI npcScript;
     private EnemyData enemyData;
+
     private Collider attackRangeCollider;
     private bool isPlayerInRange = false;
+
     private float heightDifferenceThreshold = 2f;
+
 
 
     public MeleeAttackState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)

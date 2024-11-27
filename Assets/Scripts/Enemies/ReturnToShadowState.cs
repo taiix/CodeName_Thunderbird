@@ -37,19 +37,16 @@ public class ReturnToShadowState : State
     {
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
-            if (wasInShelter)
-            {
-                enemyScript.ChangeCurrentState(new ReturnToShelter(npc, agent, anim, player, shelterLocation));
-                return;
-            }
-
             if (enemyScript.IsPointInShadow(npc.transform.position))
             {
                 enemyScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
             }
+            if (wasInShelter)
+            {
+                enemyScript.ChangeCurrentState(new ReturnToShelter(npc,agent,anim,player,shelterLocation)); 
+            }
             else
             {
-                // Find next shadow position if not already in one
                 Vector3 newShadowPosition = FindNextShadowPosition(npc.transform.position);
                 if (newShadowPosition != npc.transform.position)
                 {
@@ -59,10 +56,9 @@ public class ReturnToShadowState : State
             }
         }
 
-
-        // Deal 1 health damage every 1.5 seconds
+        // Deal 1 health damage every 2 seconds
         damageTimer += Time.deltaTime;
-        if (damageTimer >= 1.5f)
+        if (damageTimer >= 2f)
         {
             Debug.Log("Take Damage");
             enemyScript.TakeDamage(1);

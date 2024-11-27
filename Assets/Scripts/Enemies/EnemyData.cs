@@ -14,7 +14,6 @@ public class EnemyData : ScriptableObject
     public string enemyName;
     public EnemyType enemyType;
     public int health;
-    public float runningSpeed;
     public float attackSpeed;
     public float spottingRange;
     public float attackRange;

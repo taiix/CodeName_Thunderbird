@@ -52,7 +52,6 @@ public class EquipSystem : MonoBehaviour
                 equippedItemInstance.gameObject.GetComponent<Collider>().enabled = false;
                 equippedItemInstance.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             }
-
             currentEquippedItem = item;
             InventorySystem.Instance.UpdateEquippedItem(currentEquippedItem);
         }
@@ -69,6 +68,7 @@ public class EquipSystem : MonoBehaviour
         }
     }
 
+    // Check if an item is equipped
     public bool IsItemEquipped(Item item)
     {
         return currentEquippedItem == item;

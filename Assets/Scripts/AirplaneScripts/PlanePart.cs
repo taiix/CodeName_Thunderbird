@@ -85,14 +85,10 @@ public class PlanePart : MonoBehaviour
 
     public void Repair(float repairAmount)
     {
-        if (HasItemsForFix())
+        
+        if (InventorySystem.Instance.HasRequiredItem(itemForFix, requiredItemForFixAmount))
         {
-            for(int i = 0; i <= upgrades[currentUpgradeLevel].itemsForFix.Count - 1; i++)
-            {
-                InventorySystem.Instance?.RemoveItem(upgrades[currentUpgradeLevel].itemsForFix[i].item, 
-                                                    upgrades[currentUpgradeLevel].itemsForFix[i].amount);
-            }
-            
+            InventorySystem.Instance?.RemoveItem(itemForFix, requiredItemForFixAmount);
             currentHealth += repairAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
@@ -106,19 +102,6 @@ public class PlanePart : MonoBehaviour
         {
             Debug.Log("Dont't have enough items to fix");
         }
-    }
-
-
-    public bool HasItemsForFix()
-    {
-        for(int i = 0; i < upgrades[currentUpgradeLevel].requiredItemsList.Count - 1; i++)
-        {
-            if (!InventorySystem.Instance.HasRequiredItem(upgrades[i].itemsForFix[i].item, upgrades[i].itemsForFix[i].amount))
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void PartUpgrade(PartUpgrade upgrade)
