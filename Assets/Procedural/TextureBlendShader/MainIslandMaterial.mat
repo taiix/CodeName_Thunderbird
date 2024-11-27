@@ -100,7 +100,7 @@ Material:
     - _SlopeBlendWidth: -49.7
     - _SlopeTextureThreshold: 34.85
     - _SnowBlend: 1105.9
-    - _SnowHeightStart: 0.5
+    - _SnowHeightStart: 0.6
     - _SnowMetallic: 0
     - _SnowSmoothness: 0
     - _SnowStrenght: 0.2
