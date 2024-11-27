@@ -102,6 +102,8 @@ MonoBehaviour:
   interactionText: 
   itemSO: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
   amount: 1
+  highlightShader: {fileID: 2100000, guid: eb607303de8365540b9fec2cd1f06c73, type: 2}
+  originalMaterials: []
 --- !u!54 &196478883247998697
 Rigidbody:
   m_ObjectHideFlags: 0

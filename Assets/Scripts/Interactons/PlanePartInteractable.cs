@@ -30,7 +30,7 @@ public class PlanePartInteractable : Interactable
         {
             planePart.Repair(repairAmount); 
 
-            Debug.Log("Repaired " + gameObject.name);
+            //Debug.Log("Repaired " + gameObject.name);
 
             if (!planePart.IsDamaged)
             {
@@ -57,6 +57,11 @@ public class PlanePartInteractable : Interactable
         for (int i = 0; i < planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix.Count; i++)
         {
             itemsRequired += " " + planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix[i].item.itemName + "x" + planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix[i].amount + "\n";
+        }
+
+        if (planePart.HasItemsForFix())
+        {
+            return "Press F to repair " + planePart.partName;
         }
 
         return "You need " + itemsRequired + " to repair the " + planePart.partName;
