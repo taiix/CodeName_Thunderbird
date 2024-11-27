@@ -3,6 +3,7 @@ using UnityEngine;
 public class NPC_Dialogue : Interactable
 {
     [SerializeField] private Dialogue dialogue;
+    [SerializeField] private bool hasQuests;
 
     public override void OnFocus()
     {
@@ -13,7 +14,6 @@ public class NPC_Dialogue : Interactable
     {
         InteractionHandler.Instance?.UpdateInteractionText(string.Empty);
         TriggerDialogue();
-
     }
 
     public override void OnLoseFocus()
