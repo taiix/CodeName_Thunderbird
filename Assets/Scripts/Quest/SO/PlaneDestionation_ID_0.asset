@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d12670ead49728e42b51ffcb2a768563, type: 3}
   m_Name: PlaneDestionation_ID_0
   m_EditorClassIdentifier: 
+  questName: Go to plane
+  questDescription: Go to the plane asap
   id: 0
+  isCompleted: 0
+  playerIdentifier: Player
+  destinationIdentifier: Plane
+  distanceDifference: 5
