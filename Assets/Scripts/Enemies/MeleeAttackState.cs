@@ -32,11 +32,11 @@ public class MeleeAttackState : State
 
     public override void Update()
     {
-        if (npcScript.NeedsToRetreat())
-        {
-            npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
-            return;
-        }
+        //if (npcScript.NeedsToRetreat())
+        //{
+        //    npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
+        //    return;
+        //}
 
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
         float heightDifference = player.position.y - npc.transform.position.y;

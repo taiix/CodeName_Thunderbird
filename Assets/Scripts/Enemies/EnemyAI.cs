@@ -28,13 +28,13 @@ public class EnemyAI : MonoBehaviour
     private int currentHealth;
     private State currentState;
     private float enemyHeight = 2.0f;
-    private bool needsToRetreat = false;
+
+
     private bool returnToShelter = false;
-
-
     private bool isTransitioning = false;
     private bool isReturningToShelter = false;
     private bool isPatrolling = true;
+    private bool isRetreating = false;
     private Vector3 shelterLocation;
 
     private Dictionary<EnemyType, IAttackStrategy> attackStrategies;
@@ -56,13 +56,11 @@ public class EnemyAI : MonoBehaviour
         currentHealth = enemyData.health;
         //Debug.Log(enemyData.enemyName + " current health = " + currentHealth);
 
-        if (enemyData.enemyType == EnemyType.Ranged)
+        attackStrategy = AttackStrategyFactory.GetStrategy(enemyData.enemyType);
+
+        if (attackStrategy == null)
         {
-            attackStrategy = new RangeAttackStrategy();  
-        }
-        else if (enemyData.enemyType == EnemyType.Melee)
-        {
-            attackStrategy = new MeleeAttackStrategy();  
+            Debug.LogWarning("No attack strategy found for enemy type: " + enemyData.enemyType);
         }
         currentState = new PatrolState(this.gameObject, agent, anim, player);
         ChangeCurrentState(currentState);
@@ -70,7 +68,7 @@ public class EnemyAI : MonoBehaviour
 
     public void ChangeCurrentState(State state)
     {
-        if (isDead || isTransitioning || currentState == state) return;
+        if (isDead || currentState == state) return;
         isTransitioning = true;
 
         if (currentState != null)
@@ -95,11 +93,6 @@ public class EnemyAI : MonoBehaviour
         return currentHealth;
     }
 
-    public bool NeedsToRetreat()
-    {
-        return needsToRetreat;
-    }
-
     public State GetCurrentState()
     {
         return currentState;
@@ -108,7 +101,7 @@ public class EnemyAI : MonoBehaviour
     public bool IsPointInShadow(Vector3 point)
     {
         Vector3 lightDirection = -lightSource.transform.forward;
-        Vector3 adjustedPoint = point + Vector3.up * enemyHeight;
+        Vector3 adjustedPoint = point + Vector3.up * enemyHeight/2;
 
         RaycastHit hit;
         if (Physics.Raycast(adjustedPoint, lightDirection, out hit))
@@ -123,21 +116,21 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateSunExposure()
     {
-        if (needsToRetreat) return;
+        //if (needsToRetreat) return;
 
         bool currentlyInShadow = IsInShadow();
         if (currentlyInShadow)
         {
             lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;
             sunExposureTimer = 0f;
-            needsToRetreat = false;
+            isRetreating = false;
         }
         else
         {
             sunExposureTimer += Time.deltaTime;
-            if (sunExposureTimer >= enemyData.timeInSun)
+            if (sunExposureTimer >= enemyData.timeInSun && isRetreating)
             {
-                needsToRetreat = true;
+                isRetreating = true;
                 ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, shelterLocation, player, lastKnownShadowPosition, isReturningToShelter));
             }
         }
@@ -180,13 +173,14 @@ public class EnemyAI : MonoBehaviour
 
     public void ChooseAttackState()
     {
-        if (enemyData.enemyType == EnemyType.Ranged)
+        try
         {
-            ChangeCurrentState(new RangeAttackState(this.gameObject, agent, anim, player));
+            State attackState = AttackStateFactory.GetAttackState(enemyData.enemyType, gameObject, agent, anim, player);
+            ChangeCurrentState(attackState);
         }
-        else if (enemyData.enemyType == EnemyType.Melee)
+        catch (System.ArgumentException ex)
         {
-            ChangeCurrentState(new MeleeAttackState(this.gameObject, agent, anim, player));
+            Debug.LogError(ex.Message);
         }
     }
 

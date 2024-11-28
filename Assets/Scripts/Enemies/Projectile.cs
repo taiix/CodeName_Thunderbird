@@ -55,17 +55,18 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player") && !hasDealtDamage && !item.isHeld)
+        {
+            Debug.Log("hitPlayer");
+            PlayerHealth.OnPlayerDamaged?.Invoke(damageAmount);
+        }
         if (other.CompareTag("Enemy"))
         {
 
             hasDealtDamage = false;
             return;
         }
-        if (other.CompareTag("Player") && !hasDealtDamage && !item.isHeld)
-        {
-            Debug.Log("hitPlayer");
-            PlayerHealth.OnPlayerDamaged?.Invoke(damageAmount);
-        }
+         stoneRigidbody.drag = 2;
 
         hasDealtDamage = true;
     }

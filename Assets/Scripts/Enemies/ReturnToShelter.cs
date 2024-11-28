@@ -62,7 +62,7 @@ public class ReturnToShelter : State
             {
                 npc.transform.LookAt(player.position);
                 anim.SetTrigger("isInsulting");
-                //anim.ResetTrigger("isSitting");
+                anim.ResetTrigger("isSitting");
             }
             else
             {

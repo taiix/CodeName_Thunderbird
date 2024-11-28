@@ -3,8 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="Item", menuName ="ScriptableObjects/Item", order = 1)]
 public class Item : ScriptableObject
 {
-    public int id;
-
     public string itemName;
     public Sprite itemIcon;
     public string itemDescription;
@@ -24,12 +22,5 @@ public class Item : ScriptableObject
         miningEquipment,
         axe
     }
-
-    public enum Rarity
-    {
-
-    }
-
     public Types type;
-
 }

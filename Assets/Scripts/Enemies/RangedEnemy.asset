@@ -21,6 +21,6 @@ MonoBehaviour:
   attackRange: 15
   attackDamage: 1
   optimalAttackDistance: 10
-  timeInSun: 10
+  timeInSun: 5
   deadTimer: 4
   weaponPrefab: {fileID: 4393100979532919358, guid: b62bb85ad7d747a409cf045ba5ebcf4a, type: 3}
