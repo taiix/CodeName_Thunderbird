@@ -41,7 +41,7 @@ public class ReturnToShelter : State
         if (agent.pathPending) return;
 
         // Check if reached shelter
-        if (!isInShelter && agent.remainingDistance <= agent.stoppingDistance + 0.5f)
+        if (!isInShelter && agent.remainingDistance <= agent.stoppingDistance)
         {
             anim.ResetTrigger("isRunning");
             anim.SetTrigger("isSitting");
@@ -54,15 +54,15 @@ public class ReturnToShelter : State
         {
             float distanceToPlayer = Vector3.Distance(player.position, npc.transform.position);
 
-            if (distanceToPlayer <= enemyData.attackRange)
-            {
-                npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
-            }
-            else if (distanceToPlayer <= enemyData.spottingRange)
+            if (distanceToPlayer <= enemyData.spottingRange)
             {
                 npc.transform.LookAt(player.position);
                 anim.SetTrigger("isInsulting");
                 anim.ResetTrigger("isSitting");
+            }
+            if (distanceToPlayer <= enemyData.attackRange)
+            {
+                npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
             }
             else
             {
@@ -70,13 +70,17 @@ public class ReturnToShelter : State
                 anim.SetTrigger("isSitting");
             }
         }
+        else
+        {
+            npcScript.TakeSunDamage();
+        }
 
-        npcScript.TakeSunDamage();
         base.Update();
     }
 
     public override void Exit()
     {
+        StopAgent();
         anim.ResetTrigger("isInsulting");
         anim.ResetTrigger("isSitting");
         base.Exit();
