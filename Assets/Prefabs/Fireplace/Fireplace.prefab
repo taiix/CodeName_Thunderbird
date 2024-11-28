@@ -161,13 +161,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHeld: 0
   interactionText: 
-  dialogue:
-    npcName: Sam
+  npcName: 
+  dialogues:
+  - dialogueCompleted: 0
+    hasQuest: 1
+    currentDialogueQuest: {fileID: 11400000, guid: 92dd89fd3c118444b9c64b4f45851864, type: 2}
     dialogue:
-    - my name is sam
-    - bla bla
-    - bla blabla blabla blabla blabla bla
-  hasQuests: 0
+    - asdasdasd
+    - dsdasdas
+    - gfdgdfg
+  - dialogueCompleted: 0
+    hasQuest: 1
+    currentDialogueQuest: {fileID: 11400000, guid: 49d0156a2028d0b489b8e332d106f13d, type: 2}
+    dialogue:
+    - "petko l;e\t"
+    - 1234
+    - hfgfff
+  currentDialogueIndex: 0
 --- !u!114 &1516226766441492195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,13 +185,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7989225761603493158}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcb81b15463f16048b6eb07c578e75af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isHeld: 0
-  interactionText: 
   allQuests:
   - {fileID: 11400000, guid: 92dd89fd3c118444b9c64b4f45851864, type: 2}
   - {fileID: 11400000, guid: 49d0156a2028d0b489b8e332d106f13d, type: 2}

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static UnityAction<Dialogue> sendDialogue;
+    public static UnityAction<string, string[], BaseSO_Properties> sendDialogue;
     public static UnityAction OnDialogueStarted;
     public static UnityAction OnDialogueEnded;
 
@@ -18,6 +18,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject[] otherCanvases;
     [SerializeField] private TextMeshProUGUI npcNameText;
     [SerializeField] private TextMeshProUGUI dialogueTextBox;
+
+    private BaseSO_Properties currentDialogueQuest;
 
     private void Awake()
     {
@@ -39,17 +41,19 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDialogue(string npcName, string[] dialogue, BaseSO_Properties quest)
     {
+        if(quest != null) currentDialogueQuest = quest;
+
         dialogueState = DialogueState.StartDialogue;
         OnDialogueStarted?.Invoke();
         ToggleCanvases(true);
 
         sentences.Clear();
         dialogueTextBox.text = "";
-        npcNameText.text = dialogue.npcName;
+        npcNameText.text = npcName;
 
-        foreach (var sentence in dialogue.dialogue)
+        foreach (var sentence in dialogue)
         {
             sentences.Enqueue(sentence);
         }
@@ -76,6 +80,8 @@ public class DialogueManager : MonoBehaviour
 
         ToggleCanvases(false);
         ClearDialogueUI();
+
+        if(currentDialogueQuest != null) QuestManager_v2.OnQuestActivated?.Invoke(currentDialogueQuest);
 
         OnDialogueEnded?.Invoke();
         Debug.Log("Dialogue has ended.");

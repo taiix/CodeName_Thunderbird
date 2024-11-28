@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ItemsToCollect_ID_1
   m_EditorClassIdentifier: 
   questName: Collect Ores
-  questDescription: Collect as many as you can
+  questDescription: Find wood
   id: 1
-  isCompleted: 0
-  currentAmount: 0
-  requiredAmount: 20
+  isCompleted: 1
+  items:
+  - requiredItem: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
+    requiredAmount: 3
