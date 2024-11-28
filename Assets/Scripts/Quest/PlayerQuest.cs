@@ -1,12 +1,22 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerQuest : MonoBehaviour
 {
+    public static UnityAction OnQuestCompleted;
+
     [SerializeField] private BaseSO_Properties activeQuest;
     [SerializeField] private Transform desiredLocation;
 
-    private void OnEnable() { QuestManager_v2.OnQuestSent.AddListener(ReceiveQuest); }
-    private void OnDisable() { QuestManager_v2.OnQuestSent.RemoveListener(ReceiveQuest); }
+    private void OnEnable() { 
+        QuestManager_v2.OnQuestSent.AddListener(ReceiveQuest);
+        OnQuestCompleted += TrackRepairQuest;
+    }
+    private void OnDisable() { 
+        QuestManager_v2.OnQuestSent.RemoveListener(ReceiveQuest);
+        OnQuestCompleted -= TrackRepairQuest;
+
+    }
 
     private void Update()
     {
@@ -14,7 +24,7 @@ public class PlayerQuest : MonoBehaviour
         {
             TrackDestinationQuest(destinationQuest);
         }
-        else if (activeQuest is CollectingQuest_SO collectQuest)
+        if (activeQuest is CollectingQuest_SO collectQuest)
         {
             TrackCollectQuest(collectQuest);
         }
@@ -24,57 +34,73 @@ public class PlayerQuest : MonoBehaviour
     {
         activeQuest = q;
         QuestUI.OnQuestInfoChanged?.Invoke(activeQuest.questName, activeQuest.questDescription);
+
+        if (activeQuest is DestinationQuest destinationQuest)
+        {
+            GameObject go = GameObject.Find(destinationQuest.destinationPositionObjectName);
+            if (go == null)
+            {
+                Debug.LogError("No destination found for destionation quest. " +
+                "Check the quest's object name to find");
+            }
+            else desiredLocation = go.transform;
+        }
     }
 
     void TrackDestinationQuest(DestinationQuest destinationQuest)
     {
-        GameObject go = GameObject.Find(destinationQuest.destinationPositionObjectName);
-
-        if (go == null)
-        {
-            Debug.LogError("No destination found for destionation quest. " +
-            "Check the quest's object name to find");
-        }
-        else desiredLocation = go.transform;
-
         if (desiredLocation == null)
         {
             Debug.LogWarning("Destination Transform is not set. Skipping progress tracking.");
             return;
         }
 
-        Transform playerTransform = transform; // Player's position
-        float distance = Vector3.Distance(playerTransform.position, desiredLocation.position);
+        float distance = Vector3.Distance(transform.position, desiredLocation.position);
 
         if (distance <= destinationQuest.distanceDifference)
         {
             Debug.Log($"Quest '{destinationQuest.questName}' completed! Destination reached.");
-            CompleteQuest();
+            CompleteQuest(activeQuest);
         }
     }
 
     void TrackCollectQuest(CollectingQuest_SO collectQuest)
     {
-        activeQuest = collectQuest;
-        
         InventorySystem inventory = InventorySystem.Instance;
+        bool allItemsCollected = true;
 
-        for (int i = 0; i < collectQuest.items.Length - 1; i++)
+        foreach (var item in collectQuest.items)
         {
-            QuestUI.OnQuestInfoChanged?.Invoke(
-                activeQuest.questName, activeQuest.questDescription + 
-                $"{collectQuest.items[i].requiredAmount}" + "\n");
-
-            if (!inventory.HasRequiredItem(collectQuest.items[i].requiredItem, collectQuest.items[i].requiredAmount))
-                return;
+            if (!inventory.HasRequiredItem(item.requiredItem, item.requiredAmount))
+            {
+                allItemsCollected = false;
+                break;
+            }
         }
-        CompleteQuest();
+
+        if (allItemsCollected)
+        {
+            CompleteQuest(activeQuest);
+        }
+        else
+        {
+            CollectingQuest_SO currentQ = activeQuest as CollectingQuest_SO;
+            QuestUI.OnQuestInfoChanged?.Invoke(
+                activeQuest.questName,
+                $"{activeQuest.questDescription}. Required items: {currentQ.items[0].requiredAmount}"
+            );
+        }
     }
 
-    private void CompleteQuest()
+    void TrackRepairQuest() {
+        if (activeQuest is RepairQuest repQ) {
+            CompleteQuest(activeQuest);
+        }
+    }
+    private void CompleteQuest(BaseSO_Properties quest)
     {
+        quest.MarkAsCompleted();
         QuestUI.OnQuestInfoChanged?.Invoke("No name", "The quest has been completed");
-        activeQuest.isCompleted = true;
-        //INFORM THAT HE QUEST HAS BEEN FINISHED
+        //QuestManager_v2.OnQuestCompleted?.Invoke(quest);
     }
 }

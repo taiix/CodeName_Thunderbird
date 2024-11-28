@@ -112,9 +112,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2570230454359306700, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6119558563706166394}
-    - targetCorrespondingSourceObject: {fileID: 2570230454359306700, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1516226766441492195}
   m_SourcePrefab: {fileID: 100100000, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
 --- !u!4 &7319684393867855772 stripped
 Transform:
@@ -161,39 +158,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHeld: 0
   interactionText: 
-  npcName: 
+  npcName: Sam
   dialogues:
   - dialogueCompleted: 0
     hasQuest: 1
     currentDialogueQuest: {fileID: 11400000, guid: 92dd89fd3c118444b9c64b4f45851864, type: 2}
     dialogue:
-    - asdasdasd
-    - dsdasdas
-    - gfdgdfg
+    - Hello stranger. My name is Sam
+    - You crashed with your plane, right. You can find it somewhere on the island.
+    - But be careful, we are not alone here. Especially during the night...
   - dialogueCompleted: 0
     hasQuest: 1
     currentDialogueQuest: {fileID: 11400000, guid: 49d0156a2028d0b489b8e332d106f13d, type: 2}
     dialogue:
-    - "petko l;e\t"
-    - 1234
-    - hfgfff
+    - I can imagine your plane is broken
+    - I can help you with fixing it. But you need to find some wood
+    - Look around the island and find some woods
+  - dialogueCompleted: 0
+    hasQuest: 1
+    currentDialogueQuest: {fileID: 11400000, guid: 33f9dcbf39b45794b9b4bbad2ad8663b, type: 2}
+    dialogue:
+    - I am profesional plane mechanic.
+    - I will tell you my secret that works always when I have to fix a plane. After
+      all, I do this on a daily basis.
+    - Use the wood to fix the plane!
+  - dialogueCompleted: 0
+    hasQuest: 0
+    currentDialogueQuest: {fileID: 0}
+    dialogue:
+    - You can now fly to the other islands.
+    - But they are way worse than this one!
+    - If you can't take off, you can always use your axe to create a path for the
+      plane.
   currentDialogueIndex: 0
---- !u!114 &1516226766441492195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7989225761603493158}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcb81b15463f16048b6eb07c578e75af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allQuests:
-  - {fileID: 11400000, guid: 92dd89fd3c118444b9c64b4f45851864, type: 2}
-  - {fileID: 11400000, guid: 49d0156a2028d0b489b8e332d106f13d, type: 2}
-  currentQuest: {fileID: 0}
 --- !u!1001 &7437256382035104781
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,5 +6,6 @@ public abstract class BaseSO_Properties : ScriptableObject
     public string questDescription;
     public int id;
 
-    public bool isCompleted;
+    public abstract bool isCompleted { get; }
+    public abstract void MarkAsCompleted();
 }

@@ -92,13 +92,15 @@ public class PlanePart : MonoBehaviour
                 InventorySystem.Instance?.RemoveItem(upgrades[currentUpgradeLevel].itemsForFix[i].item, 
                                                     upgrades[currentUpgradeLevel].itemsForFix[i].amount);
             }
-            
+
+
             currentHealth += repairAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
             if (currentHealth >= 75f)
             {
                 VFXManager.Instance.StopVFX(partName);
+                PlayerQuest.OnQuestCompleted?.Invoke();
             }
             CurrentHealth = currentHealth;
         }

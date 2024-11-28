@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public class NPC_Dialogue : Interactable
-{    public string npcName;
+{
+    public string npcName;
 
     [SerializeField] private Dialogue[] dialogues;
     [SerializeField] private int currentDialogueIndex = 0;
@@ -29,9 +30,7 @@ public class NPC_Dialogue : Interactable
 
     private void Update()
     {
-        dialogues[currentDialogueIndex].dialogueCompleted = dialogues[currentDialogueIndex].currentDialogueQuest.isCompleted;
-        if (currentDialogueIndex < dialogues.Length - 1 && 
-            dialogues[currentDialogueIndex].dialogueCompleted) currentDialogueIndex++;
+        CheckCompletetion();
     }
 
     void TriggerDialogue()
@@ -59,6 +58,58 @@ public class NPC_Dialogue : Interactable
         else
         {
             Debug.Log("No more dialogues available.");
+        }
+    }
+
+
+    void CheckCompletetion()
+    {
+        if (currentDialogueIndex >= dialogues.Length) return;
+
+        Dialogue currentDialogue = dialogues[currentDialogueIndex];
+        BaseSO_Properties currentQuest = currentDialogue.currentDialogueQuest;
+
+        if (currentDialogue.dialogueCompleted) return;
+
+        if (currentQuest is DestinationQuest destQ)
+        {
+            if (destQ.isCompleted)
+            {
+                CompleteCurrentDialogue();
+            }
+        }
+        else if (currentQuest is CollectingQuest_SO collQ)
+        {
+            if (collQ.isCompleted)
+            {
+                CompleteCurrentDialogue();
+            }
+        } else if (currentQuest is RepairQuest repQ)
+        {
+            if (repQ.isCompleted)
+            {
+                CompleteCurrentDialogue();
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Dialogue {currentDialogueIndex} has no valid quest associated.");
+        }
+    }
+
+    void CompleteCurrentDialogue()
+    {
+        dialogues[currentDialogueIndex].dialogueCompleted = true;
+        Debug.Log($"Dialogue {currentDialogueIndex} completed.");
+
+        if (currentDialogueIndex < dialogues.Length - 1)
+        {
+            currentDialogueIndex++;
+            Debug.Log($"Advancing to dialogue {currentDialogueIndex}.");
+        }
+        else
+        {
+            Debug.Log("All dialogues completed.");
         }
     }
 }
