@@ -48,7 +48,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2570230454359306700, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
       propertyPath: m_Name
-      value: NPC_Island
+      value: Sam_NPC
       objectReference: {fileID: 0}
     - target: {fileID: 2945523857375259510, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
       propertyPath: m_LocalScale.x
@@ -112,6 +112,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2570230454359306700, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6119558563706166394}
+    - targetCorrespondingSourceObject: {fileID: 2570230454359306700, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1516226766441492195}
   m_SourcePrefab: {fileID: 100100000, guid: 0e4ea3b9203bfa54d8990929bb3bebde, type: 3}
 --- !u!4 &7319684393867855772 stripped
 Transform:
@@ -156,12 +159,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e97f196f035ab9449b5baeb8d1eeb320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isHeld: 0
+  interactionText: 
   dialogue:
     npcName: Sam
     dialogue:
     - my name is sam
     - bla bla
     - bla blabla blabla blabla blabla bla
+  hasQuests: 0
+--- !u!114 &1516226766441492195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989225761603493158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcb81b15463f16048b6eb07c578e75af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHeld: 0
+  interactionText: 
+  allQuests:
+  - {fileID: 11400000, guid: 92dd89fd3c118444b9c64b4f45851864, type: 2}
+  - {fileID: 11400000, guid: 49d0156a2028d0b489b8e332d106f13d, type: 2}
+  currentQuest: {fileID: 0}
 --- !u!1001 &7437256382035104781
 PrefabInstance:
   m_ObjectHideFlags: 0
