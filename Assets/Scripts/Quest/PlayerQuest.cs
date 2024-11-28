@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerQuest : MonoBehaviour
@@ -11,41 +10,33 @@ public class PlayerQuest : MonoBehaviour
 
     private void Update()
     {
-
         if (activeQuest is DestinationQuest destinationQuest)
         {
             TrackDestinationQuest(destinationQuest);
         }
-
-        if (activeQuest != null && Input.GetKeyDown(KeyCode.V))
+        else if (activeQuest is CollectingQuest_SO collectQuest)
         {
-            activeQuest.isCompleted = true;
-            activeQuest = null;
-            QuestUI.OnQuestInfoChanged?.Invoke("", "There is no current quest");
+            TrackCollectQuest(collectQuest);
         }
     }
 
     void ReceiveQuest(BaseSO_Properties q)
     {
-        Debug.Log("received quest from QM");
         activeQuest = q;
         QuestUI.OnQuestInfoChanged?.Invoke(activeQuest.questName, activeQuest.questDescription);
-
-        if (activeQuest is DestinationQuest)
-        {
-            DestinationQuest e = activeQuest as DestinationQuest;
-            GameObject go = GameObject.Find(e.destinationPositionObjectName);
-            if (go == null)
-            {
-                Debug.LogError("No destination found for destionation quest. " +
-                "Check the quest's object name to find");
-            }
-            else desiredLocation = go.transform;
-        }
     }
 
     void TrackDestinationQuest(DestinationQuest destinationQuest)
     {
+        GameObject go = GameObject.Find(destinationQuest.destinationPositionObjectName);
+
+        if (go == null)
+        {
+            Debug.LogError("No destination found for destionation quest. " +
+            "Check the quest's object name to find");
+        }
+        else desiredLocation = go.transform;
+
         if (desiredLocation == null)
         {
             Debug.LogWarning("Destination Transform is not set. Skipping progress tracking.");
@@ -62,8 +53,28 @@ public class PlayerQuest : MonoBehaviour
         }
     }
 
+    void TrackCollectQuest(CollectingQuest_SO collectQuest)
+    {
+        activeQuest = collectQuest;
+        
+        InventorySystem inventory = InventorySystem.Instance;
+
+        for (int i = 0; i < collectQuest.items.Length - 1; i++)
+        {
+            QuestUI.OnQuestInfoChanged?.Invoke(
+                activeQuest.questName, activeQuest.questDescription + 
+                $"{collectQuest.items[i].requiredAmount}" + "\n");
+
+            if (!inventory.HasRequiredItem(collectQuest.items[i].requiredItem, collectQuest.items[i].requiredAmount))
+                return;
+        }
+        CompleteQuest();
+    }
+
     private void CompleteQuest()
     {
+        QuestUI.OnQuestInfoChanged?.Invoke("No name", "The quest has been completed");
+        activeQuest.isCompleted = true;
         //INFORM THAT HE QUEST HAS BEEN FINISHED
     }
 }

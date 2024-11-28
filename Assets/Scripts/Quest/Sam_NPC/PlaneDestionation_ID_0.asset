@@ -15,6 +15,6 @@ MonoBehaviour:
   questName: Go to plane
   questDescription: Go to the plane asap
   id: 0
-  isCompleted: 0
+  isCompleted: 1
   distanceDifference: 5
   destinationPositionObjectName: Plane
