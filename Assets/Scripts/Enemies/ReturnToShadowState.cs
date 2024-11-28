@@ -14,7 +14,7 @@ public class ReturnToShadowState : State
     public ReturnToShadowState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Vector3 _shelterPosition, Transform _player, Vector3 _shadowPosition, bool isInShelter)
         : base(_npc, _agent, _anim, null)
     {
-        name = STATE.RETREAT;
+        name = STATE.RETURN_TO_SHADOW;
         npc = _npc;
         player = _player;
         anim = _anim;
@@ -59,21 +59,13 @@ public class ReturnToShadowState : State
             }
         }
 
-        // Deal 1 health damage every 1.5 seconds
-        damageTimer += Time.deltaTime;
-        if (damageTimer >= 1.5f)
-        {
-            Debug.Log("Take Damage");
-            enemyScript.TakeDamage(1);
-            damageTimer = 0f;
-        }
-
+        enemyScript.TakeSunDamage();
     }
 
     private Vector3 FindNextShadowPosition(Vector3 currentPosition)
     {
-        float maxSearchDistance = 100f;
-        float stepSize = 1f;
+        float maxSearchDistance = 200f;
+        float stepSize = 3f;
         Vector3 direction = targetShadowPosition - currentPosition;
 
         for (float i = stepSize; i <= maxSearchDistance; i += stepSize)
@@ -93,6 +85,7 @@ public class ReturnToShadowState : State
 
     public override void Exit()
     {
+
         anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");

@@ -23,4 +23,7 @@ public class EnemyData : ScriptableObject
     public float timeInSun;
     public float deadTimer;
     public GameObject weaponPrefab;
+    public ParticleSystem bloodSplatterPrefab;
+    public ParticleSystem burningVFXPrefab;
+
 }

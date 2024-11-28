@@ -38,7 +38,7 @@ public class PlanePart : MonoBehaviour
         var smokeEffect = GetComponentInChildren<ParticleSystem>();
         if (smokeEffect != null && VFXManager.Instance != null)
         {
-            VFXManager.Instance.RegisterVFX(partName, smokeEffect);
+            VFXManager.Instance.RegisterVFX(partName, smokeEffect, smokeEffect.transform);
         }
         TakeDamage(0);
     }

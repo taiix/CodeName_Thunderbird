@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,9 @@ public class EquipableItem : MonoBehaviour
     InputAction hitAction;
 
     [SerializeField] int damageAmount = 2;
-    private List<GameObject> enemiesInRange = new List<GameObject>();
+    public List<GameObject> enemiesInRange = new List<GameObject>();
+
+    private Collider itemCollider;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,7 @@ public class EquipableItem : MonoBehaviour
             animator = GetComponent<Animator>();
         }
     }
+
 
     private void OnEnable()
     {
@@ -39,7 +43,10 @@ public class EquipableItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        {
+            GetComponent<Collider>().enabled = false;
+        }
     }
 
     private void TriggerAnimation(InputAction.CallbackContext context)
@@ -58,15 +65,11 @@ public class EquipableItem : MonoBehaviour
             TreeInteractable treeInteractable = InteractionHandler.Instance.treeInteractable;
             Item equippedItem = InventorySystem.Instance.GetEquippedItem();
 
-            if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
-            {
-                treeInteractable.GetHit();
-            }
 
             // Handle enemy damage
-            if (equippedItem != null && equippedItem.type == Item.Types.axe)
+            GetComponent<Collider>().enabled = true;
+            if (equippedItem != null && equippedItem.type == Item.Types.axe && enemiesInRange.Count > 0)
             {
-                GetComponent<Collider>().enabled = true;
                 foreach (GameObject enemy in enemiesInRange)
                 {
                     if (enemy != null)
@@ -81,7 +84,13 @@ public class EquipableItem : MonoBehaviour
                 }
                 enemiesInRange.Clear();
             }
+            else if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
+            {
+                treeInteractable.GetHit();
+            }
         }
+
+        
     }
 
     private void OnTriggerEnter(Collider other)

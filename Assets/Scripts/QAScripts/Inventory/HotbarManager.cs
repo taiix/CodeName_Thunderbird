@@ -6,6 +6,7 @@ public class HotbarManager : MonoBehaviour
 {
     public InventorySlot[] hotbarSlots; // Hotbar slots for quick item access
 
+
     private EquipSystem equipSystem;
     private InventorySystem inventorySystem;
 

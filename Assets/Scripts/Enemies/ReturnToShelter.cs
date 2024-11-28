@@ -71,6 +71,7 @@ public class ReturnToShelter : State
             }
         }
 
+        npcScript.TakeSunDamage();
         base.Update();
     }
 
