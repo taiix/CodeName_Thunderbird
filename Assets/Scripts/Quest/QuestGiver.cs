@@ -30,13 +30,9 @@ public class QuestGiver : MonoBehaviour
     /// <summary>
     /// MAKE IT TO GIVE THE QUEST UNDER SOME CONDITIONS
     /// </summary>
-    private void Update()
+    public void GiveQuest()
     {
-        if (currentQuest != null && currentQuest.isCompleted) currentQuest = GetNewQuest();
-        if (currentQuest != null && Input.GetKeyDown(KeyCode.E))
-        {
-            QuestManager_v2.OnQuestActivated?.Invoke(currentQuest);
-        }
+        QuestManager_v2.OnQuestActivated?.Invoke(currentQuest);
     }
 
     private BaseSO_Properties GetNewQuest()
