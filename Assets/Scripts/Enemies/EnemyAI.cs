@@ -30,7 +30,7 @@ public class EnemyAI : MonoBehaviour
     private int currentHealth;
     private State currentState;
     private float enemyHeight = 2.0f;
-    
+
     private float damageTimer = 0f;
 
     private bool returnToShelter = false;
@@ -86,7 +86,7 @@ public class EnemyAI : MonoBehaviour
     public bool IsPointInShadow(Vector3 point)
     {
         Vector3 lightDirection = -lightSource.transform.forward;
-        Vector3 adjustedPoint = point + Vector3.up * enemyHeight/2;
+        Vector3 adjustedPoint = point + Vector3.up * enemyHeight / 2;
 
         RaycastHit hit;
         if (Physics.Raycast(adjustedPoint, lightDirection, out hit))
@@ -110,7 +110,10 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            sunExposureTimer += Time.deltaTime;
+            if (currentState.name == State.STATE.RETURN_TO_SHADOW && currentState.name == State.STATE.SHELTER)
+            {
+                sunExposureTimer += Time.deltaTime;
+            }
             if (sunExposureTimer >= enemyData.timeInSun && currentState.name != State.STATE.RETURN_TO_SHADOW)
             {
                 isRetreating = true;
@@ -119,7 +122,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
     }
-    
+
     private void CheckCurrentTime()
     {
         TimeSpan currentTime = timeController.CurrentTime.TimeOfDay;
@@ -127,12 +130,12 @@ public class EnemyAI : MonoBehaviour
         if (currentTime > morningTime && currentTime <= eveningTime && !isReturningToShelter)
         {
             Debug.Log("It's after 9:30 AM! Time to take action.");
-            
+
             isReturningToShelter = true;
             isPatrolling = false;
             ChangeCurrentState(new ReturnToShelter(this.gameObject, agent, anim, player, shelterLocation));
         }
-        if(currentTime > eveningTime && !isPatrolling)
+        if (currentTime > eveningTime && !isPatrolling)
         {
             ChangeCurrentState(new PatrolState(this.gameObject, agent, anim, player));
             isPatrolling = true;
@@ -192,7 +195,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (attackStrategy != null)
         {
-            attackStrategy.PerformAttack(this); 
+            attackStrategy.PerformAttack(this);
         }
     }
 
@@ -215,7 +218,7 @@ public class EnemyAI : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateSunExposure();
-        //CheckCurrentTime();
+        CheckCurrentTime();
         if (currentState != null)
         {
             currentState.Process();

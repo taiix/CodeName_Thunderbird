@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
-using static UnityEditor.Progress;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -144,7 +141,6 @@ public class InventorySystem : MonoBehaviour
             Debug.Log("No Game manager in scene, can't disable player contros.");
         }
     }
-
 
     public void PickUpItem(ItemInteractable item)
     {
