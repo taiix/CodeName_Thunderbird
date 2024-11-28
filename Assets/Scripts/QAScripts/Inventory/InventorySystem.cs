@@ -17,8 +17,9 @@ public class InventorySystem : MonoBehaviour
 
     private bool isInventoryOpen = false;
 
-    public GameObject inventoryUI;
+    [SerializeField] private GameObject inventoryUI;
 
+    public GameObject hotbarPanelUI;
     public GameObject itemPanelUI;
     public Image largeItemImage;
     public TextMeshProUGUI itemDescriptionText;
@@ -29,6 +30,8 @@ public class InventorySystem : MonoBehaviour
     private InventorySlot selectedSlot;
     private Item equippedItem;
     private HotbarManager hotbarManager;
+
+    private Transform originalHotbarPos;
 
     [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
 
@@ -53,7 +56,6 @@ public class InventorySystem : MonoBehaviour
 
     private void OnEnable()
     {
-
         StartCoroutine(InitializeInventorySystem());
     }
 
@@ -87,6 +89,7 @@ public class InventorySystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hotbarPanelUI.SetActive(true);
         inventoryUI.SetActive(false);
         itemPanelUI.SetActive(false);
         dropButton.onClick.AddListener(DropSelectedItem);
@@ -124,12 +127,16 @@ public class InventorySystem : MonoBehaviour
             {
                 GameManager.Instance.DisablePlayerControls(true);
                 inventoryUI.SetActive(true);
+                hotbarPanelUI.transform.position = hotbarPanelUI.transform.position + new Vector3(-410, -10, 0);
+
             }
             else
             {
                 GameManager.Instance.EnablePlayerControls();
                 inventoryUI.SetActive(false);
                 itemPanelUI.SetActive(false);
+                Debug.Log("Move hotbar pannel");
+                hotbarPanelUI.transform.position = hotbarPanelUI.transform.position - new Vector3(-410, -10, 0);
             }
         }
         else

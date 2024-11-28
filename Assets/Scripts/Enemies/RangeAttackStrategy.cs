@@ -22,7 +22,7 @@ public class RangeAttackStrategy : IAttackStrategy
         Projectile projectile = thrownStone.GetComponent<Projectile>();
         if (projectile != null)
         {
-            projectile.Throw(throwDirection * adjustedForce, false);
+            projectile.Throw(throwDirection * adjustedForce, false, enemyAI.gameObject);
         }
         else
         {
