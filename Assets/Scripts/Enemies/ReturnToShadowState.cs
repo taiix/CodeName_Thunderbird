@@ -59,7 +59,6 @@ public class ReturnToShadowState : State
             }
         }
 
-
         // Deal 1 health damage every 1.5 seconds
         damageTimer += Time.deltaTime;
         if (damageTimer >= 1.5f)
