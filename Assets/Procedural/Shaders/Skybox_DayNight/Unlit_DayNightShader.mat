@@ -23,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _DefaultSkybox:
+        m_Texture: {fileID: 8900000, guid: 499e84259b5a21b4689d5dc67445fb9b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainBeforeDay:
         m_Texture: {fileID: 8900000, guid: 2c16763809945d548be1e515988603c5, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -53,6 +57,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _TimeOfDay: 0.9852736
-    m_Colors: []
+    - _SunSize: 0.0223
+    - _TimeOfDay: 1
+    m_Colors:
+    - _SunColor: {r: 1, g: 1, b: 0.8, a: 1}
   m_BuildTextureStacks: []

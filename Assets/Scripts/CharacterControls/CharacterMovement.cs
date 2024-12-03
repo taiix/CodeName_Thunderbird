@@ -21,6 +21,9 @@ public class CharacterMovement : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction jumpAction;
     [SerializeField] private float groundCheckDistance = 0.1f;
+
+    [SerializeField] private float maxSlopeAngle = 30f;
+
     [SerializeField] int jumpForce = 2;
     private bool isGrounded;
 
@@ -44,14 +47,12 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    //[SerializeField] bool canJump = false;
     private void Awake()
     {
         playerInput = this.GetComponent<PlayerInput>();
         player = playerInput.currentActionMap;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -88,10 +89,11 @@ public class CharacterMovement : MonoBehaviour
         DialogueManager.OnDialogueEnded -= EnableControls;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if (activateControls)
+        Debug.Log(IsOnSteepSlope());
+
+        if (IsOnSteepSlope() && activateControls)
         {
             Movement();
         }
@@ -99,7 +101,6 @@ public class CharacterMovement : MonoBehaviour
         GroundCheck();
 
         FootstepsFX();
-
     }
 
     private void LateUpdate()
@@ -109,6 +110,50 @@ public class CharacterMovement : MonoBehaviour
             Look();
         }
     }
+
+    bool IsOnSteepSlope()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity))
+        {
+            float angle = Vector3.Angle(hit.normal, Vector3.up);
+            return angle < maxSlopeAngle;
+        }
+
+        return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        // Draw the raycast
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * Mathf.Infinity);
+
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        {
+            // Draw a sphere at the hit point
+            Gizmos.DrawSphere(hit.point, 0.1f);
+
+            // Display the slope angle as text in the Scene view
+            #if UNITY_EDITOR
+            UnityEditor.Handles.Label(hit.point, $"Angle: {Vector3.Angle(hit.normal, Vector3.up):F1}°");
+            #endif
+
+            // Change the Gizmos color if the slope is too steep
+            if (Vector3.Angle(hit.normal, Vector3.up) > maxSlopeAngle)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawRay(hit.point, hit.normal); // Draw the normal vector
+            }
+            else
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(hit.point, hit.normal);
+            }
+        }
+    }
+
 
     private void GroundCheck()
     {

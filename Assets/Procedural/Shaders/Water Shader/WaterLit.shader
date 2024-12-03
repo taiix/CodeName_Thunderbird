@@ -99,17 +99,16 @@ Shader "Custom/Water_Lit"
             i.screenPos = ComputeScreenPos(v.vertex);
 
             float3 p = v.vertex.xyz;
-            
+
             float k = 2 * UNITY_PI / _WaveLenght;
-            float c = sqrt(9.8 / k); 
+            float c = sqrt(9.8 / k);
             float f = k * (p.x - c * _Time.y);
             float a = _WaveHeight / k;
             p.x += a * cos(f);
             p.y = a * sin(f);
-            
-            
+
+
             //v.vertex.xyz = p;
-           
         }
 
         ///////////////////////////////////////////HELPERS////////////////////////////////////////////
@@ -207,11 +206,28 @@ Shader "Custom/Water_Lit"
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        float FixRefract(Input IN)
+        {
+            float4 screenPos = IN.screenPos;
+            float2 screenUV = screenPos.xy / screenPos.w;
+
+            float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV));
+
+            float surfaceDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenPos.z);
+
+            float ep = surfaceDepth-sceneDepth;
+            
+            float final = step(ep, 1);
+
+            return final;
+        }
 
         ///////////////////////////////////////////REFRACTION////////////////////////////////////////////
         //Snell's Law
         float3 Refraction(Input IN)
         {
+            float isUnderwater = FixRefract(IN);
+
             float n1 = 1.0; // air
             float n2 = 1.33; // water
 
@@ -228,8 +244,10 @@ Shader "Custom/Water_Lit"
             float3 incidentRay = normalize(lightPos - IN.worldPos);
 
             float3 refractionRay = normalize(refract(incidentRay, normal, n1 / n2));
+
             return refractionRay;
         }
+
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         void surf(Input IN, inout SurfaceOutputStandard o)

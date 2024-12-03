@@ -49,7 +49,7 @@ Material:
     - _RefractionStrengt: 0.35
     - _RefractionStrength: 2
     - _Scale: 0.277
-    - _SpeedMap1: 1.56
+    - _SpeedMap1: 0.5
     - _SpeedMap2: 1
     - _WaveFrequency: 0
     - _WaveHeight: 0
