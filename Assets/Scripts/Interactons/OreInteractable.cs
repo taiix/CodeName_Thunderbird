@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OreInteractable : Interactable
 {
     [SerializeField] private Item oreItem;
-    [SerializeField] private MiningMiniGame miningMiniGame; 
+    //[SerializeField] private MiningMiniGame miningMiniGame; 
     private bool isBeingMined = false;
+
     public override void OnFocus()
     {
         if (!isBeingMined)
@@ -17,16 +16,11 @@ public class OreInteractable : Interactable
 
     public override void OnInteract()
     {
-        if (miningMiniGame == null)
-        {
-            Debug.Log("No miningMiniGame object found");
-            return;
-        }
         if (!isBeingMined)
         {
             interactionText = string.Empty;
             isBeingMined = true;
-            miningMiniGame.StartMining(this);
+            CircleMinigame.OnItemReceived?.Invoke(oreItem, this.gameObject);
             InteractionHandler.Instance.HideInteractionUI();
         }
      
