@@ -26,7 +26,7 @@ public class InventorySystem : MonoBehaviour
 
     private InventorySlot selectedSlot;
     private Item equippedItem;
-    private HotbarManager hotbarManager;
+    [SerializeField]private HotbarManager hotbarManager;
 
     private Transform originalHotbarPos;
 
@@ -149,27 +149,68 @@ public class InventorySystem : MonoBehaviour
 
         itemsInInventory.Add(item.itemSO);
 
-        foreach (InventorySlot slot in slots)
+        foreach (InventorySlot hotbarSlot in hotbarManager.hotbarSlots)
         {
-            if (slot.itemInSlot == item.itemSO && slot.amountInSlot < item.itemSO.maxStack)
+            if (hotbarSlot.itemInSlot == item.itemSO && hotbarSlot.amountInSlot < item.itemSO.maxStack)
             {
-                int availableSpace = item.itemSO.maxStack - slot.amountInSlot;
+                int availableSpace = item.itemSO.maxStack - hotbarSlot.amountInSlot;
 
                 if (amountToAdd <= availableSpace)
                 {
-                    slot.amountInSlot += amountToAdd;
-                    slot.SetStats();
+                    hotbarSlot.amountInSlot += amountToAdd;
+                    hotbarSlot.SetStats();
                     return;
                 }
                 else
                 {
-                    slot.amountInSlot += availableSpace;
+                    hotbarSlot.amountInSlot += availableSpace;
                     amountToAdd -= availableSpace;
-                    slot.SetStats();
+                    hotbarSlot.SetStats();
                 }
             }
         }
 
+        // If not stackable in hotbar, look for an empty hotbar slot
+        foreach (InventorySlot hotbarSlot in hotbarManager.hotbarSlots)
+        {
+            if (hotbarSlot.itemInSlot == null)
+            {
+                int amountToSlot = Mathf.Min(amountToAdd, item.itemSO.maxStack);
+
+                hotbarSlot.itemInSlot = item.itemSO;
+                hotbarSlot.amountInSlot = amountToSlot;
+                amountToAdd -= amountToSlot;
+
+                hotbarSlot.SetStats();
+                hotbarSlot.gameObject.SetActive(true);
+
+                if (amountToAdd == 0) return;
+            }
+        }
+
+        // If the hotbar is full, add to regular inventory slots
+        foreach (InventorySlot inventorySlot in slots)
+        {
+            if (inventorySlot.itemInSlot == item.itemSO && inventorySlot.amountInSlot < item.itemSO.maxStack)
+            {
+                int availableSpace = item.itemSO.maxStack - inventorySlot.amountInSlot;
+
+                if (amountToAdd <= availableSpace)
+                {
+                    inventorySlot.amountInSlot += amountToAdd;
+                    inventorySlot.SetStats();
+                    return;
+                }
+                else
+                {
+                    inventorySlot.amountInSlot += availableSpace;
+                    amountToAdd -= availableSpace;
+                    inventorySlot.SetStats();
+                }
+            }
+        }
+
+        // If not stackable in inventory, look for an empty inventory slot
         while (amountToAdd > 0)
         {
             InventorySlot emptySlot = slots.Find(slot => slot.itemInSlot == null);

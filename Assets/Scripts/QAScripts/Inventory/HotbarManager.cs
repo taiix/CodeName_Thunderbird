@@ -79,6 +79,10 @@ public class HotbarManager : MonoBehaviour
             inventorySystem.RemoveItem(itemToEquip, 1);
 
         }
+        else
+        {
+            equipSystem.UnequipItem();
+        }
     }
     private void UpdateHotbarAfterThrow(Item thrownItem)
     {
