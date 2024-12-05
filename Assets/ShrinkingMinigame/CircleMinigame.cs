@@ -14,7 +14,9 @@ public class CircleMinigame : MonoBehaviour
 
     [SerializeField] private bool isShrinkingActive;
 
-    [SerializeField] private float shrinkingSpeed = 1f;
+    [SerializeField] private float[] shrinkingSpeed;
+
+    private float currentShrinkingSpeed;
 
     private Vector3 initSize;
 
@@ -44,6 +46,7 @@ public class CircleMinigame : MonoBehaviour
     {
         gameUI.SetActive(false);
         initSize = shrinkingCircle.rectTransform.sizeDelta;
+        currentShrinkingSpeed = 100;
     }
 
     void Update()
@@ -126,8 +129,8 @@ public class CircleMinigame : MonoBehaviour
         if (shrinkingCircle.rectTransform.sizeDelta.x > minRadius && shrinkingCircle.rectTransform.sizeDelta.y > minRadius)
         {
             shrinkingCircle.rectTransform.sizeDelta = new Vector2(
-                shrinkingCircle.rectTransform.sizeDelta.x - shrinkingSpeed * Time.deltaTime,
-                shrinkingCircle.rectTransform.sizeDelta.y - shrinkingSpeed * Time.deltaTime
+                shrinkingCircle.rectTransform.sizeDelta.x - currentShrinkingSpeed * Time.deltaTime,
+                shrinkingCircle.rectTransform.sizeDelta.y - currentShrinkingSpeed * Time.deltaTime
             );
         }
         else
@@ -138,6 +141,7 @@ public class CircleMinigame : MonoBehaviour
 
     void GameRestart()
     {
+        currentShrinkingSpeed = shrinkingSpeed[Random.Range(0, shrinkingSpeed.Length)];
         shrinkingCircle.rectTransform.sizeDelta = initSize;
         gameCount++;
     }
@@ -150,7 +154,7 @@ public class CircleMinigame : MonoBehaviour
         Destroy(corespondingGO);
         itemsMined = 0;
         item = null;
-
+        
         GameManager.Instance.EnablePlayerControls();
 
     }

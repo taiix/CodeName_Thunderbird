@@ -13,7 +13,7 @@ public class CircleMinigameHandler : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject go = Instantiate(item.itemPrefab);
-            go.transform.position = position.position;
+            go.transform.position = position.position + new Vector3(0,2,0);
         }
     }
 }
