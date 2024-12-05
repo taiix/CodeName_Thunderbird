@@ -35,6 +35,8 @@ public class BaseAirplaneInputs : MonoBehaviour
     public int maxFlapsIncrement = 2;
     private int flaps = 0;
 
+    private bool canHandlePitch = true;
+
     private bool positiveFlapsPressedLastFrame = false;
     private bool negativeFlapsPressedLastFrame = false;
 
@@ -79,6 +81,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     public float Pitch
     {
         get { return pitch; }
+        set { }
     }
     public float Roll
     {
@@ -163,6 +166,11 @@ public class BaseAirplaneInputs : MonoBehaviour
     public void DisableInput()
     {
         disableInput = true;
+    }
+
+    public void EnableInput()
+    {
+        disableInput = false;
     }
 
     public void ResetStickyThrottle()
