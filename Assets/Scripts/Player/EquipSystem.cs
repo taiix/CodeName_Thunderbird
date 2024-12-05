@@ -5,7 +5,7 @@ using UnityEngine;
 public class EquipSystem : MonoBehaviour
 {
     [SerializeField] private Transform handTransform;
-    private GameObject equippedItemInstance = null;
+    [SerializeField]private GameObject equippedItemInstance = null;
     private Item currentEquippedItem = null;
 
 
@@ -64,7 +64,7 @@ public class EquipSystem : MonoBehaviour
         {
             Debug.Log("Unequip item called");
             equippedItemInstance.GetComponent<ItemInteractable>().isHeld = false;
-            Destroy(equippedItemInstance);
+            Destroy(equippedItemInstance.gameObject);
             currentEquippedItem = null;
         }
     }
