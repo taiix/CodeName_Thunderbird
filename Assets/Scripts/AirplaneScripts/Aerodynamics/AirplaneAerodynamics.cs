@@ -28,7 +28,7 @@ public class AirplaneAerodynamics : MonoBehaviour
     private bool isUnderwater = false;
 
     //LIFT
-    public float baseLiftPower = 800f;
+    //public float baseLiftPower = 800f;
     private float currentLiftPower;
     public float maxLiftPower = 4100f;
     public AnimationCurve liftCurve = AnimationCurve.EaseInOut(0, 0, 1f, 1f);
@@ -56,7 +56,7 @@ public class AirplaneAerodynamics : MonoBehaviour
 
     const float mpsToKph = 3.6f;
 
-    public List<float> altitudeThresholds = new List<float> { 0, 2000f, 3000f }; 
+    public List<float> altitudeThresholds = new List<float> {}; 
     public List<float> requiredLiftPower = new List<float> { 3500f, 3700f, 4000f }; 
     public void InitializeAerodynamics(Rigidbody rigidBody, BaseAirplaneInputs inputs)
     {
@@ -81,6 +81,7 @@ public class AirplaneAerodynamics : MonoBehaviour
             Yaw();
             Banking();
             RigibodyTransform();
+            HandleAltitude(); 
         }
     }
     void ForwardSpeed()
@@ -245,6 +246,27 @@ public class AirplaneAerodynamics : MonoBehaviour
 
         Vector3 buoyancyVector = Vector3.up * buoyancy;
         rb.AddForce(buoyancyVector, ForceMode.Acceleration);
+    }
+
+    void HandleAltitude()
+    {
+
+        // Altitude thresholds and required lift power values
+        for (int i = 0; i < altitudeThresholds.Count; i++)
+        {
+            if (rb.position.y > altitudeThresholds[i])
+            {
+                // Check if the current lift power is sufficient for this altitude
+                if (currentLiftPower < requiredLiftPower[i])
+                {
+                    Debug.Log("LIMIT ALTITUDE");
+                    // Limit altitude by zeroing vertical velocity and applying downward force
+                    rb.velocity = new Vector3(rb.velocity.x, Mathf.Min(rb.velocity.y, 0f), rb.velocity.z);
+                    rb.AddForce(Vector3.down * 10f, ForceMode.Acceleration); 
+                    break; 
+                }
+            }
+        }
     }
 
     public bool IsUnderwater()
