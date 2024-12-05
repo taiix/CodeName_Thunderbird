@@ -18,6 +18,15 @@ public class AirplaneAerodynamics : MonoBehaviour
     private float maxMPS;
     private float normalizedKph;
 
+    //UNDERWATER
+    public float waterHeight = 8f;
+    public float underwaterDrag = 2f;
+    public float underwaterAngularDrag = 4f;
+    public float buoyancyForce = 5f;
+    public AnimationCurve buoyancyCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+
+    private bool isUnderwater = false;
+
     //LIFT
     public float maxLiftPower = 800f;
     public AnimationCurve liftCurve = AnimationCurve.EaseInOut(0, 0, 1f, 1f);
@@ -58,6 +67,7 @@ public class AirplaneAerodynamics : MonoBehaviour
     {
         if (rb)
         {
+            CheckIfUnderwater();
             ForwardSpeed();
             Lift();
             Drag();
@@ -70,19 +80,19 @@ public class AirplaneAerodynamics : MonoBehaviour
     }
     void ForwardSpeed()
     {
-            Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
-            forwardSpeed = Mathf.Max(0, localVelocity.z);
-            forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
+        Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
+        forwardSpeed = Mathf.Max(0, localVelocity.z);
+        forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
 
-            kph = forwardSpeed * mpsToKph;
-            kph = Mathf.Clamp(kph, 0, maxKph);
-            normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
+        kph = forwardSpeed * mpsToKph;
+        kph = Mathf.Clamp(kph, 0, maxKph);
+        normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
 
-            speedText.text = "KPH: " + kph;
+        speedText.text = "KPH: " + kph;
 
-            //Debug.Log(normalizedKph);
+        //Debug.Log(normalizedKph);
 
-            //Debug.DrawRay(transform.position, transform.position + localVelocity, Color.green);
+        //Debug.DrawRay(transform.position, transform.position + localVelocity, Color.green);
     }
 
     bool CanGenerateLift()
@@ -209,5 +219,31 @@ public class AirplaneAerodynamics : MonoBehaviour
         float bankAmount = Mathf.Lerp(-1, 1, bankSide);
         Vector3 bankTorque = bankAmount * rollSpeed * transform.up;
         rb.AddTorque(bankTorque);
+    }
+    void CheckIfUnderwater()
+    {
+        if (transform.position.y < waterHeight)
+        {
+            isUnderwater = true;
+        }
+    }
+
+    public void ApplyUnderwaterPhysics()
+    {
+        rb.drag = underwaterDrag;
+        rb.angularDrag = underwaterAngularDrag;
+
+        // Simulate buoyancy
+        float depth = Mathf.Abs(transform.position.y - waterHeight);
+        float normalizedDepth = Mathf.InverseLerp(0, 10f, depth); 
+        float buoyancy = buoyancyCurve.Evaluate(normalizedDepth) * buoyancyForce;
+
+        Vector3 buoyancyVector = Vector3.up * buoyancy;
+        rb.AddForce(buoyancyVector, ForceMode.Acceleration);
+    }
+
+    public bool IsUnderwater()
+    {
+        return isUnderwater;
     }
 }

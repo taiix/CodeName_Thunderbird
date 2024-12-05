@@ -38,6 +38,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     private bool positiveFlapsPressedLastFrame = false;
     private bool negativeFlapsPressedLastFrame = false;
 
+    [SerializeField] private bool disableInput = false;
     private void OnEnable()
     {
         // Get the "Flight" action map
@@ -114,7 +115,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.IsPLayerInPlane())
+        if (GameManager.Instance.IsPLayerInPlane() && !disableInput)
         {
             HandleInput();
         }
@@ -159,7 +160,10 @@ public class BaseAirplaneInputs : MonoBehaviour
         //Debug.Log("Sticky Throttle = " + stickyThrottle);
     }
 
-    //FOR DEMO
+    public void DisableInput()
+    {
+        disableInput = true;
+    }
 
     public void ResetStickyThrottle()
     {

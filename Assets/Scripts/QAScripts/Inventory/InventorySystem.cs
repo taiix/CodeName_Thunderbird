@@ -10,7 +10,6 @@ public class InventorySystem : MonoBehaviour
 {
     public static InventorySystem Instance { get; private set; }
 
-    private InputAction openInventory;
 
     private bool isInventoryOpen = false;
 
@@ -20,22 +19,23 @@ public class InventorySystem : MonoBehaviour
     public GameObject itemPanelUI;
     public Image largeItemImage;
     public TextMeshProUGUI itemDescriptionText;
-
-    [SerializeField] Button dropButton;
     [SerializeField] Button useButton;
+    [SerializeField] Button dropButton;
+
 
     private InventorySlot selectedSlot;
     private Item equippedItem;
+    private Transform originalHotbarPos;
     [SerializeField]private HotbarManager hotbarManager;
 
-    private Transform originalHotbarPos;
+
 
     [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
-
     public List<Item> itemsInInventory = new List<Item>();
 
-    public static event Action<Item, bool> OnItemUsed;
 
+    private InputAction openInventory;
+    public static event Action<Item, bool> OnItemUsed;
     public event Action<Item> OnItemThrown;
 
 
