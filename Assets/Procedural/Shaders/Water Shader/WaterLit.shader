@@ -32,6 +32,7 @@ Shader "Custom/Water_Lit"
         _RefractoringNormal("Refractoring Normal", 2D) = "bump" {}
         _RefractionStrength ("Refraction Strengt", Float) = 1.0
         _RefractionSpeed ("Refraction Speed", Float) = 1.0
+        _RefractionDepth ("Refract depth", Float) = 1.0
     }
     SubShader
     {
@@ -92,6 +93,7 @@ Shader "Custom/Water_Lit"
 
         float _RefractionStrength;
         float _RefractionSpeed;
+        float _RefractionDepth;
 
         void vert(inout appdata_full v, out Input i)
         {
@@ -206,28 +208,11 @@ Shader "Custom/Water_Lit"
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        float FixRefract(Input IN)
-        {
-            float4 screenPos = IN.screenPos;
-            float2 screenUV = screenPos.xy / screenPos.w;
-
-            float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV));
-
-            float surfaceDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenPos.z);
-
-            float ep = surfaceDepth-sceneDepth;
-            
-            float final = step(ep, 1);
-
-            return final;
-        }
 
         ///////////////////////////////////////////REFRACTION////////////////////////////////////////////
         //Snell's Law
         float3 Refraction(Input IN)
         {
-            float isUnderwater = FixRefract(IN);
-
             float n1 = 1.0; // air
             float n2 = 1.33; // water
 
@@ -253,11 +238,13 @@ Shader "Custom/Water_Lit"
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
             float depth = CalculateDepth(IN, _DepthFactor);
-
-            float3 refractionRay = Refraction(IN);
+            float depthBelowWater = CalculateDepth(IN, _RefractionDepth);
+            
+            float3 refractionRay = Refraction(IN) * depthBelowWater;
+            
             float2 screenUV = IN.screenPos.xy / IN.screenPos.w;
 
-            float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * 0.02;
+            float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * depthBelowWater;
 
             float3 refractedColor = tex2D(_GrabTexture, distortedUV);
 
