@@ -12,6 +12,7 @@ public class AirplaneEngine : MonoBehaviour
 
     PlanePart engine;
 
+    private bool isEngineEnabled = true;
 
     private void Start()
     {
@@ -29,7 +30,7 @@ public class AirplaneEngine : MonoBehaviour
 
     public Vector3 CalculateForce(float throttle)
     {
-        if (CanGenerateForwardSpeed())
+        if (isEngineEnabled && CanGenerateForwardSpeed())
         {
 
             float finalThrottle = Mathf.Clamp01(throttle);
@@ -43,5 +44,15 @@ public class AirplaneEngine : MonoBehaviour
             return finalForce;
         }
         return Vector3.zero;
+    }
+
+    public void DisableEngine()
+    {
+        isEngineEnabled = false;
+    }
+
+    public void EnableEngine()
+    {
+        isEngineEnabled = true;
     }
 }

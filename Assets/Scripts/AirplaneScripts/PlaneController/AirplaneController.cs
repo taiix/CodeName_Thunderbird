@@ -52,21 +52,28 @@ public class AirplaneController : RigidBodyController
             }
         }
 
-       
+
     }
     protected override void HandlePhysics()
     {
-        if (Input && canControlPlane)
+        if (!airplaneAerodynamics.IsUnderwater())
         {
-            HandleEngines();
-            HandleAerodynamics();
-            HandleWheel();
-            HandleControlSurfaces();
-            HandleAltitude();
+            if (Input && canControlPlane)
+            {
+                HandleEngines();
+                HandleAerodynamics();
+                HandleWheel();
+                HandleControlSurfaces();
+                HandleAltitude();
+            }
+            else
+            {
+                ApplyHandbrake();
+            }
         }
         else
         {
-            ApplyHandbrake();
+            HandleAltitude();
         }
     }
 
@@ -95,9 +102,9 @@ public class AirplaneController : RigidBodyController
     {
         //bool canBreak = false;
         //if(Input.Break == 1) canBreak = true;
-        if(wheels.Count > 0)
+        if (wheels.Count > 0)
         {
-            foreach(AirplaneWheels wheel in wheels)
+            foreach (AirplaneWheels wheel in wheels)
             {
                 wheel.HandleWheel(Input, canControlPlane);
             }
@@ -107,14 +114,35 @@ public class AirplaneController : RigidBodyController
 
     void HandleAltitude()
     {
-        //TODO
+        EnterWater();
+    }
+
+    private void EnterWater()
+    {
+        if (airplaneAerodynamics.IsUnderwater())
+        {
+
+
+            // Disable engines and adjust aerodynamics
+            if (engines != null)
+            {
+                foreach (AirplaneEngine engine in engines)
+                {
+                    engine.DisableEngine();
+                }
+            }
+       
+            Input.DisableInput();
+
+            airplaneAerodynamics.ApplyUnderwaterPhysics();
+        }
     }
 
     void HandleControlSurfaces()
     {
-        if(controlSurfaces.Count > 0)
+        if (controlSurfaces.Count > 0)
         {
-            foreach(FlightControlSurface controlSurface in controlSurfaces)
+            foreach (FlightControlSurface controlSurface in controlSurfaces)
             {
                 //Debug.Log($"Updating control surface of type: {controlSurface.type} with input Flaps: {Input.Flaps}");
                 controlSurface.HandleControlSurface(Input);
@@ -134,7 +162,7 @@ public class AirplaneController : RigidBodyController
         {
             foreach (AirplaneWheels wheel in wheels)
             {
-                wheel.HandleWheel(Input, false); 
+                wheel.HandleWheel(Input, false);
             }
         }
     }
