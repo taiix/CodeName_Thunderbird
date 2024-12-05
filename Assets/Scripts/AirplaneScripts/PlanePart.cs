@@ -26,19 +26,16 @@ public class PlanePart : MonoBehaviour
     [SerializeField] private int requiredItemForFixAmount = 3;
     public int currentUpgradeLevel = 0;
 
+
+    private ParticleSystem partVFX;
+
     private void Start()
     {
+        partVFX = GetComponentInChildren<ParticleSystem>();
         planeRb = GetComponentInParent<Rigidbody>();
         if (!setCurrentHealth)
         {
             currentHealth = maxHealth;
-        }
-
-        // Register the smoke effect with the VFX Manager
-        var smokeEffect = GetComponentInChildren<ParticleSystem>();
-        if (smokeEffect != null && VFXManager.Instance != null)
-        {
-            VFXManager.Instance.RegisterVFX(partName, smokeEffect, smokeEffect.transform);
         }
         TakeDamage(0);
     }
@@ -68,11 +65,11 @@ public class PlanePart : MonoBehaviour
         {
             if (currentHealth < 75f)
             {
-                VFXManager.Instance.PlayVFX(partName);
+                partVFX.Play();
             }
             else
             {
-                VFXManager.Instance.StopVFX(partName);
+                partVFX.Stop();
             }
         }
         else

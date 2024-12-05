@@ -22,13 +22,15 @@ public class AirplaneAerodynamics : MonoBehaviour
     public float waterHeight = 8f;
     public float underwaterDrag = 2f;
     public float underwaterAngularDrag = 4f;
-    public float buoyancyForce = 5f;
+    public float buoyancyForce = 8f;
     public AnimationCurve buoyancyCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
     private bool isUnderwater = false;
 
     //LIFT
-    public float maxLiftPower = 800f;
+    public float baseLiftPower = 800f;
+    private float currentLiftPower;
+    public float maxLiftPower = 4100f;
     public AnimationCurve liftCurve = AnimationCurve.EaseInOut(0, 0, 1f, 1f);
 
     public float pitchSpeed = 1000f;
@@ -53,6 +55,9 @@ public class AirplaneAerodynamics : MonoBehaviour
     private float startAngularDrag;
 
     const float mpsToKph = 3.6f;
+
+    public List<float> altitudeThresholds = new List<float> { 0, 2000f, 3000f }; 
+    public List<float> requiredLiftPower = new List<float> { 3500f, 3700f, 4000f }; 
     public void InitializeAerodynamics(Rigidbody rigidBody, BaseAirplaneInputs inputs)
     {
         airplaneInputs = inputs;
@@ -107,7 +112,6 @@ public class AirplaneAerodynamics : MonoBehaviour
             return leftWing.CurrentHealth > healthThreshold && rightWing.CurrentHealth > healthThreshold;
         }
 
-        // If wings are not defined, default to false (can't generate lift)
         return false;
     }
 
@@ -127,10 +131,12 @@ public class AirplaneAerodynamics : MonoBehaviour
             Vector3 liftDirection = transform.up;
 
             //Scalar value that we can use for the lift direction
-            float liftPower = liftCurve.Evaluate(normalizedKph) * maxLiftPower;
+            currentLiftPower = liftCurve.Evaluate(normalizedKph) * maxLiftPower;
             //Debug.Log(liftPower);
 
-            Vector3 finalLiftForce = liftDirection * liftPower * angleOfAttack;
+            
+
+            Vector3 finalLiftForce = liftDirection * currentLiftPower * angleOfAttack;
 
             rb.AddForce(finalLiftForce);
         }
@@ -227,7 +233,6 @@ public class AirplaneAerodynamics : MonoBehaviour
             isUnderwater = true;
         }
     }
-
     public void ApplyUnderwaterPhysics()
     {
         rb.drag = underwaterDrag;

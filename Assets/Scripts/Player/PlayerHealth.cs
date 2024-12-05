@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -28,8 +29,13 @@ public class PlayerHealth : MonoBehaviour
     }
 
     private void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
+    {if (currentHealth <= 0) PlayerDead();
+        if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
+    }
+
+    void PlayerDead() {
+        Debug.Log("player is dead");
+        SceneManager.LoadScene(0);
     }
 
     public void TakeDamage(float damageAmount)

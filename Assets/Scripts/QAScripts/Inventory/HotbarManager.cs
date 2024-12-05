@@ -62,8 +62,6 @@ public class HotbarManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha4)) EquipItem(3);
         else if (Input.GetKeyDown(KeyCode.Alpha5)) EquipItem(4);
         else if (Input.GetKeyDown(KeyCode.Alpha6)) EquipItem(5);
-        else if (Input.GetKeyDown(KeyCode.Alpha7)) EquipItem(6);
-        else if (Input.GetKeyDown(KeyCode.Alpha8)) EquipItem(7);
     }
 
     // Equip an item from the hotbar based on the selected slot index
