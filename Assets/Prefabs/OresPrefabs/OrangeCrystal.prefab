@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 236.24928
+      value: 290.17572
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.0002985
+      value: 14.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 245.54457
+      value: 249.54399
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -63,6 +63,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6985259737386714409}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8543445742613645505}
   m_SourcePrefab: {fileID: 100100000, guid: b08f1979d109cef4a957a2edee4f2c7c, type: 3}
 --- !u!1 &4027042166558526134 stripped
 GameObject:
@@ -90,3 +93,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.767672, y: 4.178441, z: 4.4846854}
   m_Center: {x: -0.1021564, y: 2.0633607, z: 0.08771014}
+--- !u!114 &8543445742613645505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4027042166558526134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94273673b5b05941b030d8553b7bc6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHeld: 0
+  interactionText: 
+  oreItem: {fileID: 11400000, guid: ac65f7196bdc18f46ba3ad3062467788, type: 2}
