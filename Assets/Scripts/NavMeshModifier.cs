@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 using UnityEngine.AI;
 
 public class NavMeshModifier : MonoBehaviour
-{  
+{
     public float waterHeight = 8.19f;
 
     public float maxHeight = 20.0f;
@@ -14,9 +11,11 @@ public class NavMeshModifier : MonoBehaviour
     public Terrain terrain;
 
     public NavMeshSurface navMeshSurface;
-
-    void Start()
+    public GameObject go;
+    void Awake()
     {
+        go.SetActive(false);
+
         if (terrain == null)
         {
             Debug.LogError("Terrain is not assigned!");
@@ -40,6 +39,7 @@ public class NavMeshModifier : MonoBehaviour
 
         GameObject underwaterArea = new GameObject("UnderwaterNavMeshModifier");
         underwaterArea.transform.parent = this.transform;
+        underwaterArea.transform.position = Vector3.zero;
 
         NavMeshModifierVolume modifierVolume = underwaterArea.AddComponent<NavMeshModifierVolume>();
 
@@ -58,7 +58,7 @@ public class NavMeshModifier : MonoBehaviour
 
         GameObject aboveHeightArea = new GameObject("AboveMaxHeightNavMeshModifier");
         aboveHeightArea.transform.parent = this.transform;
-
+        aboveHeightArea.transform.position = Vector3.zero;
         NavMeshModifierVolume modifierVolume = aboveHeightArea.AddComponent<NavMeshModifierVolume>();
 
         // Modifier for area above maxHeight
@@ -75,6 +75,8 @@ public class NavMeshModifier : MonoBehaviour
     void RebuildNavMesh()
     {
         // Force a NavMesh rebuild to take the new Modifier into account
+        navMeshSurface.RemoveData();
         navMeshSurface.BuildNavMesh();
+        go.SetActive(true);
     }
 }

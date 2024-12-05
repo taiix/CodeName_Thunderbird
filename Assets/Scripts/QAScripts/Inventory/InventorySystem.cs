@@ -362,6 +362,7 @@ public class InventorySystem : MonoBehaviour
         inventoryUI.SetActive(false);
         itemPanelUI.SetActive(false);
         GameManager.Instance.EnablePlayerControls();
+        hotbarPanelUI.transform.position = hotbarPanelUI.transform.position - new Vector3(-410, -10, 0);
     }
 
     private void UpdateUseButtonText()
