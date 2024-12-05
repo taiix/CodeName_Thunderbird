@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[ExecuteAlways]
 public class CircleMinigame : MonoBehaviour
 {
     [SerializeField] private GameObject gameUI;
@@ -63,6 +62,7 @@ public class CircleMinigame : MonoBehaviour
         itemsMined = 0;
         fixedCircle.color = Color.white;
         gameUI.SetActive(isShrinkingActive);
+        GameManager.Instance.DisablePlayerControls(false);
     }
 
     private void CheckMinigameState()
@@ -150,5 +150,8 @@ public class CircleMinigame : MonoBehaviour
         Destroy(corespondingGO);
         itemsMined = 0;
         item = null;
+
+        GameManager.Instance.EnablePlayerControls();
+
     }
 }
