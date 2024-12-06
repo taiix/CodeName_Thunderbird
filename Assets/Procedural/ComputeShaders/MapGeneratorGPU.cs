@@ -61,7 +61,7 @@ public class MapGeneratorGPU : MonoBehaviour
     [SerializeField] private float targetHeight;
     [SerializeField] private AnimationCurve customAreaCurve;
 
-    private void Awake()
+    private void Start()
     {
        
         if(seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);

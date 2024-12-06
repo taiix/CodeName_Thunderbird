@@ -12,9 +12,9 @@ public class NavMeshModifier : MonoBehaviour
 
     public NavMeshSurface navMeshSurface;
     public GameObject go;
-    void Awake()
+    void Start()
     {
-        go.SetActive(false);
+        //go.SetActive(false);
 
         if (terrain == null)
         {
@@ -28,8 +28,8 @@ public class NavMeshModifier : MonoBehaviour
             return;
         }
 
-        CreateUnderwaterNavMeshModifier();
-        CreateAboveMaxHeightNavMeshModifier();
+        //CreateUnderwaterNavMeshModifier();
+        //CreateAboveMaxHeightNavMeshModifier();
         RebuildNavMesh();
     }
 
@@ -75,8 +75,8 @@ public class NavMeshModifier : MonoBehaviour
     void RebuildNavMesh()
     {
         // Force a NavMesh rebuild to take the new Modifier into account
-        navMeshSurface.RemoveData();
+        //navMeshSurface.RemoveData();
         navMeshSurface.BuildNavMesh();
-        go.SetActive(true);
+        //go.SetActive(true);
     }
 }

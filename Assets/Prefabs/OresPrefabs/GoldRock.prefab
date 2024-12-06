@@ -103,8 +103,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8637898, y: 1, z: 0.5414735}
-  m_Center: {x: 0.057454374, y: 0, z: 0.10790845}
+  m_Size: {x: 0.8637898, y: 0.50979495, z: 0.5414735}
+  m_Center: {x: 0.057454355, y: 0.24510248, z: 0.10790845}
 --- !u!1001 &5761413103047713422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -127,15 +127,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 277.82162
+      value: 315.95
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.000309
+      value: 13.383244
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 240.62239
+      value: 90.16
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalRotation.w
@@ -143,15 +143,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 409592ccb9dcdec40b93fdb17b98f088, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

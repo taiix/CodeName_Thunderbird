@@ -29,8 +29,9 @@ public class PlayerHealth : MonoBehaviour
     }
 
     private void Update()
-    {if (currentHealth <= 0) PlayerDead();
-        if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
+    {
+        if (currentHealth <= 0) PlayerDead();
+        //if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
     }
 
     void PlayerDead() {
