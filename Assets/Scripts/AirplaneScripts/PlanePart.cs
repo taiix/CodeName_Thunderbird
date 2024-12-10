@@ -21,9 +21,6 @@ public class PlanePart : MonoBehaviour
     public int UpgradePower { get; private set; }
 
     [SerializeField] public List<PartUpgrade> upgrades = new List<PartUpgrade>();
-
-    [SerializeField] private Item itemForFix;
-    [SerializeField] private int requiredItemForFixAmount = 3;
     public int currentUpgradeLevel = 0;
 
 
@@ -96,7 +93,7 @@ public class PlanePart : MonoBehaviour
 
             if (currentHealth >= 75f)
             {
-                VFXManager.Instance.StopVFX(partName);
+                partVFX.Stop();
                 PlayerQuest.OnQuestCompleted?.Invoke();
             }
             CurrentHealth = currentHealth;
