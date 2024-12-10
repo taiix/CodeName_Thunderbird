@@ -238,13 +238,11 @@ Shader "Custom/Water_Lit"
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
             float depth = CalculateDepth(IN, _DepthFactor);
-            float depthBelowWater = CalculateDepth(IN, _RefractionDepth);
-            
-            float3 refractionRay = Refraction(IN) * depthBelowWater;
-            
+
+            float3 refractionRay = Refraction(IN);
             float2 screenUV = IN.screenPos.xy / IN.screenPos.w;
 
-            float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * depthBelowWater;
+            float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * 0.02;
 
             float3 refractedColor = tex2D(_GrabTexture, distortedUV);
 

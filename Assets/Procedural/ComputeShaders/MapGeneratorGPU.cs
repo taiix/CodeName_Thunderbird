@@ -60,15 +60,19 @@ public class MapGeneratorGPU : MonoBehaviour
 
     [SerializeField] private float targetHeight;
     [SerializeField] private AnimationCurve customAreaCurve;
+    private void Awake()
+    {
+        terrain = GetComponent<Terrain>();
 
+        terrainData = terrain.terrainData;
+
+    }
     private void Start()
     {
        
         if(seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
 
         UnityEngine.Random.InitState(seed);
-        terrainData = terrain.terrainData;
-        terrain = GetComponent<Terrain>();
         Calculate();
     }
 
