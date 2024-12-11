@@ -23,7 +23,7 @@ public class HotbarManager : MonoBehaviour
             return;
         }
 
-        InventorySystem.Instance.OnItemThrown += UpdateHotbarAfterThrow;
+        InventorySystem.OnItemThrown += UpdateHotbarAfterThrow;
         UpdateHotbar();
     }
 

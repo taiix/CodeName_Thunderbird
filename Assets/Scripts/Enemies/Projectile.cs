@@ -39,8 +39,8 @@ public class Projectile : MonoBehaviour
     {
         owner = pOwner;
         hasDealtDamage = false;
-        item.isHeld = false;
         transform.SetParent(null);
+        item.isThrown = true;
 
         if (updateInventory)
         {
