@@ -24,6 +24,7 @@ public class InventorySystem : MonoBehaviour
 
 
     private InventorySlot selectedSlot;
+
     private Item equippedItem;
     private Transform originalHotbarPos;
     [SerializeField]private HotbarManager hotbarManager;
@@ -36,7 +37,7 @@ public class InventorySystem : MonoBehaviour
 
     private InputAction openInventory;
     public static event Action<Item, bool> OnItemUsed;
-    public event Action<Item> OnItemThrown;
+    public static event Action<Item> OnItemThrown;
 
 
     private void Awake()
