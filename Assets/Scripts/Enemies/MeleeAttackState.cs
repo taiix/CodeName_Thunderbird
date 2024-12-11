@@ -10,7 +10,7 @@ public class MeleeAttackState : State
     private EnemyAI npcScript;
     private EnemyData enemyData;
     private Collider attackRangeCollider;
-    private bool isPlayerInRange = false;
+    //private bool isPlayerInRange = false;
     private float heightDifferenceThreshold = 2f;
 
 
@@ -42,7 +42,7 @@ public class MeleeAttackState : State
         float heightDifference = player.position.y - npc.transform.position.y;
         //Debug.Log(heightDifference);
 
-        if (distanceToPlayer <= enemyData.attackRange || heightDifference > heightDifferenceThreshold)
+        if (distanceToPlayer <= enemyData.attackRange)
         {
             LookAt(player.transform.position);
             if (heightDifference > heightDifferenceThreshold)

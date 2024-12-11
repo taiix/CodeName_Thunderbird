@@ -18,7 +18,6 @@ public class Projectile : MonoBehaviour
 
     private bool isThrown = false;
     private bool hasDealtDamage = false;
-    private bool hasHitPlayer = false;
 
     private void Awake()
     {

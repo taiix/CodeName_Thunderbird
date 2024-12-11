@@ -4,9 +4,8 @@ using UnityEngine.AI;
 public class PursueState : State
 {
     private EnemyAI npcScript;
-    private float retreatDistance = 2.0f;
-
     private EnemyData enemyData;
+
     public PursueState(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player)
        : base(_npc, _agent, _anim, _player)
     {

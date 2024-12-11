@@ -9,8 +9,6 @@ public class ReturnToShelter : State
     private Vector3 shelterLocation;
     private EnemyAI npcScript;
     private EnemyData enemyData;
-
-    private float insultRange = 20f;
     private bool isInShelter = false;
 
     public ReturnToShelter(GameObject _npc, NavMeshAgent _agent, Animator _anim, Transform _player, Vector3 _shelterLocation) : base(_npc, _agent, _anim, _player)
@@ -45,7 +43,7 @@ public class ReturnToShelter : State
         {
             anim.ResetTrigger("isRunning");
             anim.SetTrigger("isSitting");
-            StopAgent();
+            //StopAgent();
             isInShelter = true;
         }
 
@@ -58,9 +56,9 @@ public class ReturnToShelter : State
             {
                 npc.transform.LookAt(player.position);
                 anim.SetTrigger("isInsulting");
-                anim.ResetTrigger("isSitting");
+                //anim.ResetTrigger("isSitting");
             }
-            if (distanceToPlayer <= enemyData.attackRange)
+            else if (distanceToPlayer <= enemyData.attackRange)
             {
                 npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
             }

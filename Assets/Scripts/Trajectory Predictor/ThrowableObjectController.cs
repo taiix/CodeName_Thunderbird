@@ -12,7 +12,7 @@ public class ThrowableObjectController : MonoBehaviour
     private TrajectoryVisualizer trajectoryVisualizer;
     private Rigidbody rb;
 
-    private bool isEquipped = false;
+    //private bool isEquipped = false;
     private bool isThrown = false;
 
     private void Start()
