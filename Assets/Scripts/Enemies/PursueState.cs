@@ -20,7 +20,6 @@ public class PursueState : State
     {
         StartAgent();
         agent.speed = enemyData.runningSpeed;
-        //Debug.Log("Agent speed set to: " + agent.speed);
         anim.SetTrigger("isRunning");
         agent.SetDestination(player.position);
         base.Enter();
@@ -56,7 +55,6 @@ public class PursueState : State
         anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
-        agent.speed = 3.5f;
         agent.ResetPath();
         base.Exit();
     }
