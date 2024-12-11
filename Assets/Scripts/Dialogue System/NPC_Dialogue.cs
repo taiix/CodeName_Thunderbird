@@ -19,6 +19,13 @@ public class NPC_Dialogue : Interactable
 
     public override void OnInteract()
     {
+        bool isTalking = DialogueManager.isTalking;
+        if (isTalking)
+        {
+            Debug.Log("Already in conversation. Cannot start a new one.");
+            return;
+        }
+
         InteractionHandler.Instance?.UpdateInteractionText(string.Empty);
         TriggerDialogue();
     }
@@ -84,7 +91,8 @@ public class NPC_Dialogue : Interactable
             {
                 CompleteCurrentDialogue();
             }
-        } else if (currentQuest is RepairQuest repQ)
+        }
+        else if (currentQuest is RepairQuest repQ)
         {
             if (repQ.isCompleted)
             {

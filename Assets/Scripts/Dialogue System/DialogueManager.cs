@@ -10,6 +10,8 @@ public class DialogueManager : MonoBehaviour
     public static UnityAction OnDialogueStarted;
     public static UnityAction OnDialogueEnded;
 
+    public static bool isTalking { get; private set; }
+
     private Queue<string> sentences = new();
     public DialogueState dialogueState;
     private bool isTyping;
@@ -44,7 +46,7 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(string npcName, string[] dialogue, BaseSO_Properties quest)
     {
         if(quest != null) currentDialogueQuest = quest;
-
+        isTalking = true;
         dialogueState = DialogueState.StartDialogue;
         OnDialogueStarted?.Invoke();
         ToggleCanvases(true);
@@ -80,9 +82,9 @@ public class DialogueManager : MonoBehaviour
 
         ToggleCanvases(false);
         ClearDialogueUI();
-
         if(currentDialogueQuest != null) QuestManager_v2.OnQuestActivated?.Invoke(currentDialogueQuest);
 
+        isTalking = false;
         OnDialogueEnded?.Invoke();
         Debug.Log("Dialogue has ended.");
     }
@@ -95,7 +97,10 @@ public class DialogueManager : MonoBehaviour
         foreach (char c in sentence)
         {
             dialogueTextBox.text += c;
-            yield return new WaitForSeconds(0.04f);
+
+            float typingSpeed = Input.GetKey(KeyCode.Tab) ? 0.01f : 0.04f;
+
+            yield return new WaitForSeconds(typingSpeed);
         }
 
         isTyping = false;

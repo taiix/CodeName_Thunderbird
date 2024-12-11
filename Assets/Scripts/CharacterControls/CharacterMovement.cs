@@ -91,7 +91,7 @@ public class CharacterMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(IsOnSteepSlope());
+        //Debug.Log(IsOnSteepSlope());
 
         if (IsOnSteepSlope() && activateControls)
         {
