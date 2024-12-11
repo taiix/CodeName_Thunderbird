@@ -39,7 +39,6 @@ public class PatrolState : State
             if (Vector3.Distance(npc.transform.position, player.position) <= enemyData.spottingRange)
             {
                 npcScript.ChangeCurrentState(new PursueState(npc, agent, anim, player));
-                return;
             }
             else if (isIdling)
             {
@@ -152,6 +151,7 @@ public class PatrolState : State
 
     public override void Exit()
     {
+        //StopAgent();
         anim.ResetTrigger("isRunning");
         anim.ResetTrigger("isWalking");
         anim.ResetTrigger("isIdle");
