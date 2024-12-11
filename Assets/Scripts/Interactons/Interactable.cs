@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class Interactable : MonoBehaviour
 {
     public bool isHeld;
+    public bool isThrown;
 
     public string interactionText = string.Empty;
     
