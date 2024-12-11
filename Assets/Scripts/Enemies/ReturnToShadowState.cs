@@ -7,7 +7,6 @@ public class ReturnToShadowState : State
 {
     private Vector3 targetShadowPosition;
     private EnemyAI enemyScript;
-    private float damageTimer = 0f;
     private bool wasInShelter = false;
     private Vector3 shelterLocation;
 

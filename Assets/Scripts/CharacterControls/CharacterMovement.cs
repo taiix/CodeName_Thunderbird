@@ -17,21 +17,23 @@ public class CharacterMovement : MonoBehaviour
     private Vector2 look;
     private float lookRotation;
 
-    private InputActionMap player;
     private PlayerInput playerInput;
+    private InputActionMap player;
     private InputAction jumpAction;
+    private InputAction sprintAction;
     [SerializeField] private float groundCheckDistance = 0.1f;
 
     [SerializeField] private float maxSlopeAngle = 30f;
 
     [SerializeField] int jumpForce = 2;
     private bool isGrounded;
+    private bool isSprinting;
 
 
     private bool activateControls = true;
 
-    public static event Action OnDisableControls;
-    public static event Action OnEnableControls;
+    //public static event Action OnDisableControls;
+    //public static event Action OnEnableControls;
 
     bool isMoving;
     public InputActionMap PlayerAction
@@ -64,11 +66,15 @@ public class CharacterMovement : MonoBehaviour
     {
         jumpAction = player.FindAction("Jump");
         jumpAction.performed += Jump;
-
         jumpAction.Enable();
 
-        OnEnableControls += EnableControls;
-        OnDisableControls += DisableControls;
+
+        sprintAction = player.FindAction("Sprint");
+        sprintAction.performed += StartSprinting;
+        sprintAction.canceled += StopSprinting;
+        sprintAction.Enable();
+        //OnEnableControls += EnableControls;
+        //OnDisableControls += DisableControls;
 
 
         DialogueManager.OnDialogueStarted += DisableControls;
@@ -82,8 +88,13 @@ public class CharacterMovement : MonoBehaviour
 
         jumpAction.performed -= Jump;
 
-        OnDisableControls -= DisableControls;
-        OnEnableControls -= EnableControls;
+        sprintAction.Disable();
+        sprintAction.performed -= StartSprinting;
+        sprintAction.canceled -= StopSprinting;
+
+
+        //OnDisableControls -= DisableControls;
+        //OnEnableControls -= EnableControls;
 
         DialogueManager.OnDialogueStarted -= DisableControls;
         DialogueManager.OnDialogueEnded -= EnableControls;
@@ -154,7 +165,6 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-
     private void GroundCheck()
     {
         Vector3 origin = transform.position + Vector3.up * 0.1f;
@@ -169,6 +179,18 @@ public class CharacterMovement : MonoBehaviour
     {
         move = context.ReadValue<Vector2>();
         isMoving = context.performed;
+    }
+
+    private void StartSprinting(InputAction.CallbackContext context)
+    {
+        isSprinting = true;
+        speed = sprintSpeed;
+    }
+
+    private void StopSprinting(InputAction.CallbackContext context)
+    {
+        isSprinting = false;
+        speed = normalSpeed;
     }
 
     public void OnLook(InputAction.CallbackContext context)

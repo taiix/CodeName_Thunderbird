@@ -34,17 +34,7 @@ public class Page : MonoBehaviour
     //[SerializeField] private List<GameObject> pages = new List<GameObject>();
     List<Section> sections = new List<Section>();
 
-    private bool isActive = false;
-
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-
-    }
+    //private bool isActive = false;
 
     public void UpdatePage()
     {
@@ -53,6 +43,4 @@ public class Page : MonoBehaviour
             section.gameObject.SetActive(true);
         }
     }
-
-
 }
