@@ -30,11 +30,9 @@ public class EnemyAI : MonoBehaviour
 
     private float damageTimer = 0f;
 
-    private bool returnToShelter = false;
-    private bool isTransitioning = false;
+    //private bool returnToShelter = false;
     private bool isReturningToShelter = false;
     private bool isPatrolling = true;
-    private bool isRetreating = false;
     private Vector3 shelterLocation;
 
     TimeSpan morningTime = TimeSpan.FromHours(9.5f);
@@ -51,7 +49,6 @@ public class EnemyAI : MonoBehaviour
     public void ChangeCurrentState(State state)
     {
         if (isDead || currentState == state) return;
-        isTransitioning = true;
 
         if (currentState != null)
         {
@@ -61,8 +58,7 @@ public class EnemyAI : MonoBehaviour
         currentState = state;
         currentState.Enter();
 
-        Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);
-        isTransitioning = false;
+        Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);;
     }
 
     public bool IsInShadow()
@@ -103,7 +99,6 @@ public class EnemyAI : MonoBehaviour
         {
             lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;
             sunExposureTimer = 0f;
-            isRetreating = false;
         }
         else
         {
@@ -113,7 +108,6 @@ public class EnemyAI : MonoBehaviour
             }
             if (sunExposureTimer >= enemyData.timeInSun && currentState.name != State.STATE.RETURN_TO_SHADOW)
             {
-                isRetreating = true;
                 ChangeCurrentState(new ReturnToShadowState(this.gameObject, agent, anim, shelterLocation, player, lastKnownShadowPosition, isReturningToShelter));
                 sunExposureTimer = 0;
             }

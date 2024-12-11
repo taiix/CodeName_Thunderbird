@@ -8,7 +8,6 @@ public class ChoppedTreeInteractable : Interactable
     [SerializeField] private int minLogs = 1;
     [SerializeField] private int maxLogs = 5;
     [SerializeField] private ParticleSystem gatherParticles; 
-    [SerializeField] private float particleDuration = 0.5f; 
 
     private bool isGathering = false;
 

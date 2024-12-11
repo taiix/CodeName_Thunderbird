@@ -3347,75 +3347,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &642782524
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.8738
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.8738
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.8738
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.9386997
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.1947274
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
-      propertyPath: m_Name
-      value: Bor
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a70b366f9c50b774685b1dd71aeb5c3b, type: 3}
 --- !u!224 &668766353 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 14123869154717828, guid: 9e110483fd655194b90980ff01a20266, type: 3}
@@ -4969,8 +4900,6 @@ MonoBehaviour:
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 6995c155cff399e43a7951416b4c1a50, type: 2}
-  itemForFix: {fileID: 0}
-  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!114 &527538088991626550
 MonoBehaviour:
@@ -7426,8 +7355,6 @@ MonoBehaviour:
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
-  itemForFix: {fileID: 0}
-  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!114 &2999273674671400941
 MonoBehaviour:
@@ -9879,8 +9806,6 @@ MonoBehaviour:
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
   - {fileID: 11400000, guid: d99977c723f11fd488b82dede81e6b48, type: 2}
-  itemForFix: {fileID: 0}
-  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!1001 &5297947884397974676
 PrefabInstance:
@@ -11289,6 +11214,34 @@ MonoBehaviour:
   forwardSpeed: 0
   kph: 0
   maxKph: 178
+  waterHeight: 8
+  underwaterDrag: 2
+  underwaterAngularDrag: 4
+  buoyancyForce: 8
+  buoyancyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   maxLiftPower: 4000
   liftCurve:
     serializedVersion: 2
@@ -11329,6 +11282,11 @@ MonoBehaviour:
   lerpSpeed: 0.03
   dragFactor: 0.0004
   flapDragFactor: 0.005
+  altitudeThresholds: []
+  requiredLiftPower:
+  - 3500
+  - 3700
+  - 4000
 --- !u!224 &6951743382911315280
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11416,6 +11374,7 @@ MonoBehaviour:
   throttleSpeed: 0.5
   yawSpeed: 50
   maxFlapsIncrement: 2
+  disableInput: 0
 --- !u!1 &7159862720221859975
 GameObject:
   m_ObjectHideFlags: 0
@@ -12758,7 +12717,6 @@ SceneRoots:
   - {fileID: 5888418194554387038}
   - {fileID: 514514955}
   - {fileID: 1115438062}
-  - {fileID: 642782524}
   - {fileID: 573748217}
   - {fileID: 510275628}
   - {fileID: 169574473959594753}
