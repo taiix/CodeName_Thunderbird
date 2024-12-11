@@ -6,6 +6,8 @@ public class EquipSystem : MonoBehaviour
 {
     [SerializeField] private Transform handTransform;
     [SerializeField]private GameObject equippedItemInstance = null;
+
+    private ItemInteractable equippedItem;
     private Item currentEquippedItem = null;
 
 
@@ -46,7 +48,8 @@ public class EquipSystem : MonoBehaviour
         if (item != null && item.itemPrefab != null)
         {
             equippedItemInstance = Instantiate(item.itemPrefab, handTransform);
-            equippedItemInstance.GetComponent<ItemInteractable>().isHeld = true;
+            equippedItem = equippedItemInstance.GetComponent<ItemInteractable>();
+            equippedItem.isHeld = true;
             if (equippedItemInstance.gameObject.GetComponent<Collider>() != null && equippedItemInstance.gameObject.GetComponent<Rigidbody>() != null)
             {
                 equippedItemInstance.gameObject.GetComponent<Collider>().enabled = false;
@@ -60,10 +63,10 @@ public class EquipSystem : MonoBehaviour
 
     public void UnequipItem()
     {
-        if (equippedItemInstance != null)
+        if (equippedItem != null && !equippedItem.isThrown)
         {
             Debug.Log("Unequip item called");
-            equippedItemInstance.GetComponent<ItemInteractable>().isHeld = false;
+            equippedItem.isHeld = false;
             Destroy(equippedItemInstance.gameObject);
             currentEquippedItem = null;
         }
