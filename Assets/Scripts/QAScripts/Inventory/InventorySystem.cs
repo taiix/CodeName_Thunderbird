@@ -296,6 +296,7 @@ public class InventorySystem : MonoBehaviour
     {
         int totalAmount = 0;
 
+        // Check inventory slots
         foreach (InventorySlot slot in slots)
         {
             if (slot.itemInSlot == item)
@@ -303,6 +304,16 @@ public class InventorySystem : MonoBehaviour
                 totalAmount += slot.amountInSlot;
             }
         }
+
+        // Check hotbar slots
+        foreach (InventorySlot hotbarSlot in hotbarManager.hotbarSlots)
+        {
+            if (hotbarSlot.itemInSlot == item)
+            {
+                totalAmount += hotbarSlot.amountInSlot;
+            }
+        }
+
         return totalAmount;
     }
 
