@@ -54,6 +54,8 @@ GameObject:
   - component: {fileID: 7658819068699560957}
   - component: {fileID: 7395032050233925106}
   - component: {fileID: 2878522686017110930}
+  - component: {fileID: 479404416642540598}
+  - component: {fileID: 482542757852100003}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -163,11 +165,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685449f03bff9bb4a9486e33490be20a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 0.5
+  sensitivity: 0.1
   maxForce: 3
-  sprintSpeed: 2
+  sprintSpeed: 10
   normalSpeed: 6
   groundCheckDistance: 1.5
+  maxSlopeAngle: 30
   jumpForce: 6
 --- !u!54 &2011121929313801141
 Rigidbody:
@@ -269,6 +272,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 70584340-aac1-4602-8456-8e43c7f59d0b
     m_ActionName: Player/Hit[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a60bdb2b-3fe5-4f08-8f09-17f55e4791ea
+    m_ActionName: Player/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ad1fe2a7-d868-4c88-bcce-a4edf11ed020
+    m_ActionName: Player/OpenJournal[/Keyboard/j]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -309,11 +320,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 0}
+  hotbarPanelUI: {fileID: 0}
   itemPanelUI: {fileID: 0}
   largeItemImage: {fileID: 0}
   itemDescriptionText: {fileID: 0}
-  dropButton: {fileID: 0}
   useButton: {fileID: 0}
+  dropButton: {fileID: 0}
+  hotbarManager: {fileID: 7395032050233925106}
   slots:
   - {fileID: 0}
   - {fileID: 0}
@@ -341,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handTransform: {fileID: 0}
+  equippedItemInstance: {fileID: 0}
 --- !u!114 &3646437915416053012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +423,46 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthBar: {fileID: 0}
+--- !u!114 &479404416642540598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502479564273512209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e1afc2d541a7a4c8aae2be1e38e039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeQuest: {fileID: 0}
+  desiredLocation: {fileID: 0}
+--- !u!114 &482542757852100003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502479564273512209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b5cf0230fb08d34b96ab68249b7f7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 0}
+  terrainDataList:
+  - Material: {fileID: 2100000, guid: 15539b7f80a308b4a8fea5f61a84a5c6, type: 2}
+    MinHeight: 0
+    MaxHeight: 0.1
+    soundID: 0
+  - Material: {fileID: 2100000, guid: 6aa92e694ac633549962820223db4172, type: 2}
+    MinHeight: 0.1
+    MaxHeight: 0.2
+    soundID: 1
+  - Material: {fileID: 2100000, guid: 0cad7899f3a53384ab86be34d6d65606, type: 2}
+    MinHeight: 0.2
+    MaxHeight: 1
+    soundID: 2
 --- !u!1 &5811664459883230587
 GameObject:
   m_ObjectHideFlags: 0

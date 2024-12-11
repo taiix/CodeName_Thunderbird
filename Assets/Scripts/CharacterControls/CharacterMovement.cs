@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,10 +22,10 @@ public class CharacterMovement : MonoBehaviour
     private InputAction sprintAction;
     [SerializeField] private float groundCheckDistance = 0.1f;
 
-    [SerializeField] private float maxSlopeAngle = 30f;
+    [SerializeField] private float maxSlopeAngle = 45f;
 
     [SerializeField] int jumpForce = 2;
-    private bool isGrounded;
+    public bool isGrounded { get; private set; }
     private bool isSprinting;
 
 
@@ -147,9 +146,9 @@ public class CharacterMovement : MonoBehaviour
             Gizmos.DrawSphere(hit.point, 0.1f);
 
             // Display the slope angle as text in the Scene view
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.Handles.Label(hit.point, $"Angle: {Vector3.Angle(hit.normal, Vector3.up):F1}°");
-            #endif
+#endif
 
             // Change the Gizmos color if the slope is too steep
             if (Vector3.Angle(hit.normal, Vector3.up) > maxSlopeAngle)
@@ -252,9 +251,16 @@ public class CharacterMovement : MonoBehaviour
 
     void FootstepsFX()
     {
+        GroundTypeDetector groundDetector = GetComponent<GroundTypeDetector>();
+        int soundID = groundDetector.GetCurrentGroundID();
+
+        
         if (isGrounded && isMoving)
         {
-            AudioManager.instance?.onPlayFootstep?.Invoke(0, speed);
+            if (soundID != -1)
+            {
+                AudioManager.instance?.onPlayFootstep?.Invoke(soundID, speed);
+            }
         }
     }
 }
