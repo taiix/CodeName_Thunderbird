@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AirplaneEngine : MonoBehaviour
@@ -32,7 +30,6 @@ public class AirplaneEngine : MonoBehaviour
     {
         if (isEngineEnabled && CanGenerateForwardSpeed())
         {
-
             float finalThrottle = Mathf.Clamp01(throttle);
 
             finalThrottle = powerCurve.Evaluate(finalThrottle);

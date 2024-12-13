@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 using TMPro;
 
 public class AirplaneAerodynamics : MonoBehaviour
@@ -95,10 +93,6 @@ public class AirplaneAerodynamics : MonoBehaviour
         normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
 
         speedText.text = "KPH: " + kph;
-
-        //Debug.Log(normalizedKph);
-
-        //Debug.DrawRay(transform.position, transform.position + localVelocity, Color.green);
     }
 
     bool CanGenerateLift()

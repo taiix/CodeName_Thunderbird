@@ -68,7 +68,7 @@ MonoBehaviour:
     value: 40
   aperture:
     overrideState: 1
-    value: 2
+    value: 2.8
   focalLength:
     overrideState: 1
     value: 100
@@ -1461,16 +1461,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b94fcd11afffcb142908bfcb1e261fba, type: 3}
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
   shutterAngle:
     overrideState: 1
-    value: 0
+    value: 282
   sampleCount:
     overrideState: 1
-    value: 10
+    value: 9
 --- !u!114 &6978469112034130872
 MonoBehaviour:
   m_ObjectHideFlags: 3

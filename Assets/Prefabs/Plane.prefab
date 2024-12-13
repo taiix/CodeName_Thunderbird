@@ -367,13 +367,14 @@ GameObject:
   m_Component:
   - component: {fileID: 5098139177650772172}
   - component: {fileID: 3132900599038763729}
+  - component: {fileID: 2921675081814539626}
   m_Layer: 0
   m_Name: PlaneCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5098139177650772172
 Transform:
   m_ObjectHideFlags: 0
@@ -397,7 +398,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2667437014726168592}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
@@ -429,6 +430,57 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 7920984727951199266}
+--- !u!20 &2921675081814539626
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2667437014726168592}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
 --- !u!1 &2849148758982602237
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,15 +639,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  planeRb: {fileID: 0}
   damageFactor: 1
   partName: RightWing
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
   - {fileID: 11400000, guid: d99977c723f11fd488b82dede81e6b48, type: 2}
-  itemForFix: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
-  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!114 &6310518516441216734
 MonoBehaviour:
@@ -610,8 +659,154 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
   repairAmount: 50
+--- !u!1 &3862169186647533323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6334753715033208394}
+  - component: {fileID: 2320868665334396787}
+  - component: {fileID: 3810621849615744273}
+  m_Layer: 0
+  m_Name: Plane_Engine_Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6334753715033208394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862169186647533323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.13, y: 0, z: 2.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 169574472340759254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &2320868665334396787
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862169186647533323}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 4daa16fc3126cf84b8559821a86ff671, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 10.338669
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &3810621849615744273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862169186647533323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ca8963a76744b438d6518c66fb45f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  engineSound: {fileID: 2320868665334396787}
+  airplane: {fileID: 6928674494952683036}
+  minPitch: 0.5
+  maxPitch: 2
 --- !u!1 &3920303128903083544
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,14 +935,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 100
-  planeRb: {fileID: 0}
-  damageFactor: 1
+  damageFactor: 5
   partName: Engine
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 6995c155cff399e43a7951416b4c1a50, type: 2}
-  itemForFix: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
-  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!65 &4977098689660850393
 BoxCollider:
@@ -783,6 +975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
   repairAmount: 50
 --- !u!1 &3952397983731195316
@@ -1111,16 +1304,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 100
-  planeRb: {fileID: 0}
-  damageFactor: 1
+  currentHealth: 74
+  damageFactor: 5
   partName: LeftWing
   setCurrentHealth: 1
   upgrades:
   - {fileID: 11400000, guid: 2ac2c7e57d2fcea4998cb76d15f6fc94, type: 2}
   - {fileID: 11400000, guid: d99977c723f11fd488b82dede81e6b48, type: 2}
-  itemForFix: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
-  requiredItemForFixAmount: 3
   currentUpgradeLevel: 0
 --- !u!114 &5443011314849726256
 MonoBehaviour:
@@ -1135,6 +1325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
   repairAmount: 50
 --- !u!1 &5149627759113938626
@@ -1695,10 +1886,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
   inPlaneUi: {fileID: 0}
   airplaneController: {fileID: 2969923392736975392}
-  planeCamera: {fileID: 0}
+  planeCamera: {fileID: 3132900599038763729}
   player: {fileID: 0}
   playerExitPosition: {fileID: 8033119584312529947}
   planeRigidbody: {fileID: 6188762063266242806}
@@ -1717,6 +1909,7 @@ GameObject:
   - component: {fileID: 6928674494952683036}
   - component: {fileID: 4620189659819282685}
   - component: {fileID: 1173350041803854310}
+  - component: {fileID: 4137284688470175367}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -1744,6 +1937,7 @@ Transform:
   - {fileID: 2131790553223151663}
   - {fileID: 3110737282581845345}
   - {fileID: 5533267859927056169}
+  - {fileID: 6334753715033208394}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 138.68, z: 0}
 --- !u!114 &7136760309728014094
@@ -1762,6 +1956,7 @@ MonoBehaviour:
   throttleSpeed: 0.5
   yawSpeed: 50
   maxFlapsIncrement: 2
+  disableInput: 0
 --- !u!54 &6188762063266242806
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1838,7 +2033,44 @@ MonoBehaviour:
   forwardSpeed: 0
   kph: 0
   maxKph: 178
-  maxLiftPower: 4000
+  waterHeight: 8
+  underwaterDrag: 3
+  underwaterAngularDrag: 2
+  buoyancyForce: 12
+  buoyancyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.03308487
+      value: 0.8731079
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.40860525
+      value: 0.390053
+      inSlope: -1.098294
+      outSlope: -1.098294
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0297241
+      value: 0.5083313
+      inSlope: 0.90349966
+      outSlope: 0.90349966
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.045805644
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxLiftPower: 3400
   liftCurve:
     serializedVersion: 2
     m_Curve:
@@ -1877,7 +2109,12 @@ MonoBehaviour:
   yawSpeed: 1500
   lerpSpeed: 0.03
   dragFactor: 0.0004
-  flapDragFactor: 0.04
+  flapDragFactor: 0.5
+  altitudeThresholds: []
+  requiredLiftPower:
+  - 3500
+  - 3700
+  - 4000
 --- !u!114 &4620189659819282685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1904,6 +2141,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planeActions: {fileID: -944628639613478452, guid: 0b80a5ea80214ec4a87e88dc46b550c9, type: 3}
+--- !u!114 &4137284688470175367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8868244247569717997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &1227493561103563623
 PrefabInstance:
   m_ObjectHideFlags: 0
