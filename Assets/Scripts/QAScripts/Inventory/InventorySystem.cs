@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class InventorySystem : MonoBehaviour
+public class InventorySystem : MonoBehaviour, ISavableData
 {
     public static InventorySystem Instance { get; private set; }
 
@@ -27,7 +27,7 @@ public class InventorySystem : MonoBehaviour
 
     private Item equippedItem;
     private Transform originalHotbarPos;
-    [SerializeField]private HotbarManager hotbarManager;
+    [SerializeField] private HotbarManager hotbarManager;
 
 
 
@@ -112,7 +112,7 @@ public class InventorySystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log(itemsInInventory.Count);
     }
 
     void InventoryUIController(InputAction.CallbackContext context)
@@ -437,7 +437,7 @@ public class InventorySystem : MonoBehaviour
     }
 
     public void InvokeItemThrown(Item item)
-    {    
+    {
         OnItemThrown?.Invoke(item);
     }
 
@@ -448,5 +448,30 @@ public class InventorySystem : MonoBehaviour
             return equippedItem;
         }
         return null;
+    }
+
+    public string ToJson()
+    {
+        InventoryData data = new InventoryData(itemsInInventory);
+        return JsonUtility.ToJson(data);
+    }
+
+    public void FromJson(string json)
+    {
+        InventoryData inventoryData = JsonUtility.FromJson<InventoryData>(json);
+        itemsInInventory = inventoryData.inventoryItems;
+
+        // Update UI to reflect loaded inventory state
+        foreach (var slot in slots)
+        {
+            slot.itemInSlot = null; // Clear all slots
+            slot.amountInSlot = 0;
+            slot.SetStats();
+        }
+
+        foreach (var item in itemsInInventory)
+        {
+            //PickUpItem(); // Re-add items to inventory UI
+        }
     }
 }

@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, ISavableData
 {
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth;
@@ -34,7 +32,8 @@ public class PlayerHealth : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
     }
 
-    void PlayerDead() {
+    void PlayerDead()
+    {
         Debug.Log("player is dead");
         SceneManager.LoadScene(0);
     }
@@ -58,5 +57,26 @@ public class PlayerHealth : MonoBehaviour
     {
         if (healthBar != null)
             healthBar.value = currentHealth / maxHealth;
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public string ToJson()
+    {
+        PlayerData data = new PlayerData
+            (currentHealth, transform.position.x, transform.position.y, transform.position.z);
+        
+        return JsonUtility.ToJson(data);
+    }
+
+    public void FromJson(string json)
+    {
+        PlayerData data = JsonUtility.FromJson<PlayerData>(json);
+        currentHealth = data.playerHealth;
+        transform.position = new Vector3(data.posX, data.posY, data.posZ);
+        UpdateHealthBar();
     }
 }
