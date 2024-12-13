@@ -13,27 +13,63 @@ public class UnderwaterPostProcessingEffect : MonoBehaviour
 
     private bool isActive;
 
-    [SerializeField] private Transform waterSurface;
-
+    [SerializeField] private GameObject[] waterSurface;
+    private bool isUnderwater = false;
     private void Start()
     {
         globalVolume = GetComponent<PostProcessVolume>();
+
+
+        waterSurface = GameObject.FindGameObjectsWithTag("WaterSurface");
+        RenderSettings.fog = false;
+        globalVolume.profile = globalProfile;
     }
 
-    void Update()
+    private void Update()
     {
-        float cameraHeightPosition = this.transform.position.y;
+        CheckWaterTriggers();
+    }
 
-        if (cameraHeightPosition < waterSurface.position.y) isActive = true;
-        else isActive = false;
-
-        if (isActive)
+    private void CheckWaterTriggers()
+    {
+        foreach (var water in waterSurface)
         {
+            if (water == null) continue;
+
+            Collider waterCollider = water.GetComponent<Collider>();
+            if (waterCollider == null || !waterCollider.isTrigger)
+            {
+                Debug.LogWarning($"{water.name} does not have a trigger collider!");
+                continue;
+            }
+
+            if (waterCollider.bounds.Contains(transform.position))
+            {
+                ApplyUnderwaterEffects();
+                return;
+            }
+        }
+
+        ApplyGlobalEffects();
+    }
+
+    private void ApplyUnderwaterEffects()
+    {
+        if (!isUnderwater)
+        {
+            Debug.Log("Underwater effects applied.");
+            isUnderwater = true;
             RenderSettings.fog = true;
             globalVolume.profile = underwaterEffectProfile;
         }
-        else
+    }
+
+    private void ApplyGlobalEffects()
+    {
+        if (isUnderwater)
         {
+            Debug.Log("Global effects applied.");
+            isUnderwater = false;
             RenderSettings.fog = false;
             globalVolume.profile = globalProfile;
         }

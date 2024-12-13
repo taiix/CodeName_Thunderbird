@@ -11,9 +11,11 @@ public class EquipableItem : MonoBehaviour
     InputAction hitAction;
 
     [SerializeField] int damageAmount = 2;
-    public List<GameObject> enemiesInRange = new List<GameObject>();
 
     private Collider itemCollider;
+
+    private Item equippedItem;
+    private Vector3 hitPoint;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,76 +47,47 @@ public class EquipableItem : MonoBehaviour
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
         {
-            GetComponent<Collider>().enabled = false;
+            //GetComponent<Collider>().enabled = false;
         }
     }
 
     private void TriggerAnimation(InputAction.CallbackContext context)
     {
         if (InventorySystem.Instance.IsInventoryOpen()) return;
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Rigidbody>().isKinematic = false;
         animator.SetTrigger("hit");
     }
 
     public void PerformHit()
     {
-        Debug.Log("Hit");
+        //Debug.Log("Perform Hit");
+       
         if (animator == null) return;
         if (!InventorySystem.Instance.IsInventoryOpen())
         {
             // Handle tree interaction
             TreeInteractable treeInteractable = InteractionHandler.Instance.treeInteractable;
-            Item equippedItem = InventorySystem.Instance.GetEquippedItem();
-
-
-            // Handle enemy damage
-            GetComponent<Collider>().enabled = true;
-            if (equippedItem != null && equippedItem.type == Item.Types.axe && enemiesInRange.Count > 0)
-            {
-                foreach (GameObject enemy in enemiesInRange)
-                {
-                    if (enemy != null)
-                    {
-                        EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
-                        if (enemyAI != null)
-                        {
-                            Debug.Log("Do dmg to enemy");
-                            enemyAI.TakeDamage(damageAmount);
-                        }
-                    }
-                }
-                enemiesInRange.Clear();
-            }
-            else if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
+            equippedItem = InventorySystem.Instance.GetEquippedItem();
+            Debug.Log(equippedItem.itemName);
+            if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
             {
                 treeInteractable.GetHit();
             }
         }
-
-        
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Detected: {other.name}");
-
-        if (other.CompareTag("Enemy"))
+        if (equippedItem.type == Item.Types.axe && collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy in range");
-            EnemyAI enemy = other.GetComponent<EnemyAI>();
-            if (enemy != null && !enemiesInRange.Contains(other.gameObject))
-            {
-                enemiesInRange.Add(other.gameObject);
-            }
+            //Debug.Log("Hitting enemy");
+            EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
+            hitPoint = collision.GetContact(0).point;
+            enemyAI.TakeDamage(damageAmount, hitPoint);
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log("Exited trigger: " + other.name);
-
-        if (enemiesInRange.Contains(other.gameObject))
-        {
-            enemiesInRange.Remove(other.gameObject);
-        }
     }
 }
