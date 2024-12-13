@@ -320,28 +320,52 @@ public class InventorySystem : MonoBehaviour
 
     public void RemoveItem(Item item, int amountToRemove)
     {
-        foreach (InventorySlot slot in slots)
+        // First, check the hotbar slots
+        foreach (InventorySlot hotbarSlot in hotbarManager.hotbarSlots)
         {
-            if (slot.itemInSlot == item)
+            if (hotbarSlot.itemInSlot == item)
             {
-                if (slot.amountInSlot >= amountToRemove)
+                if (hotbarSlot.amountInSlot >= amountToRemove)
                 {
-                    slot.amountInSlot -= amountToRemove;
-                    if (slot.amountInSlot <= 0)
+                    hotbarSlot.amountInSlot -= amountToRemove;
+                    if (hotbarSlot.amountInSlot <= 0)
                     {
-                        slot.itemInSlot = null;
-
+                        hotbarSlot.itemInSlot = null;
                     }
-                    slot.SetStats();
-                    break;
+                    hotbarSlot.SetStats();
+                    return; // All required items removed, exit method
                 }
                 else
                 {
-                    amountToRemove -= slot.amountInSlot;
-                    slot.amountInSlot = 0;
-                    slot.itemInSlot = null;
-                    slot.SetStats();
-                    //slot.gameObject.SetActive(false);
+                    amountToRemove -= hotbarSlot.amountInSlot;
+                    hotbarSlot.amountInSlot = 0;
+                    hotbarSlot.itemInSlot = null;
+                    hotbarSlot.SetStats();
+                }
+            }
+        }
+
+        // If not enough items were removed from the hotbar, check the inventory slots
+        foreach (InventorySlot inventorySlot in slots)
+        {
+            if (inventorySlot.itemInSlot == item)
+            {
+                if (inventorySlot.amountInSlot >= amountToRemove)
+                {
+                    inventorySlot.amountInSlot -= amountToRemove;
+                    if (inventorySlot.amountInSlot <= 0)
+                    {
+                        inventorySlot.itemInSlot = null;
+                    }
+                    inventorySlot.SetStats();
+                    break; // All required items removed, exit loop
+                }
+                else
+                {
+                    amountToRemove -= inventorySlot.amountInSlot;
+                    inventorySlot.amountInSlot = 0;
+                    inventorySlot.itemInSlot = null;
+                    inventorySlot.SetStats();
                 }
             }
         }
@@ -413,7 +437,7 @@ public class InventorySystem : MonoBehaviour
     }
 
     public void InvokeItemThrown(Item item)
-    {
+    {    
         OnItemThrown?.Invoke(item);
     }
 

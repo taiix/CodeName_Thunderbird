@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -14,7 +15,7 @@ public class Projectile : MonoBehaviour
     private ItemInteractable item;
 
     private GameObject player;
-    private GameObject owner;
+    [SerializeField] private GameObject owner;
 
     private bool isThrown = false;
     private bool hasDealtDamage = false;
@@ -40,6 +41,7 @@ public class Projectile : MonoBehaviour
         owner = pOwner;
         hasDealtDamage = false;
         transform.SetParent(null);
+        item.isHeld = false;
         item.isThrown = true;
 
         if (updateInventory)
@@ -55,19 +57,22 @@ public class Projectile : MonoBehaviour
         isThrown = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other == owner.gameObject) return;
+        //Debug.Log($"Collision detected with: {collision.gameObject.name}");
+        //if (collision.gameObject == owner.gameObject) return;
 
-        if (other.CompareTag("Player") && !hasDealtDamage && owner != player)
+        if (collision.gameObject.CompareTag("Player") && !hasDealtDamage && owner != player)
         {
-            Debug.Log("hitPlayer");
+            //Debug.Log("hitPlayer");
             PlayerHealth.OnPlayerDamaged?.Invoke(damageAmount);
             hasDealtDamage = true;
         }
-        if (other.CompareTag("Enemy") && owner == player && !item.isHeld)
+        if (collision.gameObject.CompareTag("Enemy") && owner == player && !item.isHeld)
         {
-            other.GetComponent<EnemyAI>().TakeDamage(damageAmount);
+            //Debug.Log("Rock hit enemey");
+            Vector3 collisionPoint = collision.GetContact(0).point;
+            collision.gameObject.GetComponent<EnemyAI>().TakeDamage(damageAmount,collisionPoint);
             hasDealtDamage = true;
             return;
         }
