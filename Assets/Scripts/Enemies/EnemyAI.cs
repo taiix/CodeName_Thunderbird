@@ -134,14 +134,21 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(int amount, Vector3 collisionPoint)
     {
         if (isDead) return;
 
-        if (VFXManager.Instance != null)
+        //if (VFXManager.Instance != null)
+        //{
+        //    //Debug.Log("Play blood vfx");
+        //    VFXManager.Instance.PlayVFX(enemyData.enemyName + " bloodSplatter");
+        //}
+        if(enemyData.bloodSplatterPrefab != null)
         {
-            //Debug.Log("Play blood vfx");
-            VFXManager.Instance.PlayVFX(enemyData.enemyName + " bloodSplatter");
+            Debug.Log("Should play blood vfx");
+            ParticleSystem bloodVFX = Instantiate(enemyData.bloodSplatterPrefab,this.transform);
+            bloodVFX.transform.position = collisionPoint;
+            bloodVFX.Play();
         }
         currentHealth -= amount;
         OnHealthChanged?.Invoke(currentHealth);
@@ -175,7 +182,7 @@ public class EnemyAI : MonoBehaviour
             if (damageTimer >= 1.5f)
             {
                 //Debug.Log("Take Sun Damage");
-                TakeDamage(1);
+                TakeDamage(1,bloodVFXPosition.position);
                 damageTimer = 0f;
             }
         }
@@ -232,12 +239,6 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.LogWarning("No attack strategy found for enemy type: " + enemyData.enemyType);
         }
-        if (enemyData.bloodSplatterPrefab != null && enemyData.burningVFXPrefab)
-        {
-            VFXManager.Instance.RegisterVFX(enemyData.enemyName + " bloodSplatter", enemyData.bloodSplatterPrefab, bloodVFXPosition);
-            VFXManager.Instance.RegisterVFX(enemyData.enemyName + " burningVFX", enemyData.burningVFXPrefab, burningVFXPositon);
-        }
-
         currentState = new PatrolState(this.gameObject, agent, anim, player);
         ChangeCurrentState(currentState);
     }
