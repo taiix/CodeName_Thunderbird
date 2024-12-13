@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Terrain))]
-public class MapGeneratorGPU : MonoBehaviour
+public class MapGeneratorGPU : MonoBehaviour, ISavableData
 {
     public Material terrainMaterial;
     [SerializeField] private ComputeShader computeShader;
@@ -17,6 +17,7 @@ public class MapGeneratorGPU : MonoBehaviour
     private int height = 513;
 
     [SerializeField] private int seed;
+    public int Seed => seed;
     [Space]
     [Header("Terrain Properties")]
 
@@ -387,4 +388,15 @@ public class MapGeneratorGPU : MonoBehaviour
         return customAreaPositions;
     }
 
+    public string ToJson()
+    {
+        TerrainDataSave data = new TerrainDataSave(seed);
+        return JsonUtility.ToJson(data);
+    }
+
+    public void FromJson(string json)
+    {
+        TerrainDataSave data = JsonUtility.FromJson<TerrainDataSave>(json);
+        seed = data.seed;
+    }
 }

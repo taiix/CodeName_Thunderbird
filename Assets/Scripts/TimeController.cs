@@ -1,9 +1,8 @@
-using JetBrains.Annotations;
 using System;
 using TMPro;
 using UnityEngine;
 
-public class TimeController : MonoBehaviour
+public class TimeController : MonoBehaviour, ISavableData
 {
     [SerializeField] private float sunriseHour = 8; //lets say 8 am 
     [SerializeField] private float sundownHour = 20; //lets say 20 pm
@@ -43,7 +42,7 @@ public class TimeController : MonoBehaviour
     private void Update()
     {
         TimeOfDay();
-        SunRotation(); 
+        SunRotation();
         LightSettings();
     }
 
@@ -86,7 +85,16 @@ public class TimeController : MonoBehaviour
         RenderSettings.ambientLight = Color.Lerp(nightAmbientLight, dayAmbientLight, lightCurve.Evaluate(dotProduct));
     }
 
+    public string ToJson()
+    {
+        return JsonUtility.ToJson(new TimeData(currentTime));
+    }
 
+    public void FromJson(string json)
+    {
+        TimeData data = JsonUtility.FromJson<TimeData>(json);
+        currentTime = data.GetTime();
+    }
 }
 
 

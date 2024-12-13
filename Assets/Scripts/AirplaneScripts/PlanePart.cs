@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlanePart : MonoBehaviour
+public class PlanePart : MonoBehaviour, ISavableData
 {
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float currentHealth = 50;
@@ -139,5 +138,20 @@ public class PlanePart : MonoBehaviour
         {
             return null;
         }
+    }
+
+    public string ToJson()
+    {
+        PlaneData data = new PlaneData
+            (currentHealth, planeRb.gameObject.transform.position.x, planeRb.gameObject.transform.position.y, planeRb.gameObject.transform.position.z);
+
+        return JsonUtility.ToJson(data);
+    }
+
+    public void FromJson(string json)
+    {
+        PlaneData data = JsonUtility.FromJson<PlaneData>(json);
+        currentHealth = data.health;
+        planeRb.gameObject.transform.position = new Vector3(data.posX, data.posY, data.posZ);
     }
 }
