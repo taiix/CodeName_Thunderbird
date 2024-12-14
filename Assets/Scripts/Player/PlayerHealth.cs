@@ -69,7 +69,7 @@ public class PlayerHealth : MonoBehaviour, ISavableData
         PlayerData data = new PlayerData
             (currentHealth, transform.position.x, transform.position.y, transform.position.z);
         
-        return JsonUtility.ToJson(data);
+        return JsonUtility.ToJson(data, true);
     }
 
     public void FromJson(string json)

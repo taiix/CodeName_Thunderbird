@@ -58,7 +58,7 @@ public class EnemyAI : MonoBehaviour
         currentState = state;
         currentState.Enter();
 
-        Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);;
+        //Debug.Log(enemyData.enemyName + " is in state: " + currentState.name);;
     }
 
     public bool IsInShadow()
@@ -120,7 +120,7 @@ public class EnemyAI : MonoBehaviour
 
         if (currentTime > morningTime && currentTime <= eveningTime && !isReturningToShelter)
         {
-            Debug.Log("It's after 9:30 AM! Time to take action.");
+            //Debug.Log("It's after 9:30 AM! Time to take action.");
 
             isReturningToShelter = true;
             isPatrolling = false;
@@ -145,14 +145,14 @@ public class EnemyAI : MonoBehaviour
         //}
         if(enemyData.bloodSplatterPrefab != null)
         {
-            Debug.Log("Should play blood vfx");
+            //Debug.Log("Should play blood vfx");
             ParticleSystem bloodVFX = Instantiate(enemyData.bloodSplatterPrefab,this.transform);
             bloodVFX.transform.position = collisionPoint;
             bloodVFX.Play();
         }
         currentHealth -= amount;
         OnHealthChanged?.Invoke(currentHealth);
-        Debug.Log(enemyData.enemyName + " health = " + currentHealth);
+        //Debug.Log(enemyData.enemyName + " health = " + currentHealth);
         if (currentHealth <= 0)
         {
             ChangeCurrentState(new DeadState(gameObject, agent, anim, player));

@@ -30,7 +30,7 @@ public class ReturnToShelter : State
         anim.SetTrigger("isRunning");
         agent.speed = enemyData.runningSpeed;
         agent.SetDestination(shelterLocation);
-        Debug.Log("Enemy returning to shelter");
+        //Debug.Log("Enemy returning to shelter");
         base.Enter();
     }
 

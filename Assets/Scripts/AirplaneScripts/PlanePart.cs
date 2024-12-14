@@ -145,7 +145,7 @@ public class PlanePart : MonoBehaviour, ISavableData
         PlaneData data = new PlaneData
             (currentHealth, planeRb.gameObject.transform.position.x, planeRb.gameObject.transform.position.y, planeRb.gameObject.transform.position.z);
 
-        return JsonUtility.ToJson(data);
+        return JsonUtility.ToJson(data, true);
     }
 
     public void FromJson(string json)
