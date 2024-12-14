@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class PlayerData
@@ -17,7 +18,7 @@ public class PlayerData
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class PlaneData
 {
     public float health;
@@ -32,7 +33,7 @@ public class PlaneData
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class TerrainDataSave
 {
     public int seed;
@@ -43,7 +44,7 @@ public class TerrainDataSave
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class TimeData
 {
     public string time;
@@ -59,11 +60,28 @@ public class TimeData
     }
 }
 
+[Serializable]
 public class InventoryData {
-    public List<Item> inventoryItems;
+    public List<InventorySlotData> inventoryItems;
 
-    public InventoryData(List<Item> inventoryItems) { 
+    public InventoryData(List<InventorySlotData> inventoryItems) { 
         this.inventoryItems = inventoryItems;
+    }
+}
+
+[Serializable]
+public class InventorySlotData {
+
+    public string itemName;
+    public int quantity;
+
+    public InventorySlotData(string itemName, int quantity) { 
+        this.itemName = itemName;
+        this.quantity = quantity;
+    }
+
+    public Item GetItem() { 
+        return Resources.Load<Item>($"Items/{itemName}");
     }
 }
 

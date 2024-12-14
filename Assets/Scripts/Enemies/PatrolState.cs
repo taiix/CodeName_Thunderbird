@@ -102,7 +102,7 @@ public class PatrolState : State
 
     private void AdjustDirection(Vector3 targetPosition)
     {
-        Debug.Log("Adjust Direction");
+        //Debug.Log("Adjust Direction");
         float randomDistance = Random.Range(10.0f, 35.0f);
         for (int i = 0; i < 5; i++)
         {

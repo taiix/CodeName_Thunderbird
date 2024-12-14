@@ -40,10 +40,6 @@ public static class SaveLoadSystem
         Debug.Log($"Data saved successfully to {path}");
     }
 
-    public static void SaveInventoryData() { 
-        
-    }
-
     public static void LoadData(List<ISavableData> dataObjects)
     {
         if (File.Exists(path))

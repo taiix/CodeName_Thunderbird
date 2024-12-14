@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -55,7 +53,6 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
         else
         {
-          
             itemIcon.sprite = null;
             amountText.text = string.Empty;
             itemIcon.gameObject.SetActive(false);
@@ -65,7 +62,6 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     private void OnSlotClicked()
     {
-      
         InventorySystem.Instance.OnSlotClicked(this);
     }
 

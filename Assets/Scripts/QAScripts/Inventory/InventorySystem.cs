@@ -79,12 +79,10 @@ public class InventorySystem : MonoBehaviour, ISavableData
 
     private void OnDisable()
     {
-
         openInventory.Disable();
         openInventory.performed -= InventoryUIController;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         hotbarPanelUI.SetActive(true);
@@ -112,7 +110,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(itemsInInventory.Count);
+        //Debug.Log(itemsInInventory.Count);
     }
 
     void InventoryUIController(InputAction.CallbackContext context)
@@ -452,26 +450,72 @@ public class InventorySystem : MonoBehaviour, ISavableData
 
     public string ToJson()
     {
-        InventoryData data = new InventoryData(itemsInInventory);
-        return JsonUtility.ToJson(data);
+        List<InventorySlotData> slotsData = new List<InventorySlotData>();
+
+        foreach (var slot in slots)
+        {
+            if (slot.itemInSlot != null && slot.itemInSlot.itemName != null)
+            {
+                InventorySlotData slotData = new InventorySlotData(slot.itemInSlot.itemName, slot.amountInSlot);
+                slotsData.Add(slotData);
+            }
+        }
+
+        InventoryData data = new InventoryData(slotsData);
+        Debug.Log($"{data.inventoryItems.Count} items saved in the inventory");
+        return JsonUtility.ToJson(data, true);
     }
 
     public void FromJson(string json)
     {
+        ClearInventory();
+
         InventoryData inventoryData = JsonUtility.FromJson<InventoryData>(json);
-        itemsInInventory = inventoryData.inventoryItems;
 
-        // Update UI to reflect loaded inventory state
-        foreach (var slot in slots)
+
+        foreach (var slot in inventoryData.inventoryItems)
         {
-            slot.itemInSlot = null; // Clear all slots
-            slot.amountInSlot = 0;
-            slot.SetStats();
+            Item item = slot.GetItem();
+
+            if (item != null)
+            {
+                for (int i = 0; i < slot.quantity; i++)
+                {
+                    itemsInInventory.Add(item);
+                }
+
+                int remainingQuantity = slot.quantity;
+
+                foreach (var s in slots)
+                {
+                    if (s.itemInSlot == null && remainingQuantity > 0)
+                    {
+                        s.itemInSlot = item;
+                        s.itemIcon.sprite = item.itemIcon;
+                        s.amountInSlot = Mathf.Min(remainingQuantity, slot.quantity);
+                        s.SetStats();
+
+                        remainingQuantity -= s.amountInSlot;
+                    }
+                    if (remainingQuantity <= 0)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    void ClearInventory()
+    {
+        foreach (var s in slots)
+        {
+            s.itemInSlot = null;
+            s.itemIcon.sprite = null;
+            s.amountInSlot = 0;
+            s.SetStats();
         }
 
-        foreach (var item in itemsInInventory)
-        {
-            //PickUpItem(); // Re-add items to inventory UI
-        }
+        itemsInInventory.Clear();
     }
 }
