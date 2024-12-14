@@ -70,8 +70,8 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     }
     private void Start()
     {
-       
-        if(seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
+
+        if (seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
 
         UnityEngine.Random.InitState(seed);
         Calculate();
@@ -81,7 +81,7 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     {
         ComputeShader comp = Instantiate(computeShader);
         noiseHeights = new float[width, height];
-        
+
         perlinData = new ComputeBuffer(width * height, sizeof(float));
         smoothingData = new ComputeBuffer(width * height, sizeof(float));
         terrainHeightsData = new ComputeBuffer(width * height, sizeof(float));
@@ -391,7 +391,7 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     public string ToJson()
     {
         TerrainDataSave data = new TerrainDataSave(seed);
-        return JsonUtility.ToJson(data);
+        return JsonUtility.ToJson(data.seed, true);
     }
 
     public void FromJson(string json)
