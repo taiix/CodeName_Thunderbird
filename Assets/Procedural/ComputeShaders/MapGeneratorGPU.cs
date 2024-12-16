@@ -391,7 +391,7 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     public string ToJson()
     {
         TerrainDataSave data = new TerrainDataSave(seed);
-        return JsonUtility.ToJson(data.seed, true);
+        return JsonUtility.ToJson(data);
     }
 
     public void FromJson(string json)

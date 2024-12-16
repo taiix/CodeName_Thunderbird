@@ -9,7 +9,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             List<ISavableData> dataToSave = GetAllSaveableData();
 
-            SaveLoadSystem.SaveData(dataToSave );
+            SaveLoadSystem.SaveData(dataToSave);
         } 
         
         if (Input.GetKeyDown(KeyCode.F2))
