@@ -61,26 +61,31 @@ public class TimeData
 }
 
 [Serializable]
-public class InventoryData {
+public class InventoryData
+{
     public List<InventorySlotData> inventoryItems;
 
-    public InventoryData(List<InventorySlotData> inventoryItems) { 
+    public InventoryData(List<InventorySlotData> inventoryItems)
+    {
         this.inventoryItems = inventoryItems;
     }
 }
 
 [Serializable]
-public class InventorySlotData {
+public class InventorySlotData
+{
 
     public string itemName;
     public int quantity;
 
-    public InventorySlotData(string itemName, int quantity) { 
+    public InventorySlotData(string itemName, int quantity)
+    {
         this.itemName = itemName;
         this.quantity = quantity;
     }
 
-    public Item GetItem() { 
+    public Item GetItem()
+    {
         return Resources.Load<Item>($"Items/{itemName}");
     }
 }

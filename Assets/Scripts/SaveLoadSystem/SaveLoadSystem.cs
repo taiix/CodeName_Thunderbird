@@ -35,7 +35,7 @@ public static class SaveLoadSystem
 
         SaveDataWrapper wrapper = new SaveDataWrapper(jsonData);
 
-        string json = JsonUtility.ToJson(wrapper, true);
+        string json = JsonUtility.ToJson(wrapper);
 
         File.WriteAllText(path, json);
         Debug.Log($"Data saved successfully to {path}");
