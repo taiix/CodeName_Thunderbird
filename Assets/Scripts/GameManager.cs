@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public UnityAction OnPlayerEnterPlane;
     public UnityAction OnPlayerExitPlane;
 
+    private Island lastIsland;
+
     private void Awake()
     {
         Instance = this;
@@ -82,5 +84,16 @@ public class GameManager : MonoBehaviour
     public bool IsPLayerInPlane()
     {
         return isPLayerInPlane;
+    }
+
+    public void SetLastIsland(Island island)
+    {
+        lastIsland = island;
+        Debug.Log("Updated last island to: " + island.name);
+    }
+
+    public Island GetLastIsland()
+    {
+        return lastIsland;
     }
 }

@@ -60,7 +60,7 @@ public class TreeInteractable : Interactable
     {
         treeHealth -= 1;
 
-        if(treeHealth <= 0)
+        if (treeHealth <= 0)
         {
             OnTreeDeath();
         }
@@ -70,9 +70,10 @@ public class TreeInteractable : Interactable
     {
         InteractionHandler.Instance.HideInteractionUI();
         this.gameObject.SetActive(false);
-        Instantiate(choppedTreePrefab, this.transform.position, this.transform.rotation);
+        if (choppedTreePrefab != null)
+        {
+            Instantiate(choppedTreePrefab, this.transform.position, this.transform.rotation);
+        }
         Destroy(gameObject);
     }
-
-    
 }

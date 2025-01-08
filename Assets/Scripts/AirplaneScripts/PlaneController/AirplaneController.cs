@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,28 @@ public class AirplaneController : RigidBodyController
 
     private bool canControlPlane = false;
 
+    void OnEnable()
+    {
+        airplaneAerodynamics = GetComponent<AirplaneAerodynamics>();
+        if (airplaneAerodynamics != null)
+        {
+            Debug.Log("Subscribing to OnCrash");
+            airplaneAerodynamics.OnCrash += HandleCrash;
+        }
+        else
+        {
+            Debug.LogError("AirplaneAerodynamics reference is null!");
+        }
+    }
+
+    void OnDisable()
+    {
+        if (airplaneAerodynamics != null)
+        {
+            airplaneAerodynamics.OnCrash -= HandleCrash;
+        }
+    }
+
     public override void Start()
     {
         base.Start();
@@ -31,7 +54,7 @@ public class AirplaneController : RigidBodyController
                 rb.centerOfMass = centerOfGravity.localPosition;
             }
 
-            airplaneAerodynamics = GetComponent<AirplaneAerodynamics>();
+            
 
             if (airplaneAerodynamics)
             {
@@ -162,6 +185,39 @@ public class AirplaneController : RigidBodyController
             {
                 wheel.HandleWheel(Input, false);
             }
+        }
+    }
+
+    private void HandleCrash()
+    {
+        Debug.Log("Crash detected. Handling respawn...");
+        StartCoroutine(HandleCrashRespawn());
+    }
+
+    private IEnumerator HandleCrashRespawn()
+    {
+        yield return new WaitForSeconds(2f);
+
+        Island lastIsland = GameManager.Instance.GetLastIsland();
+
+        if (lastIsland != null)
+        {
+            Transform respawnPoint = lastIsland.respawnPoint;
+            airplaneAerodynamics.ResetPhysics();
+            foreach(AirplaneEngine engine in engines)
+            {
+                engine.EnableEngine();
+            }
+
+            transform.position = respawnPoint.position;
+            transform.rotation = respawnPoint.rotation;
+
+            Debug.Log("Respawned at last island: " + lastIsland.name);
+            Input.EnableInput();
+        }
+        else
+        {
+            Debug.LogWarning("No island to respawn to!");
         }
     }
 }
