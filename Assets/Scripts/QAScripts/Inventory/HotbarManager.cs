@@ -9,7 +9,6 @@ public class HotbarManager : MonoBehaviour
 
     private EquipSystem equipSystem;
     private InventorySystem inventorySystem;
-
     private void Start()
     {
         try
@@ -70,12 +69,20 @@ public class HotbarManager : MonoBehaviour
 
         if (hotbarSlots[slotIndex].itemInSlot != null)
         {
-            Debug.Log("Equip item");
             Item itemToEquip = hotbarSlots[slotIndex].itemInSlot;
 
-            equipSystem.EquipItem(itemToEquip);
-            inventorySystem.RemoveItem(itemToEquip, 1);
-
+            // If the item is already equipped, unequip it
+            if (equipSystem.IsItemEquipped(itemToEquip))
+            {
+                Debug.Log("Unequipping item: " + itemToEquip.itemName);
+                equipSystem.UnequipItem();
+            }
+            else
+            {
+                // Otherwise, equip the item
+                Debug.Log("Equipping item: " + itemToEquip.itemName);
+                equipSystem.EquipItem(itemToEquip);
+            }
         }
         else
         {

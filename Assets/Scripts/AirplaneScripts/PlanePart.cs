@@ -10,7 +10,7 @@ public class PlanePart : MonoBehaviour, ISavableData
 
 
     public string partName;
-    public bool IsDamaged => currentHealth < maxHealth;
+    [SerializeField] public bool IsDamaged => currentHealth < maxHealth;
 
     public float CurrentHealth { get; private set; }
 
@@ -50,7 +50,6 @@ public class PlanePart : MonoBehaviour, ISavableData
         }
     }
 
-
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
@@ -85,8 +84,6 @@ public class PlanePart : MonoBehaviour, ISavableData
                 InventorySystem.Instance?.RemoveItem(upgrades[currentUpgradeLevel].itemsForFix[i].item, 
                                                     upgrades[currentUpgradeLevel].itemsForFix[i].amount);
             }
-
-
             currentHealth += repairAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
 
@@ -106,7 +103,7 @@ public class PlanePart : MonoBehaviour, ISavableData
 
     public bool HasItemsForFix()
     {
-        for(int i = 0; i < upgrades[currentUpgradeLevel].requiredItemsList.Count - 1; i++)
+        for(int i = 0; i < upgrades[currentUpgradeLevel].itemsForFix.Count; i++)
         {
             if (!InventorySystem.Instance.HasRequiredItem(upgrades[i].itemsForFix[i].item, upgrades[i].itemsForFix[i].amount))
             {
@@ -125,12 +122,9 @@ public class PlanePart : MonoBehaviour, ISavableData
 
         UpgradePower = upgradePower;
     }
-
-
-
     public PartUpgrade GetCurrentUpgrade()
     {
-        if (currentUpgradeLevel < upgrades.Count)
+        if (currentUpgradeLevel <= upgrades.Count)
         {
             return upgrades[currentUpgradeLevel];
         }
@@ -140,6 +134,11 @@ public class PlanePart : MonoBehaviour, ISavableData
         }
     }
 
+    public void ResetHealth()
+    {
+        currentHealth = 100;
+        TakeDamage(0);
+    }
     public string ToJson()
     {
         PlaneData data = new PlaneData
