@@ -50,8 +50,6 @@ public class PlanePartInteractable : Interactable
 
     private string RepairMessage()
     {
-
-
         string itemsRequired = string.Empty;
 
         for (int i = 0; i < planePart.upgrades[planePart.currentUpgradeLevel].itemsForFix.Count; i++)

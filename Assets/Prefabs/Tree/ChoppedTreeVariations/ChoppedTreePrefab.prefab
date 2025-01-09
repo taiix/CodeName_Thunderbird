@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4472644180488881109}
   - component: {fileID: 4744723148550372149}
   - component: {fileID: 929907810191004891}
+  - component: {fileID: 3530143694153929302}
   m_Layer: 7
   m_Name: Tree_free_01
   m_TagString: Untagged
@@ -105,6 +106,26 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.0035637969
   m_Center: {x: -0.000000014305114, y: 1.2201726e-18, z: 0.00047325552}
+--- !u!114 &3530143694153929302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382324118763027492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b5115de5c0283a468e7a534d671ba23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHeld: 0
+  isThrown: 0
+  interactionText: Stump
+  choppedTreePrefab: {fileID: 0}
+  treeMaxHealth: 1
+  treeHealth: 0
+  canBeChopped: 0
+  playerInRange: 0
 --- !u!1 &2706461339042623145
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,9 +360,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
-  woodLogPrefab: {fileID: 7744048200847661142, guid: 27fe8091088b0e84fa77849657f92449, type: 3}
+  woodLogPrefab: {fileID: 5649871567691313508, guid: d84ab59a85d1ca8439c1255359b7f036, type: 3}
   minLogs: 1
   maxLogs: 5
   gatherParticles: {fileID: 6650199810314842004, guid: 3b7f2c753d435d647a80f1f047a113e3, type: 3}
-  particleDuration: 1.5

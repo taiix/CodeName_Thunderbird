@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using System;
 
 public class AirplaneAerodynamics : MonoBehaviour
 {
@@ -17,11 +19,11 @@ public class AirplaneAerodynamics : MonoBehaviour
     private float normalizedKph;
 
     //UNDERWATER
-    public float waterHeight = 8f;
-    public float underwaterDrag = 2f;
-    public float underwaterAngularDrag = 4f;
-    public float buoyancyForce = 8f;
-    public AnimationCurve buoyancyCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
+    [SerializeField] private float waterHeight = 7f;
+    [SerializeField] private float underwaterDrag = 2f;
+    [SerializeField] private float underwaterAngularDrag = 4f;
+    [SerializeField] private float buoyancyForce = 8f;
+    [SerializeField] private AnimationCurve buoyancyCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
 
     private bool isUnderwater = false;
 
@@ -55,7 +57,10 @@ public class AirplaneAerodynamics : MonoBehaviour
     const float mpsToKph = 3.6f;
 
     public List<float> altitudeThresholds = new List<float> {}; 
-    public List<float> requiredLiftPower = new List<float> { 3500f, 3700f, 4000f }; 
+    public List<float> requiredLiftPower = new List<float> { 3500f, 3700f, 4000f };
+
+    public event Action OnCrash;
+
     public void InitializeAerodynamics(Rigidbody rigidBody, BaseAirplaneInputs inputs)
     {
         airplaneInputs = inputs;
@@ -225,7 +230,13 @@ public class AirplaneAerodynamics : MonoBehaviour
     {
         if (transform.position.y < waterHeight)
         {
+            Debug.Log("Plane is underwater");
+            OnCrash?.Invoke();
             isUnderwater = true;
+        }
+        else
+        {
+            isUnderwater = false;
         }
     }
     public void ApplyUnderwaterPhysics()
@@ -240,11 +251,16 @@ public class AirplaneAerodynamics : MonoBehaviour
 
         Vector3 buoyancyVector = Vector3.up * buoyancy;
         rb.AddForce(buoyancyVector, ForceMode.Acceleration);
+
+        float dampingFactor = Mathf.Lerp(1f, 0.1f, normalizedDepth);
+        rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, Time.deltaTime * (1f - dampingFactor));
+
+        rb.drag = Mathf.Lerp(startDrag, underwaterDrag, normalizedDepth);
+        rb.angularDrag = Mathf.Lerp(startAngularDrag, underwaterAngularDrag, normalizedDepth);
     }
 
     void HandleAltitude()
     {
-
         // Altitude thresholds and required lift power values
         for (int i = 0; i < altitudeThresholds.Count; i++)
         {
@@ -266,5 +282,16 @@ public class AirplaneAerodynamics : MonoBehaviour
     public bool IsUnderwater()
     {
         return isUnderwater;
+    }
+
+    public void ResetPhysics()
+    {
+        foreach(PlanePart part in parts)
+        {
+            part.ResetHealth();
+        }
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        isUnderwater = false;
     }
 }
