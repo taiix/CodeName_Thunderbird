@@ -9,7 +9,7 @@ public class MiningMiniGame : MonoBehaviour
     [SerializeField] private float maxPointSize = 0.5f;
     [SerializeField] private float minPointSize = 0.1f;
     [SerializeField] private float pointShrinkTime = 5f; 
-    private float pointSpawnDistance = 0.8f;
+    private float pointSpawnDistance = 1f;
 
     private List<MiningPoint> miningPoints = new List<MiningPoint>();
     private OreInteractable currentOre;
@@ -17,6 +17,8 @@ public class MiningMiniGame : MonoBehaviour
     private int pointsClicked = 0;
 
     private bool isMining = false;
+
+    private bool hasMined = false;
     private Transform playerTransform;
 
     private void Start()
@@ -49,7 +51,7 @@ public class MiningMiniGame : MonoBehaviour
             Vector2 randomCirclePos = Random.insideUnitCircle * pointSpawnDistance;
 
             Vector3 pointPosition = spawnCenter + oreTransform.right * randomCirclePos.x + oreTransform.up * randomCirclePos.y;
-
+            pointPosition.y += 1;
        
             GameObject miningPoint = Instantiate(miningPointPrefab, pointPosition, Quaternion.identity);
 
@@ -66,10 +68,12 @@ public class MiningMiniGame : MonoBehaviour
 
     private void Update()
     {
+        //if (hasMined) return;
         if (miningPoints.Count == 0 && isMining)
         {
             currentOre.BreakOre(pointsClicked);
             isMining = false;
+            hasMined = true;
             pointsClicked = 0;
         }
     }

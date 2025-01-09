@@ -3,7 +3,10 @@ using UnityEngine;
 public class OreInteractable : Interactable
 {
     [SerializeField] private Item oreItem;
-    //[SerializeField] private MiningMiniGame miningMiniGame; 
+    private MiningMiniGame miningMiniGame;
+
+    [SerializeField] private GameObject miningGame;
+
     private bool isBeingMined = false;
 
     public override void OnFocus()
@@ -20,10 +23,22 @@ public class OreInteractable : Interactable
         {
             interactionText = string.Empty;
             isBeingMined = true;
-            CircleMinigame.OnItemReceived?.Invoke(oreItem, this.gameObject);
+            Page.OnOreMined?.Invoke(oreItem.itemName);
+            gameObject.GetComponent<Collider>().enabled = false;  
+
+            if (miningGame != null && miningGame.GetComponent<MiningMiniGame>() != null)
+            {
+                miningMiniGame = miningGame.GetComponent<MiningMiniGame>();
+                miningMiniGame.StartMining(this);
+            }
+            else
+            {
+                CircleMinigame.OnItemReceived?.Invoke(oreItem, this.gameObject);
+            }
+
             InteractionHandler.Instance.HideInteractionUI();
         }
-     
+
     }
 
     public override void OnLoseFocus()
@@ -36,9 +51,10 @@ public class OreInteractable : Interactable
 
     public void BreakOre(int spawnAmount)
     {
+
         isBeingMined = false;
         SpawnMinedItems(spawnAmount);
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
 
     private void SpawnMinedItems(int amountToSpawn)
@@ -47,7 +63,7 @@ public class OreInteractable : Interactable
         {
             for (int i = 0; i < amountToSpawn; i++)
             {
-                Instantiate(oreItem.itemPrefab, transform.position + new Vector3(Random.Range(-2f,2f), 1,Random.Range(-2f, 2f)), Quaternion.Euler(new Vector3(0,Random.Range(0, 360),0)));
+                Instantiate(oreItem.itemPrefab, transform.position + new Vector3(Random.Range(-2f, 2f), 1, Random.Range(-2f, 2f)), Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0)));
             }
         }
     }

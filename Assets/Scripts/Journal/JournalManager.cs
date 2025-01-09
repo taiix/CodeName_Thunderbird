@@ -14,16 +14,28 @@ public class JournalManager : MonoBehaviour
     private InputAction journalAction;
     private bool isOpen = false;
 
+    private Page oresPage;
 
     private void OnEnable()
     {
         journalAction = playerInputs.FindAction("OpenJournal");
         journalAction.performed += OnJournalOpened;
+
+        oresPage = pages.Find(page => page.pageCategory == PageCategory.ores);
+        if (oresPage != null)
+        {
+            Page.OnOreMined += oresPage.ActivateSection;
+        }
     }
 
     private void OnDisable()
     {
         journalAction.performed -= OnJournalOpened;
+
+        if (oresPage != null)
+        {
+            Page.OnOreMined -= oresPage.ActivateSection;
+        }
     }
 
     void OpenJournal()
@@ -60,6 +72,9 @@ public class JournalManager : MonoBehaviour
         {
             isOpen = !isOpen;
             journalUI.SetActive(isOpen);
+            GameManager.Instance.ToggleControns(isOpen);
         }
     }
+
+
 }
