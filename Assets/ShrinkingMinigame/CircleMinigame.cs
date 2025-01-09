@@ -30,8 +30,8 @@ public class CircleMinigame : MonoBehaviour
     [Header("Game State")]
     [SerializeField] private int gameCount = 0;         // Number of minigames played
     private int itemsMined = 0;
-    private GameObject corespondingGO;
 
+    private GameObject corespondingGO;
     private void OnEnable() { OnItemReceived += ReceiveItem; }
     private void OnDisable() { OnItemReceived -= ReceiveItem; }
 
@@ -151,11 +151,13 @@ public class CircleMinigame : MonoBehaviour
         isShrinkingActive = false;
         gameUI.SetActive(isShrinkingActive);
         CircleMinigameHandler.OnMinigameInteracted?.Invoke(itemsMined, item, corespondingGO.transform);
-        Destroy(corespondingGO);
         itemsMined = 0;
         item = null;
-        
-        GameManager.Instance.EnablePlayerControls();
 
+        if (corespondingGO.TryGetComponent<Interactable>(out Interactable interactable)) {
+            interactable.RemoveObject(interactable.gameObject);
+        }
+
+        GameManager.Instance.EnablePlayerControls();
     }
 }

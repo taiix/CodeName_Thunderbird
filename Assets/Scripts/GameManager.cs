@@ -65,6 +65,18 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
     }
 
+    public void ToggleControns(bool toggle)
+    {
+        if (toggle)
+        {
+            DisablePlayerControls(false);
+        }
+        else
+        {
+            EnablePlayerControls();
+        }
+    }
+
     public InventorySystem GetInventorySystem()
     {
 

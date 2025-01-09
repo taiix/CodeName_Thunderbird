@@ -6,7 +6,8 @@ public abstract class Interactable : MonoBehaviour
     public bool isThrown;
 
     public string interactionText = string.Empty;
-    
+    public ProceduralVegetation parentIsland;
+
     public virtual void Awake()
     {
         gameObject.layer = 7;
@@ -20,4 +21,9 @@ public abstract class Interactable : MonoBehaviour
 
     //Gets called when we are no longer looking at the interactable
     public abstract void OnLoseFocus();
+
+    public void RemoveObject(GameObject go) {
+        parentIsland?.RemoveObjects(go);
+        //Destroy(go);
+    }
 }

@@ -1,8 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class SaveDataWrapper
 {
     public List<string> jsonData;

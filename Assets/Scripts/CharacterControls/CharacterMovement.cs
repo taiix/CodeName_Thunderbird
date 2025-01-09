@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,6 +32,7 @@ public class CharacterMovement : MonoBehaviour
 
 
     private bool activateControls = true;
+    private bool canJump = true;
 
     //public static event Action OnDisableControls;
     //public static event Action OnEnableControls;
@@ -103,12 +106,12 @@ public class CharacterMovement : MonoBehaviour
     {
         //Debug.Log(IsOnSteepSlope());
 
+        GroundCheck();
         if (IsOnSteepSlope() && activateControls)
         {
             Movement();
         }
 
-        GroundCheck();
 
         FootstepsFX();
     }
@@ -164,14 +167,20 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private void GroundCheck()
+    private bool GroundCheck()
     {
-        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        //Vector3 origin = transform.position + Vector3.up * 0.1f;
 
+        //isGrounded = Physics.Raycast(origin, Vector3.down, groundCheckDistance);
+        //Debug.DrawRay(origin, Vector3.down * groundCheckDistance, Color.red);
 
-        isGrounded = Physics.Raycast(origin, Vector3.down, groundCheckDistance);
+        RaycastHit hit;
+        float sphereCastRadius = GetComponent<CapsuleCollider>().radius * 0.05f;
+        float sphereCastTravelDistance = GetComponent<CapsuleCollider>().bounds.extents.y - sphereCastRadius + groundCheckDistance;
 
-        Debug.DrawRay(origin, Vector3.down * groundCheckDistance, Color.red);
+      
+        return Physics.SphereCast(rb.position, sphereCastRadius, Vector3.down, out hit, sphereCastTravelDistance);
+
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -220,11 +229,18 @@ public class CharacterMovement : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (isGrounded)
-        {
-
+        if (GroundCheck() && canJump)
+        { 
+            StartCoroutine(JumpCooldown());
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
+    }
+
+    private IEnumerator JumpCooldown()
+    {
+        canJump = false; // Disable jump temporarily
+        yield return new WaitForSeconds(1f);
+        canJump = true; // Re-enable jump after cooldown
     }
 
     private void Look()

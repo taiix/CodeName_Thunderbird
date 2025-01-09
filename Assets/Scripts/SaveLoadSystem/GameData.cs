@@ -90,7 +90,24 @@ public class InventorySlotData
     }
 }
 
-public class QuestData
-{
+public class QuestData { }
 
+[Serializable]
+public class VegetationData
+{
+    public string prefabName;
+    public float posX, posY, posZ;
+    public float scaleX, scaleY, scaleZ;
+
+    public VegetationData(string prefabName, Vector3 position, Vector3 scale)
+    {
+        this.prefabName = prefabName;
+        this.posX = position.x;
+        this.posY = position.y;
+        this.posZ = position.z;
+        this.scaleX = scale.x;
+        this.scaleY = scale.y;
+        this.scaleZ = scale.z;
+    }
 }
+
