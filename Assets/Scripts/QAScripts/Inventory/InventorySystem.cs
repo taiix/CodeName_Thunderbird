@@ -28,9 +28,6 @@ public class InventorySystem : MonoBehaviour, ISavableData
     private Item equippedItem;
     private Transform originalHotbarPos;
     [SerializeField] private HotbarManager hotbarManager;
-
-
-
     [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
     public List<Item> itemsInInventory = new List<Item>();
 
@@ -110,7 +107,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(itemsInInventory.Count);
+        
     }
 
     void InventoryUIController(InputAction.CallbackContext context)

@@ -3,6 +3,10 @@ using UnityEngine;
 public class OreInteractable : Interactable
 {
     [SerializeField] private Item oreItem;
+    private MiningMiniGame miningMiniGame;
+
+    [SerializeField] private GameObject miningGame;
+
 
     private bool isBeingMined = false;
 
@@ -20,7 +24,19 @@ public class OreInteractable : Interactable
         {
             interactionText = string.Empty;
             isBeingMined = true;
-            CircleMinigame.OnItemReceived?.Invoke(oreItem, this.gameObject);
+            Page.OnOreMined?.Invoke(oreItem.itemName);
+            gameObject.GetComponent<Collider>().enabled = false;  
+
+            if (miningGame != null && miningGame.GetComponent<MiningMiniGame>() != null)
+            {
+                miningMiniGame = miningGame.GetComponent<MiningMiniGame>();
+                miningMiniGame.StartMining(this);
+            }
+            else
+            {
+                CircleMinigame.OnItemReceived?.Invoke(oreItem, this.gameObject);
+            }
+
             InteractionHandler.Instance.HideInteractionUI();
         }
 
@@ -36,6 +52,7 @@ public class OreInteractable : Interactable
 
     public void BreakOre(int spawnAmount)
     {
+
         isBeingMined = false;
         SpawnMinedItems(spawnAmount);
         RemoveObject(this.gameObject);

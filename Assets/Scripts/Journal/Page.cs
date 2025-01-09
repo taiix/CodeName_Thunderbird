@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,33 +15,46 @@ public enum PageCategory
     quests,
 
 }
-public class Section : MonoBehaviour
-{
-    [SerializeField] private Image sectionImage;
-    [SerializeField] private string sectionDiscription;
 
-
-    public Section(Image sectionImage, string sectionDiscription)
-    {
-        this.sectionImage = sectionImage;
-        this.sectionDiscription = sectionDiscription;
-    }
-}
 
 public class Page : MonoBehaviour
 {
     public PageCategory pageCategory;
 
     //[SerializeField] private List<GameObject> pages = new List<GameObject>();
-    List<Section> sections = new List<Section>();
+    [SerializeField] List<Section> sections = new List<Section>();
 
-    //private bool isActive = false;
+    public static Action<String> OnOreMined;
 
-    public void UpdatePage()
+    private void Start()
     {
-       foreach(Section section in sections)
+        Debug.Log("subscribed to onOreMined");
+        OnOreMined += ActivateSection;
+    }
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        //OnOreMined -= ActivateSection;
+    }
+
+    public void ActivateSection(String name)
+    {
+        Debug.Log("ActivateSection called for: " + name);
+        Debug.Log("Sections count: " + sections.Count);
+
+        Debug.Log($"Activating section for {name}");
+        foreach (Section section in sections)
         {
-            section.gameObject.SetActive(true);
+            if (section.sectionName.ToString() == name && !section.gameObject.activeSelf)
+            {
+                section.gameObject.SetActive(true);
+                Debug.Log($"Activated section: {section.sectionName}");
+            }
         }
     }
 }
