@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TreeInteractable : Interactable
@@ -71,7 +69,7 @@ public class TreeInteractable : Interactable
         InteractionHandler.Instance.HideInteractionUI();
         this.gameObject.SetActive(false);
         Instantiate(choppedTreePrefab, this.transform.position, this.transform.rotation);
-        Destroy(gameObject);
+        RemoveObject(this.gameObject);
     }
 
     

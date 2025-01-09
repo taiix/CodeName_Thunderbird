@@ -3,7 +3,7 @@ using UnityEngine;
 public class OreInteractable : Interactable
 {
     [SerializeField] private Item oreItem;
-    //[SerializeField] private MiningMiniGame miningMiniGame; 
+
     private bool isBeingMined = false;
 
     public override void OnFocus()
@@ -23,7 +23,7 @@ public class OreInteractable : Interactable
             CircleMinigame.OnItemReceived?.Invoke(oreItem, this.gameObject);
             InteractionHandler.Instance.HideInteractionUI();
         }
-     
+
     }
 
     public override void OnLoseFocus()
@@ -38,7 +38,8 @@ public class OreInteractable : Interactable
     {
         isBeingMined = false;
         SpawnMinedItems(spawnAmount);
-        Destroy(gameObject); 
+        RemoveObject(this.gameObject);
+        Debug.Log("vikame tova");
     }
 
     private void SpawnMinedItems(int amountToSpawn)
@@ -47,7 +48,7 @@ public class OreInteractable : Interactable
         {
             for (int i = 0; i < amountToSpawn; i++)
             {
-                Instantiate(oreItem.itemPrefab, transform.position + new Vector3(Random.Range(-2f,2f), 1,Random.Range(-2f, 2f)), Quaternion.Euler(new Vector3(0,Random.Range(0, 360),0)));
+                Instantiate(oreItem.itemPrefab, transform.position + new Vector3(Random.Range(-2f, 2f), 1, Random.Range(-2f, 2f)), Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0)));
             }
         }
     }

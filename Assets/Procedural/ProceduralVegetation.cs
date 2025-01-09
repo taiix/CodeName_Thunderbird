@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [RequireComponent(typeof(MapGeneratorGPU))]
-public class ProceduralVegetation : MonoBehaviour
+public class ProceduralVegetation : MonoBehaviour, ISavableData
 {
     private Texture2D tex;
     [SerializeField] private List<GameObject> customAreaObjects;
@@ -14,16 +15,21 @@ public class ProceduralVegetation : MonoBehaviour
     private Terrain terrain;
     private TerrainData terrainData;
     #endregion
+    [SerializeField] private List<GameObject> spawnedObjects = new();
 
     private void Start()
     {
+        Init();
+    }
+
+    void Init() {
         _mapGenerator = GetComponent<MapGeneratorGPU>();
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
 
         tex = _mapGenerator.GetHeightmapTexture();
 
-        if(customAreaObjects.Count > 0) PopulateCustomAreaObjects(customAreaObjects);
+        if (customAreaObjects.Count > 0) PopulateCustomAreaObjects(customAreaObjects);
 
         PopulateTreeObjects();
     }
@@ -43,8 +49,10 @@ public class ProceduralVegetation : MonoBehaviour
             Vector3 adjustedPosition = go.transform.position;
             adjustedPosition.y += terrain.GetPosition().y;
             go.transform.position = adjustedPosition;
-
+            
             go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, go.transform.localScale.z);
+
+            spawnedObjects.Add(go);
         }
     }
 
@@ -59,7 +67,6 @@ public class ProceduralVegetation : MonoBehaviour
         }
         return positions;
     }
-
 
     public void PopulateTreeObjects()
     {
@@ -114,10 +121,24 @@ public class ProceduralVegetation : MonoBehaviour
 
                         placedVegetation.Add(go.transform.position);
                         spawnObjects++;
-                    }
+                        spawnedObjects.Add(go);
 
+                        if (go.TryGetComponent<Interactable>(out Interactable interactable))
+                        {
+                            interactable.parentIsland = this;
+                        }
+                    }
                 }
             }
+        }
+    }
+
+    public void RemoveObjects(GameObject go)
+    {
+        if (spawnedObjects.Contains(go)) { 
+            Destroy(go);
+            spawnedObjects.Remove(go);
+            Debug.Log($"Removed object {go.name} from island {go.name}.");
         }
     }
 
@@ -157,6 +178,58 @@ public class ProceduralVegetation : MonoBehaviour
         Vector3 newVegetationPosition = new Vector3(worldX, worldY, worldZ);
 
         return newVegetationPosition;
+    }
+
+    [System.Serializable]
+    public class VegetationDataWrapper
+    {
+        public List<VegetationData> data = new();
+    }
+
+    public string ToJson()
+    {
+        List<VegetationData> data = new List<VegetationData>();
+
+        foreach (var go in spawnedObjects)
+        {
+            //VegetationData vegetationData = new VegetationData
+            //{
+            //    prefabName = go.name,  // Store prefab name
+            //    posX = go.transform.position.x,  // Store x position
+            //    posY = go.transform.position.y,  // Store y position
+            //    posZ = go.transform.position.z,  // Store z position
+            //    scaleX = go.transform.localScale.x,  // Store scale x
+            //    scaleY = go.transform.localScale.y,  // Store scale y
+            //    scaleZ = go.transform.localScale.z   // Store scale z            };
+            //}; 
+            
+            //data.Add(vegetationData);
+        }
+
+        VegetationDataWrapper wrapper = new VegetationDataWrapper { data = data };
+        return JsonUtility.ToJson(wrapper, true);
+    }
+
+    public void FromJson(string json)
+    {
+        VegetationDataWrapper vegetationData = JsonUtility.FromJson<VegetationDataWrapper>(json);
+
+        foreach (var obj in spawnedObjects)
+        {
+            Destroy(obj);
+        }
+        spawnedObjects.Clear();
+
+        foreach (var item in vegetationData.data)
+        {
+            GameObject prefab = Resources.Load<GameObject>(item.prefabName);
+            if (prefab != null)
+            {
+                //GameObject go = Instantiate(prefab, item.position, Quaternion.identity);
+                //go.transform.localScale = new Vector3(go.transform.localScale.x, item.scale, go.transform.localScale.z);
+                //spawnedObjects.Add(go);
+            }
+        }
     }
 
     [System.Serializable]
