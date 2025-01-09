@@ -68,7 +68,10 @@ public class TreeInteractable : Interactable
     {
         InteractionHandler.Instance.HideInteractionUI();
         this.gameObject.SetActive(false);
-        Instantiate(choppedTreePrefab, this.transform.position, this.transform.rotation);
+        if (choppedTreePrefab != null)
+        {
+            Instantiate(choppedTreePrefab, this.transform.position, this.transform.rotation);
+        }
         RemoveObject(this.gameObject);
     }
 }

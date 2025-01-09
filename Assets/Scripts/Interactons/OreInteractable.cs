@@ -7,7 +7,6 @@ public class OreInteractable : Interactable
 
     [SerializeField] private GameObject miningGame;
 
-
     private bool isBeingMined = false;
 
     public override void OnFocus()
