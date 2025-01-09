@@ -106,5 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
+  parentIsland: {fileID: 0}
   oreItem: {fileID: 11400000, guid: a3b361267d8ba0845a63970c791983f7, type: 2}
+  miningGame: {fileID: 0}

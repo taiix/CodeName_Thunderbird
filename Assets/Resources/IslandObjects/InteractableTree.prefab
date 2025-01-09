@@ -122,7 +122,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
+  parentIsland: {fileID: 0}
   choppedTreePrefab: {fileID: 2706461339042623145, guid: 4aae71afaea7d2a46bf2bd289a8d40c6, type: 3}
   treeMaxHealth: 5
   treeHealth: 0
