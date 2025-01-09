@@ -19,6 +19,20 @@ public class AirplaneController : RigidBodyController
 
     private bool canControlPlane = false;
 
+    private float currentMSL;
+    public float CurrentMSL
+    {
+        get { return currentMSL; }
+    }
+
+    //Above ground level
+    private float currentAGL;
+
+    public float CurrentAGL
+    {
+        get { return currentAGL;}
+    }
+
     void OnEnable()
     {
         airplaneAerodynamics = GetComponent<AirplaneAerodynamics>();
@@ -135,7 +149,21 @@ public class AirplaneController : RigidBodyController
 
     void HandleAltitude()
     {
-        EnterWater();
+        //EnterWater();
+
+        //mean sea level - altitude
+         currentMSL = transform.position.y;
+
+        RaycastHit hit;
+
+        if(Physics.Raycast(transform.position, Vector3.down, out hit))
+        {
+            if (hit.transform.CompareTag("Damageable"))
+            {
+                currentAGL = transform.position.y - hit.point.y;
+                Debug.Log("CurrentAGl = " + currentAGL);
+            }
+        }
     }
 
     private void EnterWater()

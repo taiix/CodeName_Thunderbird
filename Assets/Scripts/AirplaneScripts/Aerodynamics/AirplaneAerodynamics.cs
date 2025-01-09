@@ -75,7 +75,7 @@ public class AirplaneAerodynamics : MonoBehaviour
     {
         if (rb)
         {
-            CheckIfUnderwater();
+            //CheckIfUnderwater();
             ForwardSpeed();
             Lift();
             Drag();
@@ -97,7 +97,8 @@ public class AirplaneAerodynamics : MonoBehaviour
         kph = Mathf.Clamp(kph, 0, maxKph);
         normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
 
-        speedText.text = "KPH: " + kph;
+
+        //speedText.text = "KPH: " + kph;
     }
 
     bool CanGenerateLift()
