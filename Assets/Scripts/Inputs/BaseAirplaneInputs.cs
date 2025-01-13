@@ -95,6 +95,13 @@ public class BaseAirplaneInputs : MonoBehaviour
     {
         get { return flaps; }
     }
+    public float NormalizedFlaps
+    {
+        get
+        {
+            return (float)flaps / maxFlapsIncrement;
+        }
+    }
     public float Break
     {
         get { return breaks; }

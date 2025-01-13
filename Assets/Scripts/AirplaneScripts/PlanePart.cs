@@ -115,6 +115,11 @@ public class PlanePart : MonoBehaviour, ISavableData
 
     public void PartUpgrade(PartUpgrade upgrade)
     {
+        upgradePower = upgrade.upgradePower;
+        if(partName == "Engine")
+        {
+            Debug.Log("Upgrade the engine");
+        }
         this.maxHealth += upgrade.healthUpgrade;
         this.damageFactor -= upgrade.damageReduction;
         GameManager.Instance.GetAirplaneAerodynamics().maxLiftPower += upgradePower;
