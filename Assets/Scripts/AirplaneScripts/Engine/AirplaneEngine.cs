@@ -12,6 +12,13 @@ public class AirplaneEngine : MonoBehaviour
 
     private bool isEngineEnabled = true;
 
+    private float currentRPM;
+
+    public float CurrentRPM
+    {
+        get { return currentRPM; }
+    }
+
     private void Start()
     {
         engine = GetComponent<PlanePart>();
@@ -19,7 +26,7 @@ public class AirplaneEngine : MonoBehaviour
 
     bool CanGenerateForwardSpeed()
     {
-        if (engine != null)
+        if (engine)
         {
             return engine.CurrentHealth > healthThreshold;
         }
@@ -28,9 +35,10 @@ public class AirplaneEngine : MonoBehaviour
 
     public Vector3 CalculateForce(float throttle)
     {
+        float finalThrottle = Mathf.Clamp01(throttle);
+
         if (isEngineEnabled && CanGenerateForwardSpeed())
         {
-            float finalThrottle = Mathf.Clamp01(throttle);
 
             finalThrottle = powerCurve.Evaluate(finalThrottle);
 
@@ -38,8 +46,11 @@ public class AirplaneEngine : MonoBehaviour
 
             Vector3 finalForce = transform.forward * finalPower;
 
+            currentRPM = finalThrottle * maxRPM;
+
             return finalForce;
         }
+        currentRPM = 0;
         return Vector3.zero;
     }
 

@@ -120,7 +120,7 @@ public class AirplaneController : RigidBodyController
             {
                 foreach (AirplaneEngine engine in engines)
                 {
-                    rb.AddForce(engine.CalculateForce(Input.Throttle));
+                    rb.AddForce(engine.CalculateForce(Input.StickyThrottle));
 
                 }
             }
@@ -161,7 +161,7 @@ public class AirplaneController : RigidBodyController
             if (hit.transform.CompareTag("Damageable"))
             {
                 currentAGL = transform.position.y - hit.point.y;
-                Debug.Log("CurrentAGl = " + currentAGL);
+                //Debug.Log("CurrentAGl = " + currentAGL);
             }
         }
     }

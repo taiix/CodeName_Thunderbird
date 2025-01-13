@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,19 +6,22 @@ using UnityEngine;
 public class AirplaneTachometer : MonoBehaviour, IAirplaneUI
 {
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public AirplaneEngine engine;
+    public RectTransform pointer;
+    public float maxRPM = 3500f;
+    public float maxRotation = 312;
+    public float pointerSpeed = 2f;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private float finalRotation = 0f; 
     public void HandleAirplaneUI()
     {
-        Debug.Log("Updating Tachometer");
+        if (engine && pointer)
+        {
+            float normalizedRPM = Mathf.InverseLerp(0f, maxRPM, engine.CurrentRPM);
+
+            float wantedRotation = maxRotation * -normalizedRPM;
+            finalRotation = Mathf.Lerp(finalRotation, wantedRotation, Time.deltaTime * pointerSpeed); 
+            pointer.rotation = Quaternion.Euler(0f, 0f, finalRotation);
+        }
     }
 }
