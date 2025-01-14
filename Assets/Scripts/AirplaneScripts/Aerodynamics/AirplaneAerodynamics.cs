@@ -91,9 +91,9 @@ public class AirplaneAerodynamics : MonoBehaviour
     {
         Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
         forwardSpeed = Mathf.Max(0, localVelocity.z);
-       // forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
+        // forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
 
-        kph = forwardSpeed;
+        kph = forwardSpeed; //* mpsToKph;
         //kph = Mathf.Clamp(kph, 0, maxKph);
         normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
         perka.transform.Rotate(perka.transform.rotation.x + kph, 0f, 0f);
