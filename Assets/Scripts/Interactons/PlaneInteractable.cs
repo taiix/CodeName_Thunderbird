@@ -25,10 +25,10 @@ public class PlaneInteractable : Interactable
         {
             planeCamera.gameObject.SetActive(false);
         }
-        else
-        {
-            Debug.LogError("No plane camera found. ");
-        }
+        //else
+        //{
+        //    //Debug.LogError("No plane camera found. ");
+        //}
         if (!needsPlayer)
         {
             inPlaneUi.SetActive(true);
