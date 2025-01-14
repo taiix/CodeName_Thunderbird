@@ -19,13 +19,20 @@ public class PlaneInteractable : Interactable
 
     [SerializeField] private Rigidbody planeRigidbody;
 
-
+    public bool needsPlayer = true;
 
     private void Start()
     {
-        if (planeCamera != null)
+        if (planeCamera != null && needsPlayer)
         {
             planeCamera.gameObject.SetActive(false);
+        }
+        if (!needsPlayer)
+        {
+            inPlaneUi.SetActive(true);
+            airplaneController.ActivateControls();
+            planeCamera.gameObject.SetActive(true);
+            isPlayerInPlane = true;
         }
         else
         {
