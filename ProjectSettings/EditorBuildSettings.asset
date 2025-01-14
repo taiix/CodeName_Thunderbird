@@ -8,5 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ComputeShaderTerrain.unity
     guid: 7a6892351e61b8a4b809155b46473dd3
+  - enabled: 0
+    path: Assets/Scenes/TutorialFlying.unity
+    guid: cd8a1a2c1094c0b44a1fc1c8f0ee262a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 80bdae8216c89e04ca4990d38f7902ff, type: 2}

@@ -105,6 +105,7 @@ public class BaseAirplaneInputs : MonoBehaviour
     public float StickyThrottle
     {
         get { return stickyThrottle; }
+        set { stickyThrottle = value; }
     }
     #endregion
 
