@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class AirplaneEngine : MonoBehaviour
@@ -16,7 +17,8 @@ public class AirplaneEngine : MonoBehaviour
 
     public float CurrentRPM
     {
-        get { return currentRPM; }
+        get { return currentRPM;}
+        set { currentRPM = Mathf.Clamp(value, 0, maxRPM); }
     }
 
     private void Start()

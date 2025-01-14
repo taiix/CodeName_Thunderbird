@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [RequireComponent(typeof(MapGeneratorGPU))]
 public class ProceduralVegetation : MonoBehaviour, ISavableData
