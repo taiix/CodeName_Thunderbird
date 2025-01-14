@@ -2172,7 +2172,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   lerpSpeed: 0.03
   dragFactor: 0.0004
-  flapDragFactor: 0.5
+  flapDragFactor: 0.05
   altitudeThresholds:
   - 600
   - 1100
