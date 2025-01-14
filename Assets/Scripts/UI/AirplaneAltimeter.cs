@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class AirplaneAltimeter : MonoBehaviour, IAirplaneUI
 {
-
     public AirplaneController airplane;
     public RectTransform hundredsPointer;
     public RectTransform thousandsPointer;
+
+    private float altitude;
 
     public void HandleAirplaneUI()
     {
@@ -34,7 +35,10 @@ public class AirplaneAltimeter : MonoBehaviour, IAirplaneUI
                 float hundredsRotation = 360 * normalizedHundreds;
                 hundredsPointer.rotation = Quaternion.Euler(0f, 0f, -hundredsRotation);
             }
+
+            altitude = currentAltitude;
         }
     }
 
+    public float GetAltitude() { return altitude; }
 }
