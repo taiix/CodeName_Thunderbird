@@ -6,11 +6,10 @@ public class RingTracker : MonoBehaviour
 {
     public TextMeshProUGUI ringCounterText; 
     private int totalRings; 
-    private int ringsPassed = 0; 
+    public int ringsPassed = 0; 
 
     private void Start()
     {
-    
         totalRings = GameObject.FindGameObjectsWithTag("Ring").Length;
         UpdateRingCounter();
     }
