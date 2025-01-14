@@ -65,7 +65,7 @@ public class PlaneInteractable : Interactable
 
     private void EnterPlane()
     {
-        GameManager.Instance.OnPlayerEnterPlane.Invoke();
+        GameManager.Instance?.OnPlayerEnterPlane.Invoke();
 
         GameManager.Instance.DisablePlayerControls(false);
         Cursor.visible = false;
