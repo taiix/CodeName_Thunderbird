@@ -112,7 +112,7 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
                     if (canPlace)
                     {
                         GameObject go = Instantiate(vegetation.prefab, vegetationWorldPosition, Quaternion.identity, this.gameObject.transform);
-
+                        go.name = vegetation.prefab.name;
                         Vector3 adjustedPosition = go.transform.position;
                         adjustedPosition.y += terrain.GetPosition().y;
                         go.transform.position = adjustedPosition;
@@ -192,18 +192,9 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 
         foreach (var go in spawnedObjects)
         {
-            //VegetationData vegetationData = new VegetationData
-            //{
-            //    prefabName = go.name,  // Store prefab name
-            //    posX = go.transform.position.x,  // Store x position
-            //    posY = go.transform.position.y,  // Store y position
-            //    posZ = go.transform.position.z,  // Store z position
-            //    scaleX = go.transform.localScale.x,  // Store scale x
-            //    scaleY = go.transform.localScale.y,  // Store scale y
-            //    scaleZ = go.transform.localScale.z   // Store scale z            };
-            //}; 
-            
-            //data.Add(vegetationData);
+            VegetationData vegetationData = new VegetationData(go.name, go.transform.position, go.transform.localScale);
+
+            data.Add(vegetationData);
         }
 
         VegetationDataWrapper wrapper = new VegetationDataWrapper { data = data };
@@ -222,12 +213,25 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 
         foreach (var item in vegetationData.data)
         {
-            GameObject prefab = Resources.Load<GameObject>(item.prefabName);
+            GameObject prefab = Resources.Load<GameObject>($"IslandObjects/{item.prefabName}");
+
             if (prefab != null)
             {
-                //GameObject go = Instantiate(prefab, item.position, Quaternion.identity);
-                //go.transform.localScale = new Vector3(go.transform.localScale.x, item.scale, go.transform.localScale.z);
-                //spawnedObjects.Add(go);
+               
+                if (prefab.TryGetComponent<Interactable>(out Interactable interactable)) {
+                    interactable.parentIsland = this;
+                }
+                Vector3 pos = new Vector3(item.posX, item.posY, item.posZ);
+                Vector3 objScale = new Vector3(item.scaleX, item.scaleY, item.scaleZ);
+
+                GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform);
+                go.name = item.prefabName;
+                go.transform.localScale = objScale;
+                spawnedObjects.Add(go);
+            }
+            else
+            {
+                Debug.LogError($"Prefab {item.prefabName} not found in Resources/IslandObjects/");
             }
         }
     }

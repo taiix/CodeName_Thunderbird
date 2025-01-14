@@ -169,7 +169,7 @@ MonoBehaviour:
   maxForce: 3
   sprintSpeed: 10
   normalSpeed: 6
-  groundCheckDistance: 1.5
+  groundCheckDistance: 0.05
   maxSlopeAngle: 30
   jumpForce: 6
 --- !u!54 &2011121929313801141
@@ -619,7 +619,7 @@ MonoBehaviour:
     FieldOfView: 60.000004
     OrthographicSize: 10
     NearClipPlane: 0.01
-    FarClipPlane: 5000
+    FarClipPlane: 7000
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -666,8 +666,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 5000
-  field of view: 60
+  far clip plane: 10050
+  field of view: 100
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -776,7 +776,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   underwaterEffectProfile: {fileID: 11400000, guid: 146dc75c188605042b69a247658f3286, type: 2}
   globalProfile: {fileID: 11400000, guid: 2507dbfee634cda4ba69e0f6f6d93bf1, type: 2}
-  waterSurface: {fileID: 0}
+  waterSurface:
+  - {fileID: 0}
 --- !u!1001 &5062012173140598988
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -51,11 +51,9 @@ public class OreInteractable : Interactable
 
     public void BreakOre(int spawnAmount)
     {
-
         isBeingMined = false;
         SpawnMinedItems(spawnAmount);
         RemoveObject(this.gameObject);
-        Debug.Log("vikame tova");
     }
 
     private void SpawnMinedItems(int amountToSpawn)

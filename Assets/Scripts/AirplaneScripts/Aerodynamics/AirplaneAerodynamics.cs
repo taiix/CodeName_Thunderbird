@@ -9,13 +9,10 @@ public class AirplaneAerodynamics : MonoBehaviour
     //FOR TESTING
     public List<PlanePart> parts = new List<PlanePart>();
     public float healthThreshold = 50f;
-    public TextMeshProUGUI speedText;
-    //
 
     public float forwardSpeed;
     public float kph;
     public float maxKph = 178f;
-    private float maxMPS;
     private float normalizedKph;
 
     //UNDERWATER
@@ -36,6 +33,8 @@ public class AirplaneAerodynamics : MonoBehaviour
     public float pitchSpeed = 1000f;
     public float rollSpeed = 1000f;
     public float yawSpeed = 1000f;
+    public AnimationCurve controlSurfaceEfficiency = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
     public float lerpSpeed = 0.03f;
 
     private BaseAirplaneInputs airplaneInputs;
@@ -49,6 +48,7 @@ public class AirplaneAerodynamics : MonoBehaviour
     private float pitchAngle;
     private float rollAngle;
 
+    private float controlSurfaceEfficiencyValue;
 
     private Rigidbody rb;
     private float startDrag;
@@ -67,18 +67,17 @@ public class AirplaneAerodynamics : MonoBehaviour
         rb = rigidBody;
         startDrag = rb.drag;
         startAngularDrag = rb.angularDrag;
-
-        maxMPS = maxKph / mpsToKph;
     }
 
     public void UpdateAerodynamics()
     {
         if (rb)
         {
-            CheckIfUnderwater();
+            //CheckIfUnderwater();
             ForwardSpeed();
             Lift();
             Drag();
+            HandleControlSurfaceEfficiency();
             Pitch();
             Roll();
             Yaw();
@@ -91,13 +90,11 @@ public class AirplaneAerodynamics : MonoBehaviour
     {
         Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
         forwardSpeed = Mathf.Max(0, localVelocity.z);
-        forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
+       // forwardSpeed = Mathf.Clamp(forwardSpeed, 0, maxKph);
 
-        kph = forwardSpeed * mpsToKph;
-        kph = Mathf.Clamp(kph, 0, maxKph);
+        kph = forwardSpeed;
+        //kph = Mathf.Clamp(kph, 0, maxKph);
         normalizedKph = Mathf.InverseLerp(0, maxKph, kph);
-
-        speedText.text = "KPH: " + kph;
     }
 
     bool CanGenerateLift()
@@ -182,6 +179,10 @@ public class AirplaneAerodynamics : MonoBehaviour
         }
     }
 
+    void HandleControlSurfaceEfficiency()
+    {
+        controlSurfaceEfficiencyValue = controlSurfaceEfficiency.Evaluate(normalizedKph);
+    }
     void Pitch()
     {
         Vector3 flatForward = transform.forward;
@@ -193,7 +194,7 @@ public class AirplaneAerodynamics : MonoBehaviour
         //Debug.Log("Pitch Angle: " + pitchAngle);
 
         //
-        Vector3 pitchTorque = airplaneInputs.Pitch * pitchSpeed * transform.right;
+        Vector3 pitchTorque = airplaneInputs.Pitch * pitchSpeed * transform.right; //* controlSurfaceEfficiencyValue;
 
         rb.AddTorque(pitchTorque);
     }
@@ -206,14 +207,14 @@ public class AirplaneAerodynamics : MonoBehaviour
 
         rollAngle = Vector3.SignedAngle(transform.right, flatRight, transform.forward);
 
-        Vector3 rollTorque = -airplaneInputs.Roll * rollSpeed * transform.forward;
+        Vector3 rollTorque = -airplaneInputs.Roll * rollSpeed * transform.forward; //* controlSurfaceEfficiencyValue;
 
         rb.AddTorque(rollTorque);
     }
 
     void Yaw()
     {
-        Vector3 yawTorque = airplaneInputs.Yaw * yawSpeed * transform.up;
+        Vector3 yawTorque = airplaneInputs.Yaw * yawSpeed * transform.up; //* controlSurfaceEfficiencyValue;
 
         rb.AddTorque(yawTorque);
     }
