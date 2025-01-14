@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -8,11 +7,13 @@ public class TakeoffTutorialManager : MonoBehaviour
     public TutorialState state;
 
     [SerializeField] private Rigidbody _planeRb;
-
+    
+    [Space]
     [SerializeField] private AirplaneAltimeter _airplaneAltimeter;
     [SerializeField] private AirplaneTachometer _airplaneTachometer;
     [SerializeField] private AirplaneThrottleLever _airplaneThrottleLever;
     [Space]
+
     [SerializeField] private TextMeshProUGUI _heightText;
     [SerializeField] private TextMeshProUGUI _explanationText;
 
@@ -44,9 +45,6 @@ public class TakeoffTutorialManager : MonoBehaviour
             case TutorialState.ReachAcceleration:
                 ReachAcceleration();
                 break;
-            case TutorialState.Lifting:
-                Lifting();
-                break;
             case TutorialState.ReachHeight:
                 ReachHeight();
                 break;
@@ -63,7 +61,8 @@ public class TakeoffTutorialManager : MonoBehaviour
         float throttle = _airplaneThrottleLever.GetThrottle();
 
         _explanationText.transform.parent.gameObject.SetActive(true);
-        _explanationText.text = "Use Arrow Up to increase the throttle and Arrow Down to decrease it";
+        _explanationText.text = "Use Arrow Up to increase the throttle and Arrow Down to decrease it," +
+            "Use 'S' to lift up and 'W' to go down. 'A' and 'D' are tilting the plane";
 
         _heightText.text = $"Increase the throttle to 100% " +
             $"current throttle level {(throttle * 100).ToString("0")}%";
@@ -85,11 +84,6 @@ public class TakeoffTutorialManager : MonoBehaviour
         {
             StartCoroutine(Wait(TutorialState.ReachHeight, 3));
         }
-    }
-
-    private void Lifting()
-    {
-
     }
 
     void ReachHeight()
@@ -123,7 +117,6 @@ public class TakeoffTutorialManager : MonoBehaviour
     public enum TutorialState
     {
         PowerUpEngines,
-        Lifting,
         ReachAcceleration,
         ReachHeight,
         None

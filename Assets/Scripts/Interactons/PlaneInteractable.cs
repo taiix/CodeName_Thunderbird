@@ -1,6 +1,4 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlaneInteractable : Interactable
@@ -27,6 +25,10 @@ public class PlaneInteractable : Interactable
         {
             planeCamera.gameObject.SetActive(false);
         }
+        else
+        {
+            Debug.LogError("No plane camera found. ");
+        }
         if (!needsPlayer)
         {
             inPlaneUi.SetActive(true);
@@ -34,10 +36,7 @@ public class PlaneInteractable : Interactable
             planeCamera.gameObject.SetActive(true);
             isPlayerInPlane = true;
         }
-        else
-        {
-            Debug.LogError("No plane camera found. ");
-        }
+        
     }
 
     public override void OnFocus()
