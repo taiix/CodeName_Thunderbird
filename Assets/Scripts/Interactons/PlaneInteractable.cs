@@ -1,6 +1,4 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlaneInteractable : Interactable
@@ -19,18 +17,26 @@ public class PlaneInteractable : Interactable
 
     [SerializeField] private Rigidbody planeRigidbody;
 
-
+    public bool needsPlayer = true;
 
     private void Start()
     {
-        if (planeCamera != null)
+        if (planeCamera != null && needsPlayer)
         {
             planeCamera.gameObject.SetActive(false);
         }
-        else
+        //else
+        //{
+        //    //Debug.LogError("No plane camera found. ");
+        //}
+        if (!needsPlayer)
         {
-            Debug.LogError("No plane camera found. ");
+            inPlaneUi.SetActive(true);
+            airplaneController.ActivateControls();
+            planeCamera.gameObject.SetActive(true);
+            isPlayerInPlane = true;
         }
+        
     }
 
     public override void OnFocus()

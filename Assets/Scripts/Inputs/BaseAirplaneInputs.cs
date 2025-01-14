@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-
 public class BaseAirplaneInputs : MonoBehaviour
 {
-
 
     public InputActionAsset inputActions;
     #region Input Actions
@@ -20,8 +17,9 @@ public class BaseAirplaneInputs : MonoBehaviour
 
     public float throttleSpeed = 0.1f;
 
-    private float stickyThrottle;
+    public bool needsPlayer = true;
 
+    private float stickyThrottle;
 
     public float yawSpeed = 50f;
     private float pitch = 0f;
@@ -71,8 +69,6 @@ public class BaseAirplaneInputs : MonoBehaviour
         flapsAction.Disable();
     }
 
-
-
     #region Properties
     public float Pitch
     {
@@ -112,16 +108,14 @@ public class BaseAirplaneInputs : MonoBehaviour
     }
     #endregion
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.IsPLayerInPlane() && !disableInput)
+        if (needsPlayer && GameManager.Instance.IsPLayerInPlane() && !disableInput)
+        {
+            HandleInput();
+        }
+        else
         {
             HandleInput();
         }

@@ -3691,6 +3691,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BETTER_Tree_1
       objectReference: {fileID: 0}
+    - target: {fileID: 7019393883646730175, guid: ff8e14069abc5224e9f6f16023b35081, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8954,26 +8958,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5888418194554387038}
     m_Modifications:
-    - target: {fileID: 1314820074137943990, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
+    - target: {fileID: 2125172183377869642, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
       propertyPath: inputs
       value: 
       objectReference: {fileID: 908422985}
-    - target: {fileID: 1473076921449016613, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
-      propertyPath: airplaneAerodynamics
-      value: 
-      objectReference: {fileID: 908422983}
-    - target: {fileID: 2099835561795972931, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
-      propertyPath: airplane
-      value: 
-      objectReference: {fileID: 908422979}
-    - target: {fileID: 2862417996950561191, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
-      propertyPath: engine
-      value: 
-      objectReference: {fileID: 902241683}
     - target: {fileID: 3494859766798481832, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
       propertyPath: m_Name
       value: InPlaneUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3563726202540480556, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
+      propertyPath: airplane
+      value: 
+      objectReference: {fileID: 908422979}
     - target: {fileID: 3731937908570379375, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -9054,11 +9050,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5432933939874876900, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
+    - target: {fileID: 4217613533745707199, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
       propertyPath: airplane
       value: 
       objectReference: {fileID: 908422979}
-    - target: {fileID: 8048245710030773046, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
+    - target: {fileID: 6874337579166977294, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
+      propertyPath: airplaneAerodynamics
+      value: 
+      objectReference: {fileID: 908422983}
+    - target: {fileID: 6947497738751797869, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
+      propertyPath: engine
+      value: 
+      objectReference: {fileID: 902241683}
+    - target: {fileID: 8868878143279528035, guid: 7f0a3f26b48eb2f41aac9e4b2af26b44, type: 3}
       propertyPath: inputs
       value: 
       objectReference: {fileID: 908422985}
