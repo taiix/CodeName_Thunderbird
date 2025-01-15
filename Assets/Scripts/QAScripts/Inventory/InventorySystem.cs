@@ -104,12 +104,6 @@ public class InventorySystem : MonoBehaviour, ISavableData
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void InventoryUIController(InputAction.CallbackContext context)
     {
         if (GameManager.Instance != null)
@@ -443,6 +437,11 @@ public class InventorySystem : MonoBehaviour, ISavableData
             return equippedItem;
         }
         return null;
+    }
+    
+    public List<InventorySlot> GetInventorySlots()
+    {
+        return slots;
     }
 
     public string ToJson()

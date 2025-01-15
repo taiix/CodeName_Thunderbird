@@ -398,5 +398,7 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     {
         TerrainDataSave data = JsonUtility.FromJson<TerrainDataSave>(json);
         seed = data.seed;
+        Debug.Log("Serialized islandData: " + seed);
+        Calculate();
     }
 }

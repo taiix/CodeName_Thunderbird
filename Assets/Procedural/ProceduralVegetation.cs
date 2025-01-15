@@ -179,6 +179,10 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
         return newVegetationPosition;
     }
 
+    public List<GameObject> GetSpawnedObjects() { 
+        return spawnedObjects;
+    }
+
     [System.Serializable]
     public class VegetationDataWrapper
     {
