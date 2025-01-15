@@ -45,7 +45,7 @@
                     "name": "Pitch",
                     "type": "Button",
                     "id": "21868012-b9b7-479f-a642-72859967c6ed",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -64,6 +64,24 @@
                     "type": "Button",
                     "id": "44c12242-9177-4c19-8a93-41fb9de34ea7",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchCamera",
+                    "type": "Button",
+                    "id": "16fa4ca9-449e-460e-964e-890af9414a6f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwitchCameraBack",
+                    "type": "Button",
+                    "id": "17b9d2d7-cc12-49ce-922c-0dd6eb91e75b",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -408,6 +426,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ResetPlane",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21926691-ca2f-4f5b-ba8d-12474abd6f65",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "184a560f-e2af-4f2c-a1d9-ca42b081de8a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchCameraBack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
