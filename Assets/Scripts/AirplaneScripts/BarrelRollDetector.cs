@@ -13,6 +13,8 @@ public class BarrelRollDetector : MonoBehaviour
     public delegate void BarrelRollAction();
     public event BarrelRollAction OnBarrelRollCompleted;
 
+    public Transform airplaneTransform;
+
     void Update()
     {
         DetectBarrelRoll();
@@ -20,7 +22,7 @@ public class BarrelRollDetector : MonoBehaviour
 
     private void DetectBarrelRoll()
     {
-        float rollAngle = transform.eulerAngles.z;
+        float rollAngle = airplaneTransform.eulerAngles.z;
         float deltaAngle = Mathf.DeltaAngle(previousRollAngle, rollAngle);
         rollProgress += deltaAngle;
 
