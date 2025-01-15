@@ -100,17 +100,15 @@ Shader "Custom/Water_Lit"
             UNITY_INITIALIZE_OUTPUT(Input, i);
             i.screenPos = ComputeScreenPos(v.vertex);
 
-            float3 p = v.vertex.xyz;
+            // float3 p = v.vertex.xyz;
 
-            float k = 2 * UNITY_PI / _WaveLenght;
-            float c = sqrt(9.8 / k);
-            float f = k * (p.x - c * _Time.y);
-            float a = _WaveHeight / k;
-            p.x += a * cos(f);
-            p.y = a * sin(f);
-
-
-            //v.vertex.xyz = p;
+            // float k = 2 * UNITY_PI / _WaveLenght;
+            // float c = sqrt(9.8 / k);
+            // float f = k * (p.x - c * _Time.y);
+            // float a = _WaveHeight / k;
+            // p.x += a * cos(f);
+            // p.y = a * sin(f);
+            // //v.vertex.xyz = p;
         }
 
         ///////////////////////////////////////////HELPERS////////////////////////////////////////////

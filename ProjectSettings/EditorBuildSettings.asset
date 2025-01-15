@@ -6,10 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ComputeShaderTerrain.unity
+    path: Assets/Scenes/Game Scenes/MainMenu.unity
+    guid: 0a0cc4fffc028d14fb26f4b3e9f21004
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/ComputeShaderTerrain.unity
     guid: 7a6892351e61b8a4b809155b46473dd3
-  - enabled: 0
-    path: Assets/Scenes/Tutorials/TutorialFlying.unity
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Tutorials/TutorialFlying.unity
     guid: cd8a1a2c1094c0b44a1fc1c8f0ee262a
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Tutorials/TutorialLanding.unity
+    guid: dd42d1e1cc42c1346801e7f81cdbd200
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Tutorials/TutorialTakeOff.unity
+    guid: bfb7c58cfe353374da935333458c013c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 80bdae8216c89e04ca4990d38f7902ff, type: 2}
