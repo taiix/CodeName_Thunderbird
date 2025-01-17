@@ -15,17 +15,16 @@ public class RingTracker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        // Check if the airplane collider is the one entering the ring's trigger collider
         if (other.CompareTag("Ring"))
         {
-
             Ring ring = other.GetComponentInParent<Ring>();
 
             if (ring != null && !ring.isPassedThrough)
             {
                 ring.isPassedThrough = true;
-                ringsPassed++; 
-                UpdateRingCounter();    
+                ringsPassed++;
+                UpdateRingCounter();
                 Destroy(other.transform.parent.gameObject);
             }
         }

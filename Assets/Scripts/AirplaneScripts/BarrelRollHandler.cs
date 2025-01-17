@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class BarrelRollHandler : MonoBehaviour
 {
-    private BarrelRollDetector barrelRollDetector;
+    [SerializeField] BarrelRollDetector barrelRollDetector;
 
     [SerializeField] TextMeshProUGUI barrelRollText;
 
@@ -15,7 +15,7 @@ public class BarrelRollHandler : MonoBehaviour
     void Start()
     {
         barrelRollText.text = "Barrel rolls completed 0/3";
-        barrelRollDetector = GetComponent<BarrelRollDetector>();
+        //barrelRollDetector = GetComponent<BarrelRollDetector>();
         if (barrelRollDetector != null)
         {
             barrelRollDetector.OnBarrelRollCompleted += HandleBarrelRoll;

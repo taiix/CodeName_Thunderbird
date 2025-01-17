@@ -23,14 +23,6 @@ public class AirbornePlaneStart : MonoBehaviour
     {
         SetPlane();
     }
-
-    void Update()
-    {
-   
-    }
-
-   
-
     void SetPlane()
     {
         startPos.position = new Vector3(transform.position.x, initialAltitude, transform.position.z);
