@@ -40,7 +40,7 @@ public class BaseAirplaneInputs : MonoBehaviour
         // Get the "Flight" action map
         var flightActionMap = inputActions.FindActionMap("Flight");
 
-        // Get the yaw and throttle actions from the action map
+        // Get actions from the action map
 
         pitchAction = flightActionMap.FindAction("Pitch");
         rollAction = flightActionMap.FindAction("Roll");
