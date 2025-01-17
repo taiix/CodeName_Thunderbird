@@ -10,16 +10,18 @@ public class GameDataContainer
     public List<TerrainDataSave> terrainData;
     public TimeData timeData;
     public InventoryData inventoryData;
-    public List<VegetationData> vegetationData;
 
-    public GameDataContainer(PlayerData playerData, PlaneData planeData, List<TerrainDataSave> terrainData, TimeData timeData, InventoryData inventoryData, List<VegetationData> vegetationData)
+    public AllIslandsVegetation vegetationAllIslands;
+    
+    public GameDataContainer(PlayerData playerData, PlaneData planeData, List<TerrainDataSave> terrainData, 
+        TimeData timeData, InventoryData inventoryData, AllIslandsVegetation vegetationAllIslands)
     {
         this.playerData = playerData;
         this.planeData = planeData;
         this.terrainData = terrainData;
         this.timeData = timeData;
         this.inventoryData = inventoryData;
-        this.vegetationData = vegetationData;
+        this.vegetationAllIslands = vegetationAllIslands;
     }
 
 }
@@ -137,4 +139,25 @@ public class VegetationData
 public class VegetationDataWrapper
 {
     public List<VegetationData> data = new();
+
+    public VegetationDataWrapper()
+    {
+        data = new List<VegetationData>();
+    }
+
+    public VegetationDataWrapper(List<VegetationData> dataList)
+    {
+        data = dataList;
+    }
+}
+
+[Serializable]
+public class AllIslandsVegetation
+{
+    public List<VegetationDataWrapper> islandsData;
+
+    public AllIslandsVegetation()
+    {
+        islandsData = new List<VegetationDataWrapper>();
+    }
 }
