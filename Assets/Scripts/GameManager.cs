@@ -30,12 +30,16 @@ public class GameManager : MonoBehaviour
         if (player == null || airplane == null)
         {
             Debug.Log("No player or airplane object attached to the Game Manager ");
-            return;
+            //return;
         }
-        if (player != null && airplane != null)
+        if (player)
         {
             playerController = player.GetComponent<CharacterMovement>();
             inventorySystem = player.GetComponent<InventorySystem>();
+            
+        }
+        if (airplane)
+        {
             airplaneAerodynamics = airplane.GetComponent<AirplaneAerodynamics>();
         }
     }
