@@ -18,10 +18,12 @@ public class AirbornePlaneStart : MonoBehaviour
 
     [SerializeField]private Transform startPos;
 
+    private RingTracker ringTracker;
 
     void Start()
     {
         SetPlane();
+        ringTracker = GetComponent<RingTracker>();
     }
     void SetPlane()
     {
@@ -62,6 +64,7 @@ public class AirbornePlaneStart : MonoBehaviour
         if (other.gameObject.CompareTag("WaterSurface"))
         {
             SetPlane();
+            ringTracker.ResetRingsPos();
         }
     }
 
