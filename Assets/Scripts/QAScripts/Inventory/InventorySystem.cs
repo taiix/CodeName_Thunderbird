@@ -106,7 +106,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
 
     void InventoryUIController(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance != null)
+        if (GameManager.Instance && !GameManager.Instance.IsInteracting())
         {
 
             isInventoryOpen = !isInventoryOpen;
@@ -114,6 +114,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
             {
                 GameManager.Instance.DisablePlayerControls(true);
                 inventoryUI.SetActive(true);
+                hotbarPanelUI.SetActive(true);
                 hotbarPanelUI.transform.position = hotbarPanelUI.transform.position + new Vector3(-410, -10, 0);
 
             }
@@ -122,13 +123,13 @@ public class InventorySystem : MonoBehaviour, ISavableData
                 GameManager.Instance.EnablePlayerControls();
                 inventoryUI.SetActive(false);
                 itemPanelUI.SetActive(false);
-                Debug.Log("Move hotbar pannel");
+
                 hotbarPanelUI.transform.position = hotbarPanelUI.transform.position - new Vector3(-410, -10, 0);
             }
         }
         else
         {
-            Debug.Log("No Game manager in scene, can't disable player contros.");
+            //Debug.Log("No Game manager in scene, can't disable player contros.");
         }
     }
 
@@ -438,7 +439,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
         }
         return null;
     }
-    
+
     public List<InventorySlot> GetInventorySlots()
     {
         return slots;

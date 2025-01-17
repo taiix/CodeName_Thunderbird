@@ -6,8 +6,10 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     public UnityAction<int, float> onPlayFootstep { get; private set; }
+    public UnityAction onPlayAxeHit { get; private set; }
 
     [SerializeField] private SoundEffects[] sources;
+    [SerializeField] private AudioClip[] axeSoundsSources;
 
     private AudioSource audioSource;
 
@@ -21,6 +23,18 @@ public class AudioManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         onPlayFootstep += PlayFootsteps;
+        onPlayAxeHit += PlayAxeHit;
+    }
+    private void OnDestroy()
+    {
+        onPlayFootstep -= PlayFootsteps;
+        onPlayAxeHit -= PlayAxeHit;
+    }
+
+    public void PlayAxeHit()
+    {
+        AudioClip clip = axeSoundsSources[Random.Range(0, axeSoundsSources.Length)];
+        OneshotAudioFX(clip, 1, false);
     }
 
     void PlayFootsteps(int id, float interval)
@@ -30,16 +44,19 @@ public class AudioManager : MonoBehaviour
         if (sf.audio.Length > 0)
         {
             AudioClip footStep = sf.audio[Random.Range(0, sf.audio.Length)];
-            Footsteps(footStep, interval);
+            OneshotAudioFX(footStep, interval, true);
         }
         else Debug.LogWarning($"No audio found at {id}");
 
     }
 
-    void Footsteps(AudioClip clip, float interval) {
+    void OneshotAudioFX(AudioClip clip, float interval, bool hasPitch = false) {
         if (!audioSource.isPlaying)
         {
-            audioSource.pitch = interval / 5;
+            if (hasPitch)
+            {
+                audioSource.pitch = interval / 5;
+            }
             audioSource.PlayOneShot(clip);
         }
     }

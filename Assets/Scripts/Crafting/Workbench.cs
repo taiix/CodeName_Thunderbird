@@ -51,11 +51,17 @@ public class Workbench : Interactable
 
     public override void OnInteract()
     {
+        GameManager.Instance.DisablePlayerControls(true);
+        GameManager.Instance.IsInteracting(true);
+        Cursor.lockState = CursorLockMode.None;
+        interactionText = string.Empty;
         Camera.main.cullingMask = ~(1 << 9);
         StartCoroutine(ShowTextTemporarily());
+        InventorySystem.Instance.hotbarPanelUI.SetActive(false);
         InteractionHandler.Instance.HideInteractionUI();
         isInteracting = true;
         workbenchCamera.gameObject.SetActive(true);
+
 
         ShowCurrentPartUI();
         
@@ -83,12 +89,12 @@ public class Workbench : Interactable
     // Update is called once per frame
     void Update()
     {
-        if (isInteracting)
-        {
-            GameManager.Instance.DisablePlayerControls(true);
-            Cursor.lockState = CursorLockMode.None;
-            interactionText = string.Empty;
-        }
+        //if (isInteracting)
+        //{
+        //    GameManager.Instance.DisablePlayerControls(true);
+        //    Cursor.lockState = CursorLockMode.None;
+        //    interactionText = string.Empty;
+        //}
     }
 
     private void ShowNextPart()
@@ -139,6 +145,7 @@ public class Workbench : Interactable
         workbenchCamera.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         GameManager.Instance.EnablePlayerControls();
+        InventorySystem.Instance.hotbarPanelUI.SetActive(true);
         StartCoroutine(EnableEquppable());
     }
 

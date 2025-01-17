@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
 
     private Island lastIsland;
 
+    private bool isInteracting = false;
+
     private void Awake()
     {
         Instance = this;
@@ -39,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     public void DisablePlayerControls(bool showVirtualMouse)
     {
-        //Debug.Log("Should hide crosshair");
+        Debug.Log("Should disactivate controls");
         if (virtualMouseUI != null && showVirtualMouse)
         {
             virtualMouseUI.SetActive(true);
@@ -52,6 +55,8 @@ public class GameManager : MonoBehaviour
 
     public void EnablePlayerControls()
     {
+        Debug.Log("Should activate controls");
+        isInteracting = false;
         if (virtualMouseUI != null)
         {
             virtualMouseUI.SetActive(false);
@@ -98,7 +103,17 @@ public class GameManager : MonoBehaviour
     public void SetLastIsland(Island island)
     {
         lastIsland = island;
-        Debug.Log("Updated last island to: " + island.name);
+        //Debug.Log("Updated last island to: " + island.name);
+    }
+
+    public void IsInteracting(bool value)
+    {
+        isInteracting = value;
+    }
+
+    public bool IsInteracting()
+    {
+        return isInteracting;
     }
 
     public Island GetLastIsland()

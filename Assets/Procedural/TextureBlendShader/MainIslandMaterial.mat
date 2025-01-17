@@ -26,7 +26,7 @@ Material:
     - _HeightmapTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 1, y: 0}
+        m_Offset: {x: 0, y: 0}
     - _LayerNormal1:
         m_Texture: {fileID: 2800000, guid: 082938fd2de54c945a89d984fc3db69c, type: 3}
         m_Scale: {x: 1, y: 1}

@@ -70,6 +70,7 @@ public class EquipableItem : MonoBehaviour
             if (treeInteractable != null && equippedItem != null && equippedItem.type == Item.Types.axe)
             {
                 treeInteractable.GetHit();
+                AudioManager.instance?.onPlayAxeHit?.Invoke();
             }
         }
         GetComponent<Collider>().enabled = false;

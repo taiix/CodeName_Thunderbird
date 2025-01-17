@@ -9,11 +9,13 @@ public class BarrelRollHandler : MonoBehaviour
     [SerializeField] BarrelRollDetector barrelRollDetector;
 
     [SerializeField] TextMeshProUGUI barrelRollText;
-
     int barrelRollCounter = 0;
 
-    void Start()
+    public bool isCompleted = false;
+
+    private void OnEnable()
     {
+        barrelRollText.gameObject.SetActive(true);
         barrelRollText.text = "Barrel rolls completed 0/3";
         //barrelRollDetector = GetComponent<BarrelRollDetector>();
         if (barrelRollDetector != null)
@@ -27,11 +29,10 @@ public class BarrelRollHandler : MonoBehaviour
         barrelRollCounter++;
         barrelRollText.text = "Barrel rolls completed " + barrelRollCounter + "/3";
 
-        if(barrelRollCounter >= 3)
+        if (barrelRollCounter >= 3)
         {
-            barrelRollText.text = "Good job! You are now a pilot!";
+            isCompleted = true;
         }
-        Debug.Log("Barrel roll detected! Perform some action here.");
     }
 
     private void OnDestroy()
