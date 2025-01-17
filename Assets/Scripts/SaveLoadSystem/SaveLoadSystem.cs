@@ -106,7 +106,7 @@ public static class SaveLoadSystem
                 else if (dataObjects[i] is MapGeneratorGPU mapGenerator)
                 {
                     //TerrainDataSave data = JsonUtility.FromJson<TerrainDataSave>(json);
-                    mapGenerator.FromJson(wrapper.terrainData[i]);
+                    //mapGenerator.FromJson(wrapper.terrainData[i]);
                 }
                 else if (dataObjects[i] is TimeController timeController)
                 {

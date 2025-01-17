@@ -1537,6 +1537,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialPlane
       objectReference: {fileID: 0}
+    - target: {fileID: 5071478708911232026, guid: 1529a872ecd3cc543a6fa699fe797ed2, type: 3}
+      propertyPath: rollSpeed
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 5640836871704307037, guid: 1529a872ecd3cc543a6fa699fe797ed2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.2116699
@@ -1581,6 +1585,10 @@ PrefabInstance:
       propertyPath: inPlaneUi
       value: 
       objectReference: {fileID: 752442567}
+    - target: {fileID: 6600552084076845636, guid: 1529a872ecd3cc543a6fa699fe797ed2, type: 3}
+      propertyPath: initialRPM
+      value: 2500
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
