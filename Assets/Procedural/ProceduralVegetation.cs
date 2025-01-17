@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(MapGeneratorGPU))]
 public class ProceduralVegetation : MonoBehaviour, ISavableData
 {
-    private Texture2D tex;
+    [SerializeField]private Texture2D tex;
     [SerializeField] private List<GameObject> customAreaObjects;
     [SerializeField] private List<Vegetation> vegetations = new();
     private List<Vector3> availablePositions = new();

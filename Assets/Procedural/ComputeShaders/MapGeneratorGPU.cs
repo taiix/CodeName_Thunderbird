@@ -46,7 +46,6 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     [SerializeField] private List<TerrainTexture> terrainDataList = new();
 
     [SerializeField] private Texture2D chunkTexture = null;
-    [SerializeField] private RenderTexture slopeTexture = null;
 
     [Space]
     [Header("Smoothing Terrain")]
@@ -67,18 +66,16 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
 
         terrainData = terrain.terrainData;
 
-    }
-    private void Start()
-    {
-
         if (seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
 
         UnityEngine.Random.InitState(seed);
         Calculate();
+
     }
 
     public void Calculate()
     {
+        computeShader.name = "TerrainComputeGPU";
         ComputeShader comp = Instantiate(computeShader);
         noiseHeights = new float[width, height];
 
@@ -350,7 +347,6 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
         if (smoothingData != null) smoothingData.Release();
         if (terrainHeightsData != null) terrainHeightsData.Release();
         if (customAreaData != null) customAreaData.Release();
-        if (slopeTexture != null) slopeTexture.Release();
     }
 
     [Serializable]
