@@ -74,7 +74,7 @@ public class AirplaneAerodynamics : MonoBehaviour
     {
         if (rb)
         {
-            //CheckIfUnderwater();
+            CheckIfUnderwater();
             ForwardSpeed();
             Lift();
             Drag();

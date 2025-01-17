@@ -72,7 +72,7 @@ public class PlaneInteractable : Interactable
     private void EnterPlane()
     {
         GameManager.Instance?.OnPlayerEnterPlane.Invoke();
-
+        InventorySystem.Instance.hotbarPanelUI.SetActive(false);
         GameManager.Instance.DisablePlayerControls(false);
         Cursor.visible = false;
 
@@ -95,7 +95,7 @@ public class PlaneInteractable : Interactable
         inPlaneUi.SetActive(false);
         airplaneController.ActivateControls();
         planeCamera.gameObject.SetActive(false);
-
+        InventorySystem.Instance.hotbarPanelUI?.SetActive(true);
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
         GameManager.Instance.PlayerInPlane(isPlayerInPlane);

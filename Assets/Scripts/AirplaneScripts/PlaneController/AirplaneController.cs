@@ -149,7 +149,7 @@ public class AirplaneController : RigidBodyController
 
     void HandleAltitude()
     {
-        //EnterWater();
+        EnterWater();
 
         //mean sea level - altitude
          currentMSL = transform.position.y;
@@ -180,7 +180,8 @@ public class AirplaneController : RigidBodyController
                     engine.DisableEngine();
                 }
             }
-       
+
+            Input.ResetStickyThrottle();
             Input.DisableInput();
 
             airplaneAerodynamics.ApplyUnderwaterPhysics();
@@ -224,7 +225,7 @@ public class AirplaneController : RigidBodyController
 
     private IEnumerator HandleCrashRespawn()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
         Island lastIsland = GameManager.Instance.GetLastIsland();
 

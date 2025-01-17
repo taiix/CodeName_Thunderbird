@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 0
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 0
@@ -5497,6 +5497,22 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 414749881}
+    - target: {fileID: 5134670849953145809, guid: 5f0c2015900664b4b89377c6b5fa7bbe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7771646
+      objectReference: {fileID: 0}
+    - target: {fileID: 5134670849953145809, guid: 5f0c2015900664b4b89377c6b5fa7bbe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.066936016
+      objectReference: {fileID: 0}
+    - target: {fileID: 5134670849953145809, guid: 5f0c2015900664b4b89377c6b5fa7bbe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.62341946
+      objectReference: {fileID: 0}
+    - target: {fileID: 5134670849953145809, guid: 5f0c2015900664b4b89377c6b5fa7bbe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.053694185
+      objectReference: {fileID: 0}
     - target: {fileID: 5142154897966963329, guid: 5f0c2015900664b4b89377c6b5fa7bbe, type: 3}
       propertyPath: m_Name
       value: PlaneCamerasHolder
