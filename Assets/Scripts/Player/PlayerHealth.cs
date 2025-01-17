@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -28,14 +29,15 @@ public class PlayerHealth : MonoBehaviour, ISavableData
 
     private void Update()
     {
-        if (currentHealth <= 0) PlayerDead();
+        StartCoroutine(PlayerDead());
         //if (Input.GetKeyDown(KeyCode.F)) TakeDamage(10f);
     }
 
-    void PlayerDead()
+    IEnumerator PlayerDead()
     {
-        Debug.Log("player is dead");
-        SceneManager.LoadScene(0);
+        yield return new WaitForSeconds(1f);
+        if (currentHealth <= 0)
+            SceneManager.LoadScene(0);
     }
 
     public void TakeDamage(float damageAmount)
@@ -68,8 +70,9 @@ public class PlayerHealth : MonoBehaviour, ISavableData
     {
         PlayerData data = new PlayerData
             (currentHealth, transform.position.x, transform.position.y, transform.position.z);
-        
-        return JsonUtility.ToJson(data, true);
+        string json = JsonUtility.ToJson(data, true);
+        Debug.Log($"Saving Player Data: {json}");
+        return json;
     }
 
     public void FromJson(string json)
@@ -78,5 +81,6 @@ public class PlayerHealth : MonoBehaviour, ISavableData
         currentHealth = data.playerHealth;
         transform.position = new Vector3(data.posX, data.posY, data.posZ);
         UpdateHealthBar();
+        Debug.Log($"Player stats loaded {data.playerHealth}");
     }
 }

@@ -3,6 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+public class GameDataContainer
+{
+    public PlayerData playerData;
+    public PlaneData planeData;
+    public List<TerrainDataSave> terrainData;
+    public TimeData timeData;
+    public InventoryData inventoryData;
+    public List<VegetationData> vegetationData;
+
+    public GameDataContainer(PlayerData playerData, PlaneData planeData, List<TerrainDataSave> terrainData, TimeData timeData, InventoryData inventoryData, List<VegetationData> vegetationData)
+    {
+        this.playerData = playerData;
+        this.planeData = planeData;
+        this.terrainData = terrainData;
+        this.timeData = timeData;
+        this.inventoryData = inventoryData;
+        this.vegetationData = vegetationData;
+    }
+
+}
+
+[Serializable]
 public class PlayerData
 {
     public float playerHealth;
@@ -21,12 +43,12 @@ public class PlayerData
 [Serializable]
 public class PlaneData
 {
-    public float health;
+    public float planeDurability;
     public float posX, posY, posZ;
 
     public PlaneData(float health, float x, float y, float z)
     {
-        this.health = health;
+        this.planeDurability = health;
         this.posX = x;
         this.posY = y;
         this.posZ = z;
