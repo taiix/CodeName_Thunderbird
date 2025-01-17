@@ -63,7 +63,7 @@ public class PlaneInteractable : Interactable
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && IsPlaneStationary() && isPlayerInPlane)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && IsPlaneStationary() && isPlayerInPlane)
         {
             ExitPlane();
         }
@@ -85,7 +85,7 @@ public class PlaneInteractable : Interactable
         isPlayerInPlane = true;
 
         GameManager.Instance.PlayerInPlane(isPlayerInPlane);
-        InteractionHandler.Instance.UpdateInteractionText("Press 'Escape' to exit the plane");
+        InteractionHandler.Instance.UpdateInteractionText("Press 'Shift' to exit the plane");
         //Debug.Log("Player has entered the plane.");
     }
 
