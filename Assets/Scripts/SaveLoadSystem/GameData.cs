@@ -133,3 +133,8 @@ public class VegetationData
     }
 }
 
+[Serializable]
+public class VegetationDataWrapper
+{
+    public List<VegetationData> data = new();
+}

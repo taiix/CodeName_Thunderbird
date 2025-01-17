@@ -6,8 +6,8 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 {
     private Texture2D tex;
     [SerializeField] private List<GameObject> customAreaObjects;
-    private List<Vector3> availablePositions = new();
     [SerializeField] private List<Vegetation> vegetations = new();
+    private List<Vector3> availablePositions = new();
 
     #region References
     private MapGeneratorGPU _mapGenerator;
@@ -183,12 +183,6 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
         return spawnedObjects;
     }
 
-    [System.Serializable]
-    public class VegetationDataWrapper
-    {
-        public List<VegetationData> data = new();
-    }
-
     public string ToJson()
     {
         List<VegetationData> data = new List<VegetationData>();
@@ -220,7 +214,6 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 
             if (prefab != null)
             {
-               
                 if (prefab.TryGetComponent<Interactable>(out Interactable interactable)) {
                     interactable.parentIsland = this;
                 }

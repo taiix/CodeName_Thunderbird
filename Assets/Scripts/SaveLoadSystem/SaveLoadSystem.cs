@@ -85,6 +85,7 @@ public static class SaveLoadSystem
 
     public static void LoadData(List<ISavableData> dataObjects)
     {
+        int terrainIndex = 0;
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
@@ -105,8 +106,9 @@ public static class SaveLoadSystem
                 }
                 else if (dataObjects[i] is MapGeneratorGPU mapGenerator)
                 {
-                    //TerrainDataSave data = JsonUtility.FromJson<TerrainDataSave>(json);
-                    //mapGenerator.FromJson(wrapper.terrainData[i]);
+                    string data = JsonUtility.ToJson(wrapper.terrainData[terrainIndex]);
+                    mapGenerator.FromJson(data);
+                    terrainIndex++;
                 }
                 else if (dataObjects[i] is TimeController timeController)
                 {
@@ -120,8 +122,17 @@ public static class SaveLoadSystem
                 }
                 else if (dataObjects[i] is ProceduralVegetation vegetationList)
                 {
-                    //string vegetationJson = JsonUtility.ToJson(wrapper.vegetationData);
-                    //vegetationList.FromJson(vegetationJson);
+                    // 1) Create a wrapper object
+                    VegetationDataWrapper vWrapper = new VegetationDataWrapper
+                    {
+                        data = wrapper.vegetationData
+                    };
+
+                    // 2) Convert that wrapper to JSON
+                    string vegetationJson = JsonUtility.ToJson(vWrapper, true);
+
+                    // 3) Pass it into FromJson, which expects a VegetationDataWrapper-based JSON
+                    vegetationList.FromJson(vegetationJson);
                 }
             }
 
