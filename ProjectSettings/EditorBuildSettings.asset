@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Scenes/Tutorials/TutorialFlying.unity
     guid: cd8a1a2c1094c0b44a1fc1c8f0ee262a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TutorialLanding.unity
     guid: dd42d1e1cc42c1346801e7f81cdbd200
   m_configObjects:
