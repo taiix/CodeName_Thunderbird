@@ -14,12 +14,12 @@ public class EnemyAI : MonoBehaviour
     public Transform player;
     public EnemyData enemyData;
     public bool isDead = false;
-    public bool currentlyInShadow = false;
+    public bool currentlyInShadow = true;
 
     public IAttackStrategy attackStrategy;
 
     //PRIVATE 
-    private Light lightSource;
+    [SerializeField] private Light lightSource;
     private NavMeshAgent agent;
     private Animator anim;
     private float sunExposureTimer = 0f;
@@ -78,23 +78,32 @@ public class EnemyAI : MonoBehaviour
 
     public bool IsPointInShadow(Vector3 point)
     {
-        Vector3 lightDirection = -lightSource.transform.forward;
-        Vector3 adjustedPoint = point + Vector3.up * enemyHeight / 2;
-
-        RaycastHit hit;
-        if (Physics.Raycast(adjustedPoint, lightDirection, out hit))
+        if (timeController)
         {
-            if (hit.collider != null && hit.collider.gameObject != gameObject)
+
+            Vector3 lightDirection = -lightSource.transform.forward;
+            Vector3 adjustedPoint = point + Vector3.up * enemyHeight / 2;
+
+            RaycastHit hit;
+            if (Physics.Raycast(adjustedPoint, lightDirection, out hit))
             {
-                return true;
+                if (hit.collider != null && hit.collider.gameObject != gameObject)
+                {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        return true;
     }
 
     private void UpdateSunExposure()
     {
-        currentlyInShadow = IsInShadow();
+        if (timeController)
+        {
+            currentlyInShadow = IsInShadow();
+        }
+
         if (currentlyInShadow)
         {
             lastKnownShadowPosition = transform.position - lightSource.transform.forward * 2f;
@@ -116,21 +125,25 @@ public class EnemyAI : MonoBehaviour
 
     private void CheckCurrentTime()
     {
-        TimeSpan currentTime = timeController.CurrentTime.TimeOfDay;
-
-        if (currentTime > morningTime && currentTime <= eveningTime && !isReturningToShelter)
+        if (timeController)
         {
-            //Debug.Log("It's after 9:30 AM! Time to take action.");
 
-            isReturningToShelter = true;
-            isPatrolling = false;
-            ChangeCurrentState(new ReturnToShelter(this.gameObject, agent, anim, player, shelterLocation));
-        }
-        if (currentTime > eveningTime && !isPatrolling)
-        {
-            ChangeCurrentState(new PatrolState(this.gameObject, agent, anim, player));
-            isPatrolling = true;
-            isReturningToShelter = false;
+            TimeSpan currentTime = timeController.CurrentTime.TimeOfDay;
+
+            if (currentTime > morningTime && currentTime <= eveningTime && !isReturningToShelter)
+            {
+                //Debug.Log("It's after 9:30 AM! Time to take action.");
+
+                isReturningToShelter = true;
+                isPatrolling = false;
+                ChangeCurrentState(new ReturnToShelter(this.gameObject, agent, anim, player, shelterLocation));
+            }
+            if (currentTime > eveningTime && !isPatrolling)
+            {
+                ChangeCurrentState(new PatrolState(this.gameObject, agent, anim, player));
+                isPatrolling = true;
+                isReturningToShelter = false;
+            }
         }
     }
 
@@ -143,10 +156,10 @@ public class EnemyAI : MonoBehaviour
         //    //Debug.Log("Play blood vfx");
         //    VFXManager.Instance.PlayVFX(enemyData.enemyName + " bloodSplatter");
         //}
-        if(enemyData.bloodSplatterPrefab != null)
+        if (enemyData.bloodSplatterPrefab != null)
         {
             //Debug.Log("Should play blood vfx");
-            ParticleSystem bloodVFX = Instantiate(enemyData.bloodSplatterPrefab,this.transform);
+            ParticleSystem bloodVFX = Instantiate(enemyData.bloodSplatterPrefab, this.transform);
             bloodVFX.transform.position = collisionPoint;
             bloodVFX.Play();
         }
@@ -182,7 +195,7 @@ public class EnemyAI : MonoBehaviour
             if (damageTimer >= 1.5f)
             {
                 //Debug.Log("Take Sun Damage");
-                TakeDamage(1,bloodVFXPosition.position);
+                TakeDamage(1, bloodVFXPosition.position);
                 damageTimer = 0f;
             }
         }
@@ -228,7 +241,10 @@ public class EnemyAI : MonoBehaviour
         timeController = FindObjectOfType<TimeController>();
         player = FindObjectOfType<PlayerHealth>().gameObject.transform;
         shelterLocation = gameObject.transform.position;
-        lightSource = timeController.Sun;
+        if (timeController)
+        {
+            lightSource = timeController.Sun;
+        }
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         currentHealth = enemyData.health;

@@ -297,13 +297,13 @@ public class InventorySystem : MonoBehaviour, ISavableData
         }
 
         // Check hotbar slots
-        foreach (InventorySlot hotbarSlot in hotbarManager.hotbarSlots)
-        {
-            if (hotbarSlot.itemInSlot == item)
-            {
-                totalAmount += hotbarSlot.amountInSlot;
-            }
-        }
+        //foreach (InventorySlot hotbarSlot in hotbarManager.hotbarSlots)
+        //{
+        //    if (hotbarSlot.itemInSlot == item)
+        //    {
+        //        totalAmount += hotbarSlot.amountInSlot;
+        //    }
+        //}
 
         return totalAmount;
     }

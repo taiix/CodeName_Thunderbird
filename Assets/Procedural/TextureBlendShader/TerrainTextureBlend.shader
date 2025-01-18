@@ -65,7 +65,6 @@ Shader "Custom/TerrainTextureBlend"
         #pragma target 3.0
         ///////////////////////////////////////Properties//////////////////////////////////////
         sampler2D _HeightmapTexture;
-        sampler2D _SlopeTexture;
 
         sampler2D _LayerTexture1, _LayerNormal1;
         float _LayerMetallic1, _LayerSmoothness1;
@@ -87,7 +86,6 @@ Shader "Custom/TerrainTextureBlend"
 
         float4 _LayerTexTilingOffset4;
 
-        int _texSize;
         float _MinHeights[4];
         float _MaxHeights[4];
         float tiling;

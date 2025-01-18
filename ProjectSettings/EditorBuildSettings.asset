@@ -16,9 +16,9 @@ EditorBuildSettings:
     guid: 4a11faf317dff144fb69c70b21018cce
   - enabled: 1
     path: Assets/Scenes/Game Scenes/Tutorials/TutorialFlying.unity
-    guid: cd8a1a2c1094c0b44a1fc1c8f0ee262a
-  - enabled: 0
-    path: Assets/Scenes/TutorialLanding.unity
-    guid: dd42d1e1cc42c1346801e7f81cdbd200
+    guid: 36130094c1112b8468942874f4ceb4a4
+  - enabled: 1
+    path: Assets/Scenes/Game Scenes/Tutorials/TutorialLanding.unity
+    guid: 0ca098f95d55a484181d4f7eab3c8090
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 80bdae8216c89e04ca4990d38f7902ff, type: 2}

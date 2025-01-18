@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,11 +10,19 @@ public class PlayerQuest : MonoBehaviour
     [SerializeField] private BaseSO_Properties activeQuest;
     [SerializeField] private Transform desiredLocation;
 
-    private void OnEnable() { 
+    [Header("Sound Effect")]
+    [SerializeField] private AudioClip questCompletedFX;
+
+    [Header("UI")]
+    [SerializeField] private GameObject questCompletedUI;
+
+    private void OnEnable()
+    {
         QuestManager_v2.OnQuestSent.AddListener(ReceiveQuest);
         OnQuestCompleted += TrackRepairQuest;
     }
-    private void OnDisable() { 
+    private void OnDisable()
+    {
         QuestManager_v2.OnQuestSent.RemoveListener(ReceiveQuest);
         OnQuestCompleted -= TrackRepairQuest;
 
@@ -92,15 +102,45 @@ public class PlayerQuest : MonoBehaviour
         }
     }
 
-    void TrackRepairQuest() {
-        if (activeQuest is RepairQuest repQ) {
+    void TrackRepairQuest()
+    {
+        if (activeQuest is RepairQuest repQ)
+        {
             CompleteQuest(activeQuest);
         }
     }
+
+    bool isAnimating;
     private void CompleteQuest(BaseSO_Properties quest)
     {
+        if (quest == null || quest.isCompleted) return;
+        if (!isAnimating)
+            StartCoroutine(WaitUI());
+
         quest.MarkAsCompleted();
+        AudioManager.instance?.OneshotAudioFX(questCompletedFX, 5, false);
         QuestUI.OnQuestInfoChanged?.Invoke("No name", "The quest has been completed");
-        //QuestManager_v2.OnQuestCompleted?.Invoke(quest);
+    }
+
+    IEnumerator WaitUI()
+    {
+        isAnimating = true;
+        questCompletedUI.SetActive(true);
+        if (questCompletedUI.transform.GetChild(0).TryGetComponent<TextMeshProUGUI>(out TextMeshProUGUI t))
+        {
+            Color originalColor = t.color;
+            t.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
+
+            while (t.color.a > 0)
+            {
+                float newAlpha = t.color.a - Time.deltaTime * 0.2f;
+                t.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Max(0, newAlpha));
+                yield return null;
+            }
+        }
+            questCompletedUI.SetActive(false);
+
+        yield return new WaitForSeconds(1f);
+        isAnimating = false;
     }
 }

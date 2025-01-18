@@ -50,7 +50,8 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    void OneshotAudioFX(AudioClip clip, float interval, bool hasPitch = false) {
+    public void OneshotAudioFX(AudioClip clip, float interval, bool hasPitch = false)
+    {
         if (!audioSource.isPlaying)
         {
             if (hasPitch)

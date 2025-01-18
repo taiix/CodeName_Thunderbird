@@ -111,7 +111,7 @@ Material:
     - _b: 0.01
     - _blendFactor: 146.7
     - _blendFactorGrassToRock: 52
-    - _blendFactorSandToGrass: 23.4
+    - _blendFactorSandToGrass: 23.9
     - _blendLine: 15
     - _maxHeight1: 1
     - _minHeight1: 0

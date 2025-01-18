@@ -45,7 +45,15 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(string npcName, string[] dialogue, BaseSO_Properties quest)
     {
-        if(quest != null) currentDialogueQuest = quest;
+        if (dialogue == null || dialogue.Length == 0)
+        {
+            Debug.LogError("Dialogue is empty or null. Cannot start dialogue.");
+            return;
+        }
+
+        // Set the current quest (null if no quest is provided)
+        currentDialogueQuest = quest;
+
         isTalking = true;
         dialogueState = DialogueState.StartDialogue;
         OnDialogueStarted?.Invoke();
@@ -53,7 +61,7 @@ public class DialogueManager : MonoBehaviour
 
         sentences.Clear();
         dialogueTextBox.text = "";
-        npcNameText.text = npcName;
+        npcNameText.text = string.IsNullOrEmpty(npcName) ? "Unknown NPC" : npcName;
 
         foreach (var sentence in dialogue)
         {
@@ -61,6 +69,16 @@ public class DialogueManager : MonoBehaviour
         }
 
         NextSentence();
+
+        // Log for debugging whether a quest is linked
+        if (quest == null)
+        {
+            Debug.Log($"Dialogue with NPC '{npcName}' has no quest associated.");
+        }
+        else
+        {
+            Debug.Log($"Dialogue with NPC '{npcName}' started. Associated quest: {quest.questName}");
+        }
     }
 
     private void NextSentence()

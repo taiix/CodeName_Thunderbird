@@ -249,8 +249,6 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     {
         int getSize = terrainDataList.Count;
 
-        terrainMaterial.SetInt("_texSize", getSize);
-
         float[] minHeights = new float[getSize];
         float[] maxHeights = new float[getSize];
 
