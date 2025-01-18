@@ -5,19 +5,19 @@ public class SaveLoadManager : MonoBehaviour
 {
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            List<ISavableData> dataToSave = GetAllSaveableData();
-
-            SaveLoadSystem.SaveData(dataToSave);
-        } 
-        
         if (Input.GetKeyDown(KeyCode.F2))
         {
             List<ISavableData> dataToLoad = GetAllSaveableData();
 
             SaveLoadSystem.LoadData(dataToLoad);
         }
+    }
+
+    public void SaveGame()
+    {
+        List<ISavableData> dataToSave = GetAllSaveableData();
+
+        SaveLoadSystem.SaveData(dataToSave);
     }
 
     private List<ISavableData> GetAllSaveableData()

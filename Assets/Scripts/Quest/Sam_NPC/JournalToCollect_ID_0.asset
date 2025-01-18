@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29a00cfe910b0c4f94786ebb109e1c9, type: 3}
+  m_Name: JournalToCollect_ID_0
+  m_EditorClassIdentifier: 
+  questName: Find the Journal
+  questDescription: Find the Journal
+  id: 0
+  items:
+  - requiredItem: {fileID: 11400000, guid: 85c01e5c0b62c874097ff9365bc4f341, type: 2}
+    requiredAmount: 1
+  _isCompleted: 0

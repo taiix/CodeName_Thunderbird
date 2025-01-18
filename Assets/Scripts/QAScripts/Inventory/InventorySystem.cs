@@ -426,6 +426,11 @@ public class InventorySystem : MonoBehaviour, ISavableData
         return isInventoryOpen;
     }
 
+    public void AddSlot(InventorySlot slot)
+    {
+        slots.Add(slot);
+    }
+
     public void InvokeItemThrown(Item item)
     {
         OnItemThrown?.Invoke(item);

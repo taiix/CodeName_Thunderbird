@@ -124,12 +124,14 @@ public class PlanePart : MonoBehaviour, ISavableData
         this.damageFactor -= upgrade.damageReduction;
         GameManager.Instance.GetAirplaneAerodynamics().maxLiftPower += upgradePower;
         currentUpgradeLevel++;
+        Debug.Log(currentUpgradeLevel);
+        Debug.Log(upgrades.Count);
 
         UpgradePower = upgradePower;
     }
     public PartUpgrade GetCurrentUpgrade()
     {
-        if (currentUpgradeLevel <= upgrades.Count)
+        if (currentUpgradeLevel < upgrades.Count )
         {
             return upgrades[currentUpgradeLevel];
         }

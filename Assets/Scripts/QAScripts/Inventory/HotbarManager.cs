@@ -24,11 +24,17 @@ public class HotbarManager : MonoBehaviour
 
         InventorySystem.OnItemThrown += UpdateHotbarAfterThrow;
         UpdateHotbar();
+        foreach (InventorySlot slot in hotbarSlots)
+        {
+            InventorySystem.Instance.AddSlot(slot);
+        }
     }
 
     private void Update()
     {
         ChooseItem();
+
+      
     }
 
     // Update the hotbar based on the inventory
@@ -39,13 +45,13 @@ public class HotbarManager : MonoBehaviour
         {
             if (i < inventorySystem.itemsInInventory.Count)
             {
-                hotbarSlots[i].itemInSlot = inventorySystem.itemsInInventory[i]; // Assign item from inventory to hotbar
+                hotbarSlots[i].itemInSlot = inventorySystem.itemsInInventory[i]; 
                 hotbarSlots[i].amountInSlot = inventorySystem.GetItemCount(inventorySystem.itemsInInventory[i]);
                 hotbarSlots[i].SetStats();
             }
             else
             {
-                hotbarSlots[i].itemInSlot = null; // Clear hotbar slot if no item available
+                hotbarSlots[i].itemInSlot = null;
                 hotbarSlots[i].amountInSlot = 0;
                 hotbarSlots[i].SetStats();
             }

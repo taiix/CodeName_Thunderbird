@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum FlyingTutorialStates
@@ -29,10 +30,11 @@ public class FlyingTutorialManager : MonoBehaviour
     private bool completedRudder = false;
     private bool completedRingRoll = false;
 
-    private float bankingThreshold = 45f; 
-    private float rudderThreshold = 45f; 
+    private float bankingThreshold = 45f;
+    private float rudderThreshold = 45f;
 
     private float initialYaw;
+    private bool hasInitialYaw = false;
     private float maxBankingAngle = 0f;
     private void Start()
     {
@@ -72,8 +74,8 @@ public class FlyingTutorialManager : MonoBehaviour
         explanationText.text = "In this tutorial you will learn the basics of flying. How to maneuver the plane in the air" +
             " and how to do some fun stuff with it.";
 
-        StartCoroutine(Wait(FlyingTutorialStates.Banking, 15));
-        
+        StartCoroutine(Wait(FlyingTutorialStates.Banking, 4));
+
     }
 
     void Banking()
@@ -86,14 +88,14 @@ public class FlyingTutorialManager : MonoBehaviour
             "Use A - to bank to the left D - to bank to the right. ";
 
         float currentBankingAngle = Vector3.Angle(Vector3.up, airplaneTransform.right) - 90f;
-        currentBankingAngle = Mathf.Abs(currentBankingAngle); // Ensure it's positive
+        currentBankingAngle = Mathf.Abs(currentBankingAngle);
         maxBankingAngle = Mathf.Max(maxBankingAngle, currentBankingAngle);
 
         if (maxBankingAngle >= bankingThreshold)
         {
             StartCoroutine(Wait(FlyingTutorialStates.Rudder, 4));
             explanationText.transform.parent.gameObject.SetActive(false);
-            initialYaw = airplaneTransform.eulerAngles.y; // Store initial yaw for the rudder stage
+
         }
     }
 
@@ -107,10 +109,14 @@ public class FlyingTutorialManager : MonoBehaviour
         explanationText.text = "The rudder controls rotation about the vertical axis of the aircraft. " +
             " This movement is referred to as \"yaw\". \n Use the Left and Right arrow keys to rotate the plane.";
 
-
+        if (!hasInitialYaw)
+        {
+            initialYaw = airplaneTransform.eulerAngles.y;
+            hasInitialYaw = true;
+        }
 
         float currentYaw = Mathf.DeltaAngle(initialYaw, airplaneTransform.eulerAngles.y);
-        currentYaw = Mathf.Abs(currentYaw); // Ensure it's positive
+        currentYaw = Mathf.Abs(currentYaw);
 
         if (currentYaw >= rudderThreshold)
         {
@@ -125,7 +131,7 @@ public class FlyingTutorialManager : MonoBehaviour
 
         barrelRollHandler.gameObject.SetActive(true);
         ringTracker.enabled = true;
-       
+
 
         taskText.text = "Go through all the rings and do some barrel rolls.";
 
@@ -159,7 +165,7 @@ public class FlyingTutorialManager : MonoBehaviour
         taskText.color = Color.green;
         yield return new WaitForSeconds(time);
         state = _state;
-      
+
     }
 
 
