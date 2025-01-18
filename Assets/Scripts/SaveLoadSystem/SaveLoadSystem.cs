@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -20,8 +21,7 @@ public static class SaveLoadSystem
         TimeData timeData = null;
         InventoryData inventoryData = null;
 
-        List<VegetationData> vegetationData = new();
-
+        AllIslandsVegetation allIslandsVegetation = new();
         List<TerrainDataSave> terrainSeed = new();
 
         foreach (ISavableData data in dataContainer)
@@ -61,20 +61,23 @@ public static class SaveLoadSystem
             else if (data is ProceduralVegetation vegetationList)
             {
                 List<VegetationData> vegetationDataList = new List<VegetationData>();
-
-                foreach (var go in vegetationList.GetSpawnedObjects())
+                
+                var spawns = vegetationList.GetSpawnedObjects();
+                Debug.Log($"[Save] {vegetationList.gameObject.name} has {spawns.Count} objects.");
+                
+                foreach (var go in spawns)
                 {
                     VegetationData d = new VegetationData(go.name, go.transform.position, go.transform.localScale);
                     vegetationDataList.Add(d);
                 }
+                VegetationDataWrapper islandWrapper = new VegetationDataWrapper(vegetationDataList);
 
-
-                vegetationData = vegetationDataList;
+                allIslandsVegetation.islandsData.Add(islandWrapper);
             }
         }
 
-        GameDataContainer gameDataContainer = new GameDataContainer(playerData, planeData, terrainSeed, timeData, inventoryData, vegetationData);
-
+        GameDataContainer gameDataContainer = new GameDataContainer(playerData, planeData, terrainSeed,
+            timeData, inventoryData, allIslandsVegetation);
 
         string json = JsonUtility.ToJson(gameDataContainer, true);
 
@@ -86,6 +89,7 @@ public static class SaveLoadSystem
     public static void LoadData(List<ISavableData> dataObjects)
     {
         int terrainIndex = 0;
+        int vegetationIndex = 0;
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
@@ -122,17 +126,12 @@ public static class SaveLoadSystem
                 }
                 else if (dataObjects[i] is ProceduralVegetation vegetationList)
                 {
-                    // 1) Create a wrapper object
-                    VegetationDataWrapper vWrapper = new VegetationDataWrapper
-                    {
-                        data = wrapper.vegetationData
-                    };
+                    VegetationDataWrapper vWrapper = wrapper.vegetationAllIslands.islandsData[vegetationIndex];
 
-                    // 2) Convert that wrapper to JSON
                     string vegetationJson = JsonUtility.ToJson(vWrapper, true);
 
-                    // 3) Pass it into FromJson, which expects a VegetationDataWrapper-based JSON
                     vegetationList.FromJson(vegetationJson);
+                    vegetationIndex++;
                 }
             }
 
