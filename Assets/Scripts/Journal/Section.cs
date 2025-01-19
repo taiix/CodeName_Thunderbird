@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public enum SectionName
 {
     GoldOre,
-    PurpleOre,
+    PurpleCrystal,
     BlueOre,
     OrangeOre,
 

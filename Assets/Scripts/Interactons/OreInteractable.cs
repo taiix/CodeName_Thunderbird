@@ -9,6 +9,16 @@ public class OreInteractable : Interactable
 
     private bool isBeingMined = false;
 
+   
+
+    private void Start()
+    {
+        if (!isSpawnedByIsland && parentIsland)
+        {
+            parentIsland.AddToSpawnedObjects(this.gameObject);
+        }
+    }
+
     public override void OnFocus()
     {
         if (!isBeingMined)

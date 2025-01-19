@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     public void DisablePlayerControls(bool showVirtualMouse)
     {
-        Debug.Log("Should disactivate controls");
+        //Debug.Log("Should disactivate controls");
         if (virtualMouseUI != null && showVirtualMouse)
         {
             virtualMouseUI.SetActive(true);
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     public void EnablePlayerControls()
     {
-        Debug.Log("Should activate controls");
+        //Debug.Log("Should activate controls");
         isInteracting = false;
         if (virtualMouseUI != null)
         {

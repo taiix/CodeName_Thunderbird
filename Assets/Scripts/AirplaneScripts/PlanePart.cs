@@ -79,9 +79,9 @@ public class PlanePart : MonoBehaviour, ISavableData
     {
         if (HasItemsForFix())
         {
-            for(int i = 0; i <= upgrades[currentUpgradeLevel].itemsForFix.Count - 1; i++)
+            for (int i = 0; i <= upgrades[currentUpgradeLevel].itemsForFix.Count - 1; i++)
             {
-                InventorySystem.Instance?.RemoveItem(upgrades[currentUpgradeLevel].itemsForFix[i].item, 
+                InventorySystem.Instance?.RemoveItem(upgrades[currentUpgradeLevel].itemsForFix[i].item,
                                                     upgrades[currentUpgradeLevel].itemsForFix[i].amount);
             }
             currentHealth += repairAmount;
@@ -103,7 +103,7 @@ public class PlanePart : MonoBehaviour, ISavableData
 
     public bool HasItemsForFix()
     {
-        for(int i = 0; i < upgrades[currentUpgradeLevel].itemsForFix.Count; i++)
+        for (int i = 0; i < upgrades[currentUpgradeLevel].itemsForFix.Count; i++)
         {
             if (!InventorySystem.Instance.HasRequiredItem(upgrades[i].itemsForFix[i].item, upgrades[i].itemsForFix[i].amount))
             {
@@ -116,20 +116,23 @@ public class PlanePart : MonoBehaviour, ISavableData
     public void PartUpgrade(PartUpgrade upgrade)
     {
         upgradePower = upgrade.upgradePower;
-        if(partName == "Engine")
+        if (partName == "Engine")
         {
-            Debug.Log("Upgrade the engine");
+            GetComponent<AirplaneEngine>().maxForce += upgradePower;
+        }
+        else
+        {
+            GameManager.Instance.GetAirplaneAerodynamics().maxLiftPower += upgradePower;
         }
         this.maxHealth += upgrade.healthUpgrade;
         this.damageFactor -= upgrade.damageReduction;
-        GameManager.Instance.GetAirplaneAerodynamics().maxLiftPower += upgradePower;
         currentUpgradeLevel++;
 
         UpgradePower = upgradePower;
     }
     public PartUpgrade GetCurrentUpgrade()
     {
-        if (currentUpgradeLevel < upgrades.Count )
+        if (currentUpgradeLevel < upgrades.Count)
         {
             return upgrades[currentUpgradeLevel];
         }
@@ -141,7 +144,7 @@ public class PlanePart : MonoBehaviour, ISavableData
 
     public void ResetHealth()
     {
-        currentHealth = 100;
+        currentHealth = maxHealth;
         TakeDamage(0);
     }
     public string ToJson()

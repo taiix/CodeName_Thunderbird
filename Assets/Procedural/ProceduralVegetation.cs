@@ -125,6 +125,7 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
                         if (go.TryGetComponent<Interactable>(out Interactable interactable))
                         {
                             interactable.parentIsland = this;
+                            interactable.isSpawnedByIsland = true;
                         }
                     }
                 }
@@ -181,6 +182,11 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 
     public List<GameObject> GetSpawnedObjects() { 
         return spawnedObjects;
+    }
+
+    public void AddToSpawnedObjects(GameObject go)
+    {
+        spawnedObjects.Add(go);
     }
 
     public string ToJson()

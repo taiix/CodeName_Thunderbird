@@ -69,6 +69,11 @@ public class AirplaneCameraController : MonoBehaviour
     {
         if (virtualCameras.Count == 0) return;
 
+        if (GameManager.Instance)
+        {
+            if (!GameManager.Instance.IsPLayerInPlane()) return;
+        }
+
         virtualCameras[currentCameraIndex].Priority = 0;
 
         currentCameraIndex = (currentCameraIndex + 1) % virtualCameras.Count;
@@ -81,6 +86,11 @@ public class AirplaneCameraController : MonoBehaviour
     private void OnSwitchCameraBack(InputAction.CallbackContext context)
     {
         if (virtualCameras.Count == 0) return;
+
+        if (GameManager.Instance)
+        {
+            if (!GameManager.Instance.IsPLayerInPlane()) return;
+        }
 
         virtualCameras[currentCameraIndex].Priority = 0;
 

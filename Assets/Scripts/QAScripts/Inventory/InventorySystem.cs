@@ -23,6 +23,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
     [SerializeField] Button dropButton;
 
 
+
     private InventorySlot selectedSlot;
 
     private Item equippedItem;

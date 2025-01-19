@@ -49,7 +49,7 @@ public class PatrolState : State
 
                 }
             }
-            else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            else if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance )
             {
                 StartIdle();
             }
@@ -69,25 +69,31 @@ public class PatrolState : State
         idleTime = Random.Range(2f, 4.5f);
         idleTimer = 0f;
         isIdling = true;
+        // Set the idle animation trigger
         anim.SetTrigger("isIdle");
+        ResetOtherTriggers("isIdle");
     }
 
     private void Patrol()
     {
         StartAgent();
         isIdling = false;
-            idleTimer = 0f;
+        idleTimer = 0f;
+
         float randomDistance = Random.Range(10.0f, 25.0f);
         Vector3 randomDirection = Random.insideUnitSphere * randomDistance;
         randomDirection += npcScript.transform.position;
+
         NavMeshHit navHit;
         if (NavMesh.SamplePosition(randomDirection, out navHit, randomDistance, NavMesh.AllAreas))
         {
             Vector3 targetPosition = navHit.position;
-            anim.SetTrigger("isWalking");
+
             if (npcScript.IsPointInShadow(targetPosition))
             {
                 agent.SetDestination(targetPosition);
+                anim.SetTrigger("isWalking");
+                ResetOtherTriggers("isWalking");
             }
             else
             {
@@ -102,7 +108,6 @@ public class PatrolState : State
 
     private void AdjustDirection(Vector3 targetPosition)
     {
-        //Debug.Log("Adjust Direction");
         float randomDistance = Random.Range(10.0f, 35.0f);
         for (int i = 0; i < 5; i++)
         {
@@ -113,21 +118,25 @@ public class PatrolState : State
             {
                 StartAgent();
                 anim.SetTrigger("isWalking");
+                ResetOtherTriggers("isWalking");
                 agent.SetDestination(newTarget);
                 return;
             }
         }
-        //StartIdle();
     }
 
     private void AdjustAnimationAndSpeedBasedOnShadow()
     {
         bool isCurrentlyInShadow = npcScript.IsInShadow();
-        if (agent.velocity.magnitude > 0f)
+        bool isMoving = agent.velocity.magnitude > 0.1f; // Check if the enemy is moving
+
+        if (isMoving)
         {
             if (isCurrentlyInShadow && !isWalking)
             {
                 anim.SetTrigger("isWalking");
+                ResetOtherTriggers("isWalking");
+
                 agent.speed = 3.5f;
                 isWalking = true;
                 isRunning = false;
@@ -135,6 +144,8 @@ public class PatrolState : State
             else if (!isCurrentlyInShadow && !isRunning)
             {
                 anim.SetTrigger("isRunning");
+                ResetOtherTriggers("isRunning");
+
                 agent.speed = 6.5f;
                 isWalking = false;
                 isRunning = true;
@@ -142,11 +153,22 @@ public class PatrolState : State
         }
         else
         {
-            if (!isWalking && !isRunning)
+            if (!isIdling)
             {
                 anim.SetTrigger("isIdle");
+                ResetOtherTriggers("isIdle");
+                isWalking = false;
+                isRunning = false;
             }
         }
+    }
+
+    private void ResetOtherTriggers(string currentTrigger)
+    {
+        // Reset other triggers to avoid flickering transitions
+        if (currentTrigger != "isIdle") anim.ResetTrigger("isIdle");
+        if (currentTrigger != "isWalking") anim.ResetTrigger("isWalking");
+        if (currentTrigger != "isRunning") anim.ResetTrigger("isRunning");
     }
 
     public override void Exit()

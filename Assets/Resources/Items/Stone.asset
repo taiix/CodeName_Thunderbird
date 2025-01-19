@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aabe4d06f0f5b944a2f82764f523209, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  id: 0
   itemName: Stone
   itemIcon: {fileID: 21300000, guid: e884f4b327b2b374780a180fddf974f2, type: 3}
   itemDescription: Just a simple stone...or is it ?

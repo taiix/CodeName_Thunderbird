@@ -18,6 +18,6 @@ MonoBehaviour:
   itemsForFix:
   - item: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
     amount: 3
-  upgradePower: 100
+  upgradePower: 50
   healthUpgrade: 10
   damageReduction: 1

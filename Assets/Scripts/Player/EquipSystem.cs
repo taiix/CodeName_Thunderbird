@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EquipSystem : MonoBehaviour
 {
     [SerializeField] private Transform handTransform;
     [SerializeField]private GameObject equippedItemInstance = null;
+    [SerializeField] GameObject itemHoldTextUI;
 
     private ItemInteractable equippedItem;
     private Item currentEquippedItem = null;
@@ -50,6 +52,8 @@ public class EquipSystem : MonoBehaviour
             equippedItemInstance = Instantiate(item.itemPrefab, handTransform);
             equippedItem = equippedItemInstance.GetComponent<ItemInteractable>();
             equippedItem.isHeld = true;
+            equippedItem.itemHoldText = itemHoldTextUI;
+            
             if (equippedItemInstance.gameObject.GetComponent<Collider>() != null && equippedItemInstance.gameObject.GetComponent<Rigidbody>() != null)
             {
                 equippedItemInstance.gameObject.GetComponent<Collider>().enabled = false;
@@ -65,6 +69,7 @@ public class EquipSystem : MonoBehaviour
     {
         if (equippedItem != null && !equippedItem.isThrown)
         {
+            itemHoldTextUI.SetActive(false);
             Debug.Log("Unequip item called");
             equippedItem.isHeld = false;
             Destroy(equippedItemInstance.gameObject);

@@ -90,8 +90,9 @@ public class State
     public void LookAt(Vector3 target)
     {
         Vector3 directionToTarget = (target - npc.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
-        npc.transform.rotation = lookRotation;
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
+
+        npc.transform.rotation = targetRotation;
     }
 
     public void StopAgent()

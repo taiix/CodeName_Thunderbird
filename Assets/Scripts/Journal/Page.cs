@@ -29,17 +29,17 @@ public class Page : MonoBehaviour
     private void Start()
     {
         Debug.Log("subscribed to onOreMined");
-        OnOreMined += ActivateSection;
+       
     }
 
     private void OnEnable()
     {
-        
+        OnOreMined += ActivateSection;
     }
 
     private void OnDisable()
     {
-        //OnOreMined -= ActivateSection;
+        OnOreMined -= ActivateSection;
     }
 
     public void ActivateSection(String name)
@@ -47,10 +47,9 @@ public class Page : MonoBehaviour
         Debug.Log("ActivateSection called for: " + name);
         Debug.Log("Sections count: " + sections.Count);
 
-        Debug.Log($"Activating section for {name}");
         foreach (Section section in sections)
         {
-            if (section.sectionName.ToString() == name && !section.gameObject.activeSelf)
+            if (section.sectionName.ToString() == name /*&& !section.gameObject.activeSelf*/)
             {
                 section.gameObject.SetActive(true);
                 Debug.Log($"Activated section: {section.sectionName}");
