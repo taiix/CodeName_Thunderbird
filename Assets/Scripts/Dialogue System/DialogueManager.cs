@@ -51,7 +51,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Set the current quest (null if no quest is provided)
         currentDialogueQuest = quest;
 
         isTalking = true;
@@ -70,7 +69,6 @@ public class DialogueManager : MonoBehaviour
 
         NextSentence();
 
-        // Log for debugging whether a quest is linked
         if (quest == null)
         {
             Debug.Log($"Dialogue with NPC '{npcName}' has no quest associated.");

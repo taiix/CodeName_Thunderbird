@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -17,7 +16,6 @@ public static class SaveLoadSystem
 
         PlayerData playerData = null;
         PlaneData planeData = null;
-        TerrainDataSave terrainData = null;
         TimeData timeData = null;
         InventoryData inventoryData = null;
 
@@ -26,56 +24,71 @@ public static class SaveLoadSystem
 
         foreach (ISavableData data in dataContainer)
         {
-            if (data is PlayerHealth playerHealth)
+            try
             {
-                playerData = new PlayerData(playerHealth.GetCurrentHealth(), playerHealth.transform.position.x, playerHealth.transform.position.y, playerHealth.transform.position.z);
-            }
-            else if (data is PlanePart planePart)
-            {
-                planeData = new PlaneData(planePart.CurrentHealth, planePart.transform.position.x, planePart.transform.position.y, planePart.transform.position.z);
-            }
-            else if (data is MapGeneratorGPU mapGenerator)
-            {
-                terrainData = new TerrainDataSave(mapGenerator.Seed);
-                terrainSeed.Add(terrainData);
-            }
-            else if (data is TimeController timeController)
-            {
-                timeData = new TimeData(timeController.CurrentTime);
-            }
-            else if (data is InventorySystem inventorySystem)
-            {
-                List<InventorySlot> inventorySlots = inventorySystem.GetInventorySlots();
-
-                List<InventorySlotData> slotsData = new List<InventorySlotData>();
-                foreach (var slot in inventorySlots)
+                switch (data)
                 {
-                    if (slot.itemInSlot != null && slot.itemInSlot.itemName != null)
-                    {
-                        slotsData.Add(new InventorySlotData(slot.itemInSlot.itemName, slot.amountInSlot));
-                    }
-                }
+                    case PlayerHealth playerHealth:
+                        playerData = JsonUtility.FromJson<PlayerData>(data.ToJson());
+                        break;
 
-                inventoryData = new InventoryData(slotsData);
+                    case PlanePart planePart:
+                        planeData = JsonUtility.FromJson<PlaneData>(data.ToJson());
+                        break;
+
+                    case MapGeneratorGPU mapGenerator:
+                        terrainSeed.Add(JsonUtility.FromJson<TerrainDataSave>(data.ToJson()));
+                        break;
+
+                    case TimeController timeController:
+                        timeData = JsonUtility.FromJson<TimeData>(data.ToJson());
+                        break;
+
+                    case InventorySystem inventorySystem:
+                        inventoryData = JsonUtility.FromJson<InventoryData>(data.ToJson());
+                        break;
+
+                    case ProceduralVegetation vegetationList:
+                        {
+                            List<VegetationData> vegetationDataList = new List<VegetationData>();
+
+                            var spawns = vegetationList.GetSpawnedObjects();
+                            Debug.Log($"[Save] {vegetationList.gameObject.name} has {spawns.Count} objects.");
+
+                            foreach (var go in spawns)
+                            {
+                                if (go == null || string.IsNullOrEmpty(go.name))
+                                {
+                                    Debug.LogWarning($"Skipped saving null or unnamed GameObject in {vegetationList.gameObject.name}.");
+                                    continue;
+                                }
+
+                                VegetationData d = new VegetationData(go.name, go.transform.position, go.transform.localScale);
+                                vegetationDataList.Add(d);
+                            }
+
+                            if (vegetationDataList.Count > 0)
+                            {
+                                VegetationDataWrapper islandWrapper = new VegetationDataWrapper(vegetationDataList);
+                                allIslandsVegetation.islandsData.Add(islandWrapper);
+                            }
+                            else
+                            {
+                                Debug.LogWarning($"No vegetation objects to save for {vegetationList.gameObject.name}.");
+                            }
+                        }
+                        break;
+
+                    default:
+                        Debug.LogWarning($"Unhandled data type: {data.GetType().Name}");
+                        break;
+                }
             }
-            else if (data is ProceduralVegetation vegetationList)
+            catch (System.Exception ex)
             {
-                List<VegetationData> vegetationDataList = new List<VegetationData>();
-                
-                var spawns = vegetationList.GetSpawnedObjects();
-                Debug.Log($"[Save] {vegetationList.gameObject.name} has {spawns.Count} objects.");
-                
-                foreach (var go in spawns)
-                {
-                    VegetationData d = new VegetationData(go.name, go.transform.position, go.transform.localScale);
-                    vegetationDataList.Add(d);
-                }
-                VegetationDataWrapper islandWrapper = new VegetationDataWrapper(vegetationDataList);
-
-                allIslandsVegetation.islandsData.Add(islandWrapper);
+                Debug.LogError($"Error saving data for {data.GetType().Name}: {ex.Message}");
             }
         }
-
         GameDataContainer gameDataContainer = new GameDataContainer(playerData, planeData, terrainSeed,
             timeData, inventoryData, allIslandsVegetation);
 
@@ -88,58 +101,86 @@ public static class SaveLoadSystem
 
     public static void LoadData(List<ISavableData> dataObjects)
     {
-        int terrainIndex = 0;
-        int vegetationIndex = 0;
-        if (File.Exists(path))
+        if (!File.Exists(path))
         {
-            string json = File.ReadAllText(path);
+            Debug.LogWarning("Save file not found");
+            return;
+        }
 
+        try
+        {
+            // Read JSON from file
+            string json = File.ReadAllText(path);
             GameDataContainer wrapper = JsonUtility.FromJson<GameDataContainer>(json);
 
-            for (int i = 0; i < dataObjects.Count; i++)
+            foreach (ISavableData data in dataObjects)
             {
-                if (dataObjects[i] is PlayerHealth playerHealth)
+                try
                 {
-                    string playerJson = JsonUtility.ToJson(wrapper.playerData);
-                    playerHealth.FromJson(playerJson);
-                }
-                else if (dataObjects[i] is PlanePart planePart)
-                {
-                    string planeJson = JsonUtility.ToJson(wrapper.planeData);
-                    planePart.FromJson(planeJson);
-                }
-                else if (dataObjects[i] is MapGeneratorGPU mapGenerator)
-                {
-                    string data = JsonUtility.ToJson(wrapper.terrainData[terrainIndex]);
-                    mapGenerator.FromJson(data);
-                    terrainIndex++;
-                }
-                else if (dataObjects[i] is TimeController timeController)
-                {
-                    string timeJson = JsonUtility.ToJson(wrapper.timeData);
-                    timeController.FromJson(timeJson);
-                }
-                else if (dataObjects[i] is InventorySystem inventorySystem)
-                {
-                    string inventoryJson = JsonUtility.ToJson(wrapper.inventoryData);
-                    inventorySystem.FromJson(inventoryJson);
-                }
-                else if (dataObjects[i] is ProceduralVegetation vegetationList)
-                {
-                    VegetationDataWrapper vWrapper = wrapper.vegetationAllIslands.islandsData[vegetationIndex];
+                    switch (data)
+                    {
+                        case PlayerHealth playerHealth:
+                            if (wrapper.playerData != null)
+                            {
+                                playerHealth.FromJson(JsonUtility.ToJson(wrapper.playerData));
+                            }
+                            break;
 
-                    string vegetationJson = JsonUtility.ToJson(vWrapper, true);
+                        case PlanePart planePart:
+                            if (wrapper.planeData != null)
+                            {
+                                planePart.FromJson(JsonUtility.ToJson(wrapper.planeData));
+                            }
+                            break;
 
-                    vegetationList.FromJson(vegetationJson);
-                    vegetationIndex++;
+                        case MapGeneratorGPU mapGenerator:
+                            if (wrapper.terrainData.Count > 0)
+                            {
+                                string terrainJson = JsonUtility.ToJson(wrapper.terrainData[0]);
+                                mapGenerator.FromJson(terrainJson);
+                                wrapper.terrainData.RemoveAt(0); // Remove used terrain data
+                            }
+                            break;
+
+                        case TimeController timeController:
+                            if (wrapper.timeData != null)
+                            {
+                                timeController.FromJson(JsonUtility.ToJson(wrapper.timeData));
+                            }
+                            break;
+
+                        case InventorySystem inventorySystem:
+                            if (wrapper.inventoryData != null)
+                            {
+                                inventorySystem.FromJson(JsonUtility.ToJson(wrapper.inventoryData));
+                            }
+                            break;
+
+                        case ProceduralVegetation vegetationList:
+                            if (wrapper.vegetationAllIslands.islandsData.Count > 0)
+                            {
+                                string vegetationJson = JsonUtility.ToJson(wrapper.vegetationAllIslands.islandsData[0]);
+                                vegetationList.FromJson(vegetationJson);
+                                wrapper.vegetationAllIslands.islandsData.RemoveAt(0); // Remove used vegetation data
+                            }
+                            break;
+
+                        default:
+                            Debug.LogWarning($"Unhandled data type: {data.GetType().Name}");
+                            break;
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"Error loading data for {data.GetType().Name}: {ex.Message}");
                 }
             }
 
             Debug.Log("Game data loaded successfully");
         }
-        else
+        catch (System.Exception ex)
         {
-            Debug.LogWarning("Save file not found");
+            Debug.LogError($"Failed to load game data: {ex.Message}");
         }
     }
 }
