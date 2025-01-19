@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aabe4d06f0f5b944a2f82764f523209, type: 3}
   m_Name: OrangeCrystal
   m_EditorClassIdentifier: 
-  itemName: Orange Crystal
+  itemName: OrangeCrystal
   itemIcon: {fileID: 21300000, guid: 84354f863a0976f42857ab6d6867fa57, type: 3}
-  itemDescription: 
+  itemDescription: Powerful crystal used for the ultimate upgrades
   itemPrefab: {fileID: 8120075853405739526, guid: 7a51593b76dbbd246b653c13aeb0c2bd, type: 3}
   maxStack: 5
   inventorySize: 1

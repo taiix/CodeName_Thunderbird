@@ -7,8 +7,8 @@ public enum SectionName
 {
     GoldOre,
     PurpleCrystal,
-    BlueOre,
-    OrangeOre,
+    BlueCrystal,
+    OrangeCrystal,
 
 }
 

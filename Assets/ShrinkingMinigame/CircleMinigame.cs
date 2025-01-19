@@ -77,7 +77,7 @@ public class CircleMinigame : MonoBehaviour
         if (shrinkingRadius < fixedInnerRadius || innerRadius > fixedRadius)
         {
             fixedCircle.color = Color.yellow;
-            if (Input.GetKeyDown(KeyCode.Alpha8))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 Debug.Log("fail");
                 GameRestart();
@@ -86,7 +86,7 @@ public class CircleMinigame : MonoBehaviour
         else if (innerRadius <= fixedRadius)
         {
             fixedCircle.color = Color.green;
-            if (Input.GetKeyDown(KeyCode.Alpha8))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 Debug.Log("success");
 
