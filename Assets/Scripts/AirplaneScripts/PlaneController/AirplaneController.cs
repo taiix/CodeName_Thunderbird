@@ -38,7 +38,7 @@ public class AirplaneController : RigidBodyController
         airplaneAerodynamics = GetComponent<AirplaneAerodynamics>();
         if (airplaneAerodynamics != null)
         {
-            Debug.Log("Subscribing to OnCrash");
+            //Debug.Log("Subscribing to OnCrash");
             airplaneAerodynamics.OnCrash += HandleCrash;
         }
         else
