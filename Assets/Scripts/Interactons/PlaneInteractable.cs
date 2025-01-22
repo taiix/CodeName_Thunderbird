@@ -99,7 +99,7 @@ public class PlaneInteractable : Interactable
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
         GameManager.Instance.PlayerInPlane(isPlayerInPlane);
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
 
         Debug.Log("Player has exited the plane.");
     }

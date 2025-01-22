@@ -15,6 +15,8 @@ public class InventorySystem : MonoBehaviour, ISavableData
 
     [SerializeField] private GameObject inventoryUI;
 
+    [SerializeField] private Transform hotbarOpenInInventoryPos;
+    private Vector3 originalHotbarPos;
     public GameObject hotbarPanelUI;
     public GameObject itemPanelUI;
     public Image largeItemImage;
@@ -27,7 +29,6 @@ public class InventorySystem : MonoBehaviour, ISavableData
     private InventorySlot selectedSlot;
 
     private Item equippedItem;
-    private Transform originalHotbarPos;
     [SerializeField] private HotbarManager hotbarManager;
     [SerializeField] private List<InventorySlot> slots = new List<InventorySlot>();
     public List<Item> itemsInInventory = new List<Item>();
@@ -84,7 +85,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
     void Start()
     {
         hotbarPanelUI.SetActive(true);
-        inventoryUI.SetActive(false);
+        originalHotbarPos = hotbarPanelUI.transform.position;
         itemPanelUI.SetActive(false);
         dropButton.onClick.AddListener(DropSelectedItem);
         useButton.onClick.AddListener(UseSelectedItem);
@@ -113,19 +114,21 @@ public class InventorySystem : MonoBehaviour, ISavableData
             isInventoryOpen = !isInventoryOpen;
             if (isInventoryOpen)
             {
-                GameManager.Instance.DisablePlayerControls(true);
+                GameManager.Instance.DisablePlayerControls(false);
                 inventoryUI.SetActive(true);
                 hotbarPanelUI.SetActive(true);
-                hotbarPanelUI.transform.position = hotbarPanelUI.transform.position + new Vector3(-410, -10, 0);
+                //hotbarPanelUI.transform.position = hotbarPanelUI.transform.position + new Vector3(-410, -10, 0);
+                hotbarPanelUI.transform.position = hotbarOpenInInventoryPos.position;
 
             }
             else
             {
-                GameManager.Instance.EnablePlayerControls();
+                GameManager.Instance.EnablePlayerControls(true);
                 inventoryUI.SetActive(false);
                 itemPanelUI.SetActive(false);
 
-                hotbarPanelUI.transform.position = hotbarPanelUI.transform.position - new Vector3(-410, -10, 0);
+                //hotbarPanelUI.transform.position = hotbarPanelUI.transform.position - new Vector3(-410, -10, 0);
+                hotbarPanelUI.transform.position = originalHotbarPos;
             }
         }
         else
@@ -388,7 +391,7 @@ public class InventorySystem : MonoBehaviour, ISavableData
         isInventoryOpen = false;
         inventoryUI.SetActive(false);
         itemPanelUI.SetActive(false);
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
         hotbarPanelUI.transform.position = hotbarPanelUI.transform.position - new Vector3(-410, -10, 0);
     }
 

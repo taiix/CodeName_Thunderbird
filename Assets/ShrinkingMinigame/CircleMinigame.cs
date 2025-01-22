@@ -158,6 +158,6 @@ public class CircleMinigame : MonoBehaviour
             interactable.RemoveObject(interactable.gameObject);
         }
 
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
     }
 }

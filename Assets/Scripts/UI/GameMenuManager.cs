@@ -54,16 +54,19 @@ public class GameMenuManager : MonoBehaviour
         {
             GameManager.Instance.DisablePlayerControls(false);
         }
+        else if(GameManager.Instance.IsPLayerInPlane())
+        {
+            GameManager.Instance.EnablePlayerControls(false);
+        }
         else
         {
-            GameManager.Instance.EnablePlayerControls();
+            GameManager.Instance.EnablePlayerControls(true);
         }
-
 
         if (!isMenuOpen && controlsPanel.activeSelf)
         {
             controlsPanel.SetActive(false);
-            GameManager.Instance.EnablePlayerControls();
+            GameManager.Instance.EnablePlayerControls(true);
         }
     }
 

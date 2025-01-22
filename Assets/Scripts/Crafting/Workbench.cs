@@ -144,7 +144,7 @@ public class Workbench : Interactable
         isInteracting = false;
         workbenchCamera.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
         InventorySystem.Instance.hotbarPanelUI.SetActive(true);
         StartCoroutine(EnableEquppable());
     }
