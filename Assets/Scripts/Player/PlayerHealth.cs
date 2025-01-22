@@ -37,7 +37,7 @@ public class PlayerHealth : MonoBehaviour, ISavableData
     {
         yield return new WaitForSeconds(1f);
         if (currentHealth <= 0)
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
     }
 
     public void TakeDamage(float damageAmount)
