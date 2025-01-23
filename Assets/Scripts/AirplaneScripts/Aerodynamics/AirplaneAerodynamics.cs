@@ -274,10 +274,12 @@ public class AirplaneAerodynamics : MonoBehaviour
                 // Check if the current lift power is sufficient for this altitude
                 if (currentLiftPower < requiredLiftPower[i])
                 {
-                    Debug.Log("LIMIT ALTITUDE");
+                    //Debug.Log("LIMIT ALTITUDE");
                     ShowAltitudeWarning(altitudeWarningText.text);
                     rb.velocity = new Vector3(rb.velocity.x, Mathf.Min(rb.velocity.y, 0f), rb.velocity.z);
-                    rb.AddForce(Vector3.down * 10f, ForceMode.Acceleration); 
+                    rb.AddForce(Vector3.down * 5f, ForceMode.Acceleration);
+                    altitudeThresholds.Remove(i);
+                    requiredLiftPower.Remove(i);
                     break; 
                 }
             }

@@ -15,6 +15,8 @@ public class AirplaneController : RigidBodyController
     public List<AirplaneEngine> engines = new List<AirplaneEngine>();
     public List<AirplaneWheels> wheels = new List<AirplaneWheels>();
     public List<FlightControlSurface> controlSurfaces = new List<FlightControlSurface>();
+    public float timeInWater = 5f;
+
 
 
     private bool canControlPlane = false;
@@ -225,7 +227,7 @@ public class AirplaneController : RigidBodyController
 
     private IEnumerator HandleCrashRespawn()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(timeInWater);
 
         Island lastIsland = GameManager.Instance.GetLastIsland();
 

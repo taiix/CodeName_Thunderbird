@@ -80,7 +80,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (timeController)
         {
-
+            //Debug.Log("Checking if in shadow");
             Vector3 lightDirection = -lightSource.transform.forward;
             Vector3 adjustedPoint = point + Vector3.up * enemyHeight / 2;
 

@@ -54,6 +54,7 @@ public class LandingTutorialManager : MonoBehaviour
     {
         state = LandingTutorialState.LowerAltitude;
         explanationText.transform.parent.gameObject.SetActive(false);
+        Cursor.visible = false;
     }
 
     void LowerAltitude()
@@ -66,7 +67,7 @@ public class LandingTutorialManager : MonoBehaviour
         heightText.text = $"Lower your height to 1000 meters " +
             $"current height: " + altitude;
 
-        Debug.Log(altitude);
+        //Debug.Log(altitude);
         if (altitude != 0 && altitude <= desiredHeight)
         {
             StartCoroutine(Wait(LandingTutorialState.LowerRPMS2000, 1));

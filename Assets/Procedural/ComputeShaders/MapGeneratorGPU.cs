@@ -395,4 +395,9 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
         Debug.Log("Serialized islandData: " + seed);
         Calculate();
     }
+
+    private void Update()
+    {
+        //Debug.Log(seed + " from island " + this.gameObject.name);
+    }
 }

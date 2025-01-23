@@ -16,19 +16,21 @@ public class AirplaneInputEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
 
-        string debugInfo = "";
-        debugInfo += "Pitch = " + inputs.Pitch + '\n';
-        debugInfo += "Roll = " + inputs.Roll + '\n';
-        debugInfo += "Yaw = " + inputs.Yaw + '\n';
-        debugInfo += "Throttle = " + inputs.Throttle + '\n';
-        debugInfo += "Break = " + inputs.Break + '\n';
-        debugInfo += "Flaps = " + inputs.Flaps;
+            base.OnInspectorGUI();
 
-        GUILayout.Space(20);
-        EditorGUILayout.TextArea(debugInfo);
+            string debugInfo = "";
+            debugInfo += "Pitch = " + inputs.Pitch + '\n';
+            debugInfo += "Roll = " + inputs.Roll + '\n';
+            debugInfo += "Yaw = " + inputs.Yaw + '\n';
+            debugInfo += "Throttle = " + inputs.Throttle + '\n';
+            debugInfo += "Break = " + inputs.Break + '\n';
+            debugInfo += "Flaps = " + inputs.Flaps;
 
-        Repaint();
+            GUILayout.Space(20);
+            //EditorGUILayout.TextArea(debugInfo);
+
+            Repaint();
+        
     }
 }

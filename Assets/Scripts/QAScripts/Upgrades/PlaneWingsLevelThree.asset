@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: PlaneWingsLevelThree
   m_EditorClassIdentifier: 
   requiredItemsList:
-  - item: {fileID: 11400000, guid: 479d54b48d45be14b95ab55437ce20e9, type: 2}
+  - item: {fileID: 11400000, guid: a3b361267d8ba0845a63970c791983f7, type: 2}
     amount: 5
   - item: {fileID: 11400000, guid: ac65f7196bdc18f46ba3ad3062467788, type: 2}
     amount: 5
   itemsForFix:
-  - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
-    amount: 5
+  - item: {fileID: 11400000, guid: 479d54b48d45be14b95ab55437ce20e9, type: 2}
+    amount: 3
   upgradePower: 200
   healthUpgrade: 20
   damageReduction: 1

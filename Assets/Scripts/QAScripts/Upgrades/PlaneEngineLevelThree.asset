@@ -16,7 +16,7 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: ac65f7196bdc18f46ba3ad3062467788, type: 2}
     amount: 5
   itemsForFix:
-  - item: {fileID: 11400000, guid: 479d54b48d45be14b95ab55437ce20e9, type: 2}
+  - item: {fileID: 11400000, guid: ac65f7196bdc18f46ba3ad3062467788, type: 2}
     amount: 2
   upgradePower: 2000
   healthUpgrade: 50

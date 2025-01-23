@@ -47,26 +47,30 @@ public class GameMenuManager : MonoBehaviour
     {
         isMenuOpen = !isMenuOpen;
 
-
         buttonsParent.SetActive(isMenuOpen);
+        Cursor.visible = isMenuOpen;
 
-        if (isMenuOpen)
+        if (GameManager.Instance)
         {
-            GameManager.Instance.DisablePlayerControls(false);
-        }
-        else if(GameManager.Instance.IsPLayerInPlane())
-        {
-            GameManager.Instance.EnablePlayerControls(false);
-        }
-        else
-        {
-            GameManager.Instance.EnablePlayerControls(true);
-        }
 
-        if (!isMenuOpen && controlsPanel.activeSelf)
-        {
-            controlsPanel.SetActive(false);
-            GameManager.Instance.EnablePlayerControls(true);
+            if (isMenuOpen)
+            {
+                GameManager.Instance.DisablePlayerControls(false);
+            }
+            else if (GameManager.Instance.IsPLayerInPlane())
+            {
+                GameManager.Instance.EnablePlayerControls(false);
+            }
+            else
+            {
+                GameManager.Instance.EnablePlayerControls(true);
+            }
+
+            if (!isMenuOpen && controlsPanel.activeSelf)
+            {
+                controlsPanel.SetActive(false);
+                GameManager.Instance.EnablePlayerControls(true);
+            }
         }
     }
 

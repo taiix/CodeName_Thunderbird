@@ -343,6 +343,7 @@ MonoBehaviour:
   isThrown: 0
   interactionText: 
   parentIsland: {fileID: 0}
+  isSpawnedByIsland: 0
   choppedTreePrefab: {fileID: 2706461339042623145, guid: 4aae71afaea7d2a46bf2bd289a8d40c6, type: 3}
   treeMaxHealth: 10
   treeHealth: 0
@@ -3635,6 +3636,7 @@ MonoBehaviour:
   isThrown: 0
   interactionText: Stump
   parentIsland: {fileID: 0}
+  isSpawnedByIsland: 0
   choppedTreePrefab: {fileID: 0}
   treeMaxHealth: 1
   treeHealth: 0
@@ -3677,6 +3679,7 @@ MonoBehaviour:
   isThrown: 0
   interactionText: 
   parentIsland: {fileID: 0}
+  isSpawnedByIsland: 0
   woodLogPrefab: {fileID: 5649871567691313508, guid: d84ab59a85d1ca8439c1255359b7f036, type: 3}
   minLogs: 1
   maxLogs: 5
@@ -10569,13 +10572,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 15855723552886519, guid: a766ecef892deb345a945fe6f6e067b2, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2276935292839239105, guid: a766ecef892deb345a945fe6f6e067b2, type: 3}
       propertyPath: m_Name
       value: BloodVFX
       objectReference: {fileID: 0}
+    - target: {fileID: 3914076503122001886, guid: a766ecef892deb345a945fe6f6e067b2, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489322680017617068, guid: a766ecef892deb345a945fe6f6e067b2, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5844005589497496364, guid: a766ecef892deb345a945fe6f6e067b2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.1
+      value: 28.03
       objectReference: {fileID: 0}
     - target: {fileID: 5844005589497496364, guid: a766ecef892deb345a945fe6f6e067b2, type: 3}
       propertyPath: m_LocalPosition.y
