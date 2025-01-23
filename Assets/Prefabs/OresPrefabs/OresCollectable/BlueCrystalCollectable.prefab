@@ -81,6 +81,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18b0479b9f3f5eb4d9cf4aba5df45a02, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5547813562006246419}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18b0479b9f3f5eb4d9cf4aba5df45a02, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7261777343379074491}
   m_SourcePrefab: {fileID: 100100000, guid: 18b0479b9f3f5eb4d9cf4aba5df45a02, type: 3}
 --- !u!1 &5573226421185571055 stripped
 GameObject:
@@ -100,9 +103,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
+  parentIsland: {fileID: 0}
+  isSpawnedByIsland: 0
   itemSO: {fileID: 11400000, guid: 479d54b48d45be14b95ab55437ce20e9, type: 2}
   amount: 1
+  itemHoldText: {fileID: 0}
   highlightShader: {fileID: 2100000, guid: eb607303de8365540b9fec2cd1f06c73, type: 2}
   originalMaterials: []
 --- !u!65 &2628599451304392310
@@ -153,3 +160,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7261777343379074491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5573226421185571055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829fec6c692042845a7499a6c4c5903a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

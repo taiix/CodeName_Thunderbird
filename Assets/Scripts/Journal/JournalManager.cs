@@ -47,7 +47,7 @@ public class JournalManager : MonoBehaviour
     public void CloseJournal()
     {
         journalUI.SetActive(false);
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
     }
 
     public void OpenPage(string category)

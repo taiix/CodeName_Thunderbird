@@ -33,6 +33,7 @@ public class TakeoffTutorialManager : MonoBehaviour
     {
         state = TutorialState.PowerUpEngines;
         _explanationText.transform.parent.gameObject.SetActive(false);
+        Cursor.visible = false;
     }
 
     void Update()

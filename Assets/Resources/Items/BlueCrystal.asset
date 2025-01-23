@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aabe4d06f0f5b944a2f82764f523209, type: 3}
   m_Name: BlueCrystal
   m_EditorClassIdentifier: 
-  itemName: Blue Crystal
+  itemName: BlueCrystal
   itemIcon: {fileID: 21300000, guid: cfb73d51934074846b0df93217d342c2, type: 3}
-  itemDescription: 
+  itemDescription: Magical crystal that has healing abilities
   itemPrefab: {fileID: 5573226421185571055, guid: 3dbc5091fe4b3614e94fe42149384ffd, type: 3}
   maxStack: 5
   inventorySize: 1

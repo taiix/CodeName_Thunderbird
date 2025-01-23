@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         {
             playerController = player.GetComponent<CharacterMovement>();
             inventorySystem = player.GetComponent<InventorySystem>();
-            
+
         }
         if (airplane)
         {
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
 
     public void DisablePlayerControls(bool showVirtualMouse)
     {
-        Debug.Log("Should disactivate controls");
+        //Debug.Log("Should disactivate controls");
         if (virtualMouseUI != null && showVirtualMouse)
         {
             virtualMouseUI.SetActive(true);
@@ -57,15 +57,18 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public void EnablePlayerControls()
+    public void EnablePlayerControls(bool showCrosshair)
     {
-        Debug.Log("Should activate controls");
+        //Debug.Log("Should activate controls");
         isInteracting = false;
         if (virtualMouseUI != null)
         {
             virtualMouseUI.SetActive(false);
         }
-        crosshair.SetActive(true);
+        if (showCrosshair)
+        {
+            crosshair.SetActive(true);
+        }
         playerController?.EnableControls();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -79,7 +82,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            EnablePlayerControls();
+            EnablePlayerControls(true);
         }
     }
 

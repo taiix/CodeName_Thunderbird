@@ -6,6 +6,7 @@ public class ItemInteractable : Interactable
     public Item itemSO;
     public int amount = 1;
 
+    public GameObject itemHoldText;
     [SerializeField] private Material highlightShader;
 
     [SerializeField] private List<Material> originalMaterials = new();

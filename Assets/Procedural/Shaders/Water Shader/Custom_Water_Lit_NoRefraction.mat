@@ -42,7 +42,7 @@ Material:
     - _FoamCutoff: 2.35
     - _FoamIntensity: 8.08
     - _FoamScale: 5
-    - _Glossiness: 0.155
+    - _Glossiness: 0
     - _Metallic: 0
     - _RefractionDepth: 1
     - _RefractionSpeed: 1

@@ -1,17 +1,15 @@
 using Cinemachine;
 using UnityEngine;
+using TMPro;
 
 public class PlaneInteractable : Interactable
 {
     [SerializeField] GameObject inPlaneUi;
-
     [SerializeField] AirplaneController airplaneController;
-
     [SerializeField] CinemachineVirtualCamera planeCamera;
-
     [SerializeField] GameObject player;
-
     [SerializeField] private Transform playerExitPosition;
+    [SerializeField] private GameObject exitPlaneText;
 
     private bool isPlayerInPlane = false;
 
@@ -85,7 +83,8 @@ public class PlaneInteractable : Interactable
         isPlayerInPlane = true;
 
         GameManager.Instance.PlayerInPlane(isPlayerInPlane);
-        InteractionHandler.Instance.UpdateInteractionText("Press 'Shift' to exit the plane");
+        exitPlaneText.SetActive(true);
+        InteractionHandler.Instance.HideInteractionUI();
         //Debug.Log("Player has entered the plane.");
     }
 
@@ -93,13 +92,14 @@ public class PlaneInteractable : Interactable
     {
         player.SetActive(true);
         inPlaneUi.SetActive(false);
+        exitPlaneText.SetActive(false);
         airplaneController.ActivateControls();
         planeCamera.gameObject.SetActive(false);
         InventorySystem.Instance.hotbarPanelUI?.SetActive(true);
         player.transform.position = playerExitPosition.position;
         isPlayerInPlane = false;
         GameManager.Instance.PlayerInPlane(isPlayerInPlane);
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
 
         Debug.Log("Player has exited the plane.");
     }

@@ -14,16 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requiredItemsList:
   - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
-    amount: 3
-  - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
-    amount: 4
-  - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
-    amount: 1
-  - item: {fileID: 11400000, guid: 6ff87e5456cac83429ef0c00e0cbcebb, type: 2}
-    amount: 10
+    amount: 5
+  - item: {fileID: 11400000, guid: a3b361267d8ba0845a63970c791983f7, type: 2}
+    amount: 5
   itemsForFix:
   - item: {fileID: 11400000, guid: bf0e6cc440583ba42b7373b8a031fe65, type: 2}
     amount: 3
-  upgradePower: 20
-  healthUpgrade: 0
-  damageReduction: 0
+  upgradePower: 100
+  healthUpgrade: 20
+  damageReduction: 1

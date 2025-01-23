@@ -1,4 +1,4 @@
-Shader "Custom/Water_Lit"
+Shader "Custom/Water_Lit_NoRefract"
 {
     Properties
     {
@@ -45,7 +45,6 @@ Shader "Custom/Water_Lit"
             "Queue" = "Transparent"
             "RenderType"="Transparent"
         }
-        LOD 200
 
         CGPROGRAM
         #pragma surface surf Standard alpha vertex:vert

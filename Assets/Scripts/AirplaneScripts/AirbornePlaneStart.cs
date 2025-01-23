@@ -5,30 +5,32 @@ using UnityEngine;
 using UnityEngine.UI;
 public class AirbornePlaneStart : MonoBehaviour
 {
-    public float initialAltitude = 1000f; 
-    public float initialSpeed = 300f; 
-    public float initialThrottle = 1.0f; 
-    public float initialRPM = 3200f; 
-    public float initialPitchAngle = 5f; 
+    public float initialAltitude = 1000f;
+    public float initialSpeed = 300f;
+    public float initialThrottle = 1.0f;
+    public float initialRPM = 3200f;
+    public float initialPitchAngle = 5f;
 
     public Rigidbody planeRigidbody;
     public AirplaneAerodynamics airplaneAerodynamics;
     public AirplaneEngine airplaneEngine;
     public BaseAirplaneInputs airplaneInputs;
 
-    [SerializeField]private Transform startPos;
+    [SerializeField] private Transform startPos;
 
     private RingTracker ringTracker;
 
     void Start()
     {
+        startPos.position = new Vector3(transform.position.x, initialAltitude, transform.position.z);
+        startPos.rotation = Quaternion.Euler(initialPitchAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         SetPlane();
         ringTracker = GetComponent<RingTracker>();
+
     }
     void SetPlane()
     {
-        startPos.position = new Vector3(transform.position.x, initialAltitude, transform.position.z);
-        startPos.rotation = Quaternion.Euler(initialPitchAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+       
         // Set the plane's initial position and rotation
         transform.position = startPos.position;
         transform.rotation = startPos.rotation;
@@ -64,7 +66,10 @@ public class AirbornePlaneStart : MonoBehaviour
         if (other.gameObject.CompareTag("WaterSurface"))
         {
             SetPlane();
-            ringTracker.ResetRingsPos();
+            if (ringTracker)
+            {
+                ringTracker.ResetRingsPos();
+            }
         }
     }
 

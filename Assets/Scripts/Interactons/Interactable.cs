@@ -7,6 +7,7 @@ public abstract class Interactable : MonoBehaviour
 
     public string interactionText = string.Empty;
     public ProceduralVegetation parentIsland;
+    public bool isSpawnedByIsland = false;
 
     public virtual void Awake()
     {

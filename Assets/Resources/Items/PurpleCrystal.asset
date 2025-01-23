@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aabe4d06f0f5b944a2f82764f523209, type: 3}
   m_Name: PurpleCrystal
   m_EditorClassIdentifier: 
-  itemName: Purple Crystal
+  itemName: PurpleCrystal
   itemIcon: {fileID: 21300000, guid: 29fedf54419a6084ab396f09d06e16df, type: 3}
-  itemDescription: 
+  itemDescription: Just a shiny crystal....or is it ?
   itemPrefab: {fileID: 7146436574758727739, guid: b6cce2f0332c2014b911ac595e81be36, type: 3}
   maxStack: 5
   inventorySize: 1
-  miningTime: 0
-  minigameDifficulty: 0
+  miningTime: 2
+  minigameDifficulty: 2
   type: 0

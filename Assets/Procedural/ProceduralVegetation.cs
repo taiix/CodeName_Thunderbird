@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 [RequireComponent(typeof(MapGeneratorGPU))]
 public class ProceduralVegetation : MonoBehaviour, ISavableData
 {
-    [SerializeField]private Texture2D tex;
+
+    [SerializeField] NavMeshSurface navMeshSurface;
+    [SerializeField] private Texture2D tex;
     [SerializeField] private List<GameObject> customAreaObjects;
     [SerializeField] private List<Vegetation> vegetations = new();
     private List<Vector3> availablePositions = new();
@@ -19,9 +22,12 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
     private void Start()
     {
         Init();
+
     }
 
-    void Init() {
+    void Init()
+    {
+        navMeshSurface = GetComponent<NavMeshSurface>();
         _mapGenerator = GetComponent<MapGeneratorGPU>();
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
@@ -31,6 +37,11 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
         if (customAreaObjects.Count > 0) PopulateCustomAreaObjects(customAreaObjects);
 
         PopulateTreeObjects();
+
+        if (navMeshSurface)
+        {
+            navMeshSurface.BuildNavMesh();
+        }
     }
 
     public void PopulateCustomAreaObjects(List<GameObject> customObjectsPrefab)
@@ -48,9 +59,10 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
             Vector3 adjustedPosition = go.transform.position;
             adjustedPosition.y += terrain.GetPosition().y;
             go.transform.position = adjustedPosition;
-            
+
             go.transform.localScale = new Vector3(go.transform.localScale.x, go.transform.localScale.y, go.transform.localScale.z);
 
+            
             spawnedObjects.Add(go);
         }
     }
@@ -125,6 +137,7 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
                         if (go.TryGetComponent<Interactable>(out Interactable interactable))
                         {
                             interactable.parentIsland = this;
+                            interactable.isSpawnedByIsland = true;
                         }
                     }
                 }
@@ -134,7 +147,8 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 
     public void RemoveObjects(GameObject go)
     {
-        if (spawnedObjects.Contains(go)) { 
+        if (spawnedObjects.Contains(go))
+        {
             Destroy(go);
             spawnedObjects.Remove(go);
             Debug.Log($"Removed object {go.name} from island {go.name}.");
@@ -179,8 +193,14 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
         return newVegetationPosition;
     }
 
-    public List<GameObject> GetSpawnedObjects() { 
+    public List<GameObject> GetSpawnedObjects()
+    {
         return spawnedObjects;
+    }
+
+    public void AddToSpawnedObjects(GameObject go)
+    {
+        spawnedObjects.Add(go);
     }
 
     public string ToJson()
@@ -214,7 +234,8 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
 
             if (prefab != null)
             {
-                if (prefab.TryGetComponent<Interactable>(out Interactable interactable)) {
+                if (prefab.TryGetComponent<Interactable>(out Interactable interactable))
+                {
                     interactable.parentIsland = this;
                 }
                 Vector3 pos = new Vector3(item.posX, item.posY, item.posZ);

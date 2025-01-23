@@ -22,6 +22,7 @@ public class PursueState : State
         agent.speed = enemyData.runningSpeed;
         anim.SetTrigger("isRunning");
         agent.SetDestination(player.position);
+        LookAt(player.position);  
         base.Enter();
     }
 
@@ -29,13 +30,15 @@ public class PursueState : State
     {
         float distanceToPlayer = Vector3.Distance(npc.transform.position, player.position);
 
+        agent.SetDestination(player.position);
+        LookAtPlayer(player.transform.position);
 
-        if (distanceToPlayer <= enemyData.attackRange &&
-            distanceToPlayer > enemyData.optimalAttackDistance)
-        {
-            LookAt(player.transform.position);
-            agent.SetDestination(player.position);
-        }
+        //if (distanceToPlayer <= enemyData.attackRange &&
+        //    distanceToPlayer > enemyData.optimalAttackDistance)
+        //{
+        //    LookAtPlayer(player.transform.position);
+        //    agent.SetDestination(player.position);
+        //}
         if (distanceToPlayer <= enemyData.optimalAttackDistance)
         {
             npcScript.ChooseAttackState();
@@ -44,10 +47,17 @@ public class PursueState : State
         {
             npcScript.ChangeCurrentState(new PatrolState(npc, agent, anim, player));
         }
-        else
-        {
-            agent.SetDestination(player.position);
-        }
+    }
+
+    private void LookAtPlayer(Vector3 target)
+    {
+        Vector3 directionToTarget = (target - npc.transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToTarget.x, 0, directionToTarget.z));
+        npc.transform.rotation = Quaternion.RotateTowards(
+            npc.transform.rotation,
+            targetRotation,
+            500 * Time.deltaTime // Ensure smooth rotation
+        );
     }
 
     public override void Exit()

@@ -11,9 +11,14 @@ public class UpgradeSystem : MonoBehaviour
     [SerializeField] private Transform requiredItemTransform;
     [SerializeField] private Button upgradeButton;
 
-    private PlanePart currentPlanePart = null;
+    [SerializeField] private List<PlanePart> wings = new List<PlanePart>();
+    [SerializeField] private PlanePart currentPlanePart = null;
     private PartUpgrade currentUpgrade = null;
     private InventorySystem inventorySystem;
+
+    private GameObject itemUI;
+    private Image itemImage;
+    private TextMeshProUGUI itemText;
 
     private Dictionary<Item, int> combinedRequiredItems = new Dictionary<Item, int>();
 
@@ -72,9 +77,9 @@ public class UpgradeSystem : MonoBehaviour
         foreach (RequiredItem requiredItem in upgrade.requiredItemsList)
         {        
 
-            GameObject itemUI = Instantiate(requiredItemUiPrefab, requiredItemTransform);
-            Image itemImage = itemUI.GetComponent<Image>();
-            TextMeshProUGUI itemText = itemUI.GetComponentInChildren<TextMeshProUGUI>();
+            itemUI = Instantiate(requiredItemUiPrefab, requiredItemTransform);
+            itemImage = itemUI.GetComponent<Image>();
+            itemText = itemUI.GetComponentInChildren<TextMeshProUGUI>();
 
             itemUI.SetActive(true);
             itemImage.sprite = requiredItem.item.itemIcon;
@@ -86,6 +91,12 @@ public class UpgradeSystem : MonoBehaviour
 
     public void UpgradePlanePart()
     {
+        if (currentPlanePart.currentUpgradeLevel > currentPlanePart.upgrades.Count - 1)
+        {
+            Debug.Log("No more upgrades available for this part.");
+            StartCoroutine(ShowNotEnoughItemsMessage("Good Job! No more upgrades available for this part."));
+            return;
+        }
         if (currentPlanePart == null || inventorySystem == null) return;
 
         currentUpgrade = currentPlanePart.GetCurrentUpgrade();
@@ -123,7 +134,7 @@ public class UpgradeSystem : MonoBehaviour
             {
                 hasAllItems = false;
                 int missingAmount = requiredAmount - playerItemCount;
-                missingItemsMessage += missingAmount.ToString() + "x " + item.itemName + "\n";
+                missingItemsMessage += "Missing items:\n" + missingAmount.ToString() + "x " + item.itemName + "\n";
             }
         }
 
@@ -140,7 +151,7 @@ public class UpgradeSystem : MonoBehaviour
             inventorySystem.RemoveItem(item, requiredAmount);
         }
 
-        if (currentUpgrade != null)
+        if (currentUpgrade != null && currentPlanePart.partName != "PlaneWing")
         {
             currentPlanePart.PartUpgrade(currentUpgrade);
 
@@ -148,15 +159,20 @@ public class UpgradeSystem : MonoBehaviour
 
             UpdateRequiredItemsUI(currentPlanePart.GetCurrentUpgrade());
         }
-        else
+        else if(currentUpgrade != null && currentPlanePart.partName == "PlaneWing")
         {
-            Debug.Log("No more upgrades available for this part.");
+            foreach(PlanePart part in wings)
+            {
+                part.PartUpgrade(currentUpgrade);
+                combinedRequiredItems.Clear();
+                UpdateRequiredItemsUI(currentPlanePart.GetCurrentUpgrade());
+            }
         }
     }
 
     private IEnumerator ShowNotEnoughItemsMessage(string message)
     {
-        notEnoughItemsText.text = "Missing items:\n" + message;
+        notEnoughItemsText.text = message;
         notEnoughItemsText.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1.5f);

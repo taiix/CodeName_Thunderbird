@@ -91,8 +91,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.767672, y: 4.178441, z: 4.4846854}
-  m_Center: {x: -0.1021564, y: 2.0633607, z: 0.08771014}
+  m_Size: {x: 1.7210693, y: 2.708129, z: 4.145645}
+  m_Center: {x: 0.05999756, y: 1.3282046, z: 0.07431793}
 --- !u!114 &5786964245135765860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,5 +106,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
+  isThrown: 0
   interactionText: 
+  parentIsland: {fileID: 0}
+  isSpawnedByIsland: 0
   oreItem: {fileID: 11400000, guid: 479d54b48d45be14b95ab55437ce20e9, type: 2}
+  miningGame: {fileID: 0}

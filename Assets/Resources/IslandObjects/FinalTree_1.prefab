@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7843954866504225921, guid: f27700f88915d9747b2395d341a69b72, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7798127056731401282, guid: f27700f88915d9747b2395d341a69b72, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -7227946838062834516, guid: f27700f88915d9747b2395d341a69b72, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -99,6 +107,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f27700f88915d9747b2395d341a69b72, type: 3}
       propertyPath: m_Name
       value: FINAL_Tree_Cut_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f27700f88915d9747b2395d341a69b72, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8354760524339423056, guid: f27700f88915d9747b2395d341a69b72, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -174,6 +186,7 @@ MonoBehaviour:
   isThrown: 0
   interactionText: 
   parentIsland: {fileID: 0}
+  isSpawnedByIsland: 0
   choppedTreePrefab: {fileID: 842681405382859988, guid: f1512e011fb55a44092ae0fec6e2eb96, type: 3}
   treeMaxHealth: 10
   treeHealth: 0
@@ -276,6 +289,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 62e014350a29e4a4eb5e22d68213da3c, type: 3}
       propertyPath: m_Name
       value: FINAL_Tree_Crown_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 62e014350a29e4a4eb5e22d68213da3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -40,6 +40,7 @@ public class FlyingTutorialManager : MonoBehaviour
     {
         state = FlyingTutorialStates.Introduction;
         explanationText.transform.parent.gameObject.SetActive(false);
+        Cursor.visible = false;
 
     }
 

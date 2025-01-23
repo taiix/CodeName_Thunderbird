@@ -7,6 +7,8 @@ using System;
 public class AirplaneAerodynamics : MonoBehaviour
 {
     [SerializeField] private GameObject perka;
+    [SerializeField] private TextMeshProUGUI altitudeWarningText;
+    private float lastAltitudeWarningTime = -Mathf.Infinity;
     //FOR TESTING
     public List<PlanePart> parts = new List<PlanePart>();
     public float healthThreshold = 50f;
@@ -272,14 +274,44 @@ public class AirplaneAerodynamics : MonoBehaviour
                 // Check if the current lift power is sufficient for this altitude
                 if (currentLiftPower < requiredLiftPower[i])
                 {
-                    Debug.Log("LIMIT ALTITUDE");
-                    // Limit altitude by zeroing vertical velocity and applying downward force
+                    //Debug.Log("LIMIT ALTITUDE");
+                    ShowAltitudeWarning(altitudeWarningText.text);
                     rb.velocity = new Vector3(rb.velocity.x, Mathf.Min(rb.velocity.y, 0f), rb.velocity.z);
-                    rb.AddForce(Vector3.down * 10f, ForceMode.Acceleration); 
+                    rb.AddForce(Vector3.down * 5f, ForceMode.Acceleration);
+                    altitudeThresholds.Remove(i);
+                    requiredLiftPower.Remove(i);
                     break; 
                 }
             }
         }
+    }
+    void ShowAltitudeWarning(string message)
+    {
+        if (Time.time - lastAltitudeWarningTime >= 5f)
+        {
+            altitudeWarningText.text = message;
+            altitudeWarningText.gameObject.SetActive(true);
+            StartCoroutine(AnimateText(altitudeWarningText));
+            lastAltitudeWarningTime = Time.time;
+        }
+    }
+
+    private IEnumerator AnimateText(TextMeshProUGUI text)
+    {
+        Vector3 originalScale = text.transform.localScale;
+        Vector3 targetScale = originalScale * 1.2f; 
+        float timer = 0f;
+        float animationDuration = 3f; 
+
+        while (timer < animationDuration)
+        {
+            float scaleFactor = Mathf.PingPong(timer * 2f, 1f);  
+            text.transform.localScale = Vector3.Lerp(originalScale, targetScale, scaleFactor);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        text.gameObject.SetActive(false);
     }
 
     public bool IsUnderwater()

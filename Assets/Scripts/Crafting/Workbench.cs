@@ -51,7 +51,7 @@ public class Workbench : Interactable
 
     public override void OnInteract()
     {
-        GameManager.Instance.DisablePlayerControls(true);
+        GameManager.Instance.DisablePlayerControls(false);
         GameManager.Instance.IsInteracting(true);
         Cursor.lockState = CursorLockMode.None;
         interactionText = string.Empty;
@@ -144,7 +144,7 @@ public class Workbench : Interactable
         isInteracting = false;
         workbenchCamera.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
-        GameManager.Instance.EnablePlayerControls();
+        GameManager.Instance.EnablePlayerControls(true);
         InventorySystem.Instance.hotbarPanelUI.SetActive(true);
         StartCoroutine(EnableEquppable());
     }
