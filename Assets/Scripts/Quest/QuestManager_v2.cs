@@ -19,14 +19,19 @@ public class QuestManager_v2 : MonoBehaviour
         if (q is DestinationQuest destQ && !destQ.isCompleted)
         {
             OnQuestSent?.Invoke(q);
+            Debug.Log("quest accepted asdasdasd");
         }
         else if (q is CollectingQuest_SO collQ && !collQ.isCompleted)
         {
             OnQuestSent?.Invoke(q);
+            Debug.Log("quest accepted asdasdasd");
+
         }
         else if (q is RepairQuest repQ && !repQ.isCompleted)
         {
             OnQuestSent?.Invoke(q);
+            Debug.Log("quest accepted asdasdasd");
+
         }
     }
 }

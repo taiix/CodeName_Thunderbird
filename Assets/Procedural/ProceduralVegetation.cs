@@ -22,7 +22,6 @@ public class ProceduralVegetation : MonoBehaviour, ISavableData
     private void Start()
     {
         Init();
-
     }
 
     void Init()

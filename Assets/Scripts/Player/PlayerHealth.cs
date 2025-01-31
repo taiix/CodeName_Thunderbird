@@ -82,6 +82,5 @@ public class PlayerHealth : MonoBehaviour, ISavableData
         currentHealth = data.playerHealth;
         transform.position = new Vector3(data.posX, data.posY, data.posZ);
         UpdateHealthBar();
-        Debug.Log($"Player stats loaded {data.playerHealth}");
     }
 }

@@ -12,9 +12,12 @@ public class GameDataContainer
     public InventoryData inventoryData;
 
     public AllIslandsVegetation vegetationAllIslands;
+
+    public NPCDialogueData npcDialogueData;
     
     public GameDataContainer(PlayerData playerData, PlaneData planeData, List<TerrainDataSave> terrainData, 
-        TimeData timeData, InventoryData inventoryData, AllIslandsVegetation vegetationAllIslands)
+        TimeData timeData, InventoryData inventoryData, 
+        AllIslandsVegetation vegetationAllIslands, NPCDialogueData npcDialogueData)
     {
         this.playerData = playerData;
         this.planeData = planeData;
@@ -22,8 +25,23 @@ public class GameDataContainer
         this.timeData = timeData;
         this.inventoryData = inventoryData;
         this.vegetationAllIslands = vegetationAllIslands;
+        this.npcDialogueData = npcDialogueData;
     }
 
+}
+
+[Serializable]
+public class NPCDialogueData {
+
+    public int dialogueIndex;
+    public bool questHasBeenTaken;
+    public bool isCompleted;
+
+    public NPCDialogueData(int dialogueIndex, bool questHasBeenTaken, bool isCompleted) { 
+        this.dialogueIndex = dialogueIndex;
+        this.questHasBeenTaken = questHasBeenTaken;
+        this.isCompleted = isCompleted;
+    }
 }
 
 [Serializable]

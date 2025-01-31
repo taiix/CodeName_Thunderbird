@@ -11,7 +11,6 @@ public class LandingZone : MonoBehaviour
         //Debug.Log("Collider with " + other.name);
         if (other.CompareTag("Plane")) 
         {
-            Debug.Log("Plane landed in the zone on island: " + parentIsland.name);
             parentIsland.MarkAsLastIsland();
         }
     }

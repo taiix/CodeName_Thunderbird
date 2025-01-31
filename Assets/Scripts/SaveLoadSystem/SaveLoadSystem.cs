@@ -19,6 +19,8 @@ public static class SaveLoadSystem
         TimeData timeData = null;
         InventoryData inventoryData = null;
 
+        NPCDialogueData npcData = null;
+
         AllIslandsVegetation allIslandsVegetation = new();
         List<TerrainDataSave> terrainSeed = new();
 
@@ -78,6 +80,9 @@ public static class SaveLoadSystem
                             }
                         }
                         break;
+                    case NPC_Dialogue dialogueData:
+                        npcData = JsonUtility.FromJson<NPCDialogueData>(data.ToJson());
+                        break;
 
                     default:
                         Debug.LogWarning($"Unhandled data type: {data.GetType().Name}");
@@ -90,7 +95,7 @@ public static class SaveLoadSystem
             }
         }
         GameDataContainer gameDataContainer = new GameDataContainer(playerData, planeData, terrainSeed,
-            timeData, inventoryData, allIslandsVegetation);
+            timeData, inventoryData, allIslandsVegetation, npcData);
 
         string json = JsonUtility.ToJson(gameDataContainer, true);
 
@@ -164,7 +169,13 @@ public static class SaveLoadSystem
                                 wrapper.vegetationAllIslands.islandsData.RemoveAt(0); // Remove used vegetation data
                             }
                             break;
-
+                         case NPC_Dialogue npcDialogueData:
+                            if (wrapper.npcDialogueData != null)
+                            { 
+                                string npcData = JsonUtility.ToJson(wrapper.npcDialogueData);
+                                npcDialogueData.FromJson(npcData);
+                            }
+                            break;
                         default:
                             Debug.LogWarning($"Unhandled data type: {data.GetType().Name}");
                             break;

@@ -10,11 +10,6 @@ Shader "Custom/Water_Lit"
         _Glossiness ("Smoothness", Range(0, 1)) = 0.5
         _Metallic ("Metallic", Range(0, 1)) = 0.0
 
-        _WaveHeight ("Wave Height", Float) = 0.1
-        _WaveSpeed ("Wave Speed", Float) = 0.1
-        _WaveFrequency ("Wave Frequency", Float) = 0.1
-        _WaveLenght ("Wave Lenght", Float) = 0.1
-
         _SpeedMap1 ("Wave Speed 1", Float) = 0.1
         _SpeedMap2 ("Wave Speed 2", Float) = 0.2
         _Scale ("Wave Scale", Range(0, 1)) = 0.1
@@ -45,7 +40,9 @@ Shader "Custom/Water_Lit"
             "Queue" = "Transparent"
             "RenderType"="Transparent"
         }
-        LOD 200
+
+        ZWrite On
+        ColorMask 0
 
         CGPROGRAM
         #pragma surface surf Standard alpha vertex:vert
@@ -78,8 +75,6 @@ Shader "Custom/Water_Lit"
         float4 _DeepColor;
         float4 _ShallowColor;
 
-        float _WaveHeight, _WaveSpeed, _WaveFrequency, _WaveLenght;
-
 
         float _SpeedMap1, _SpeedMap2, _Scale, _Amplitude;
 
@@ -99,16 +94,6 @@ Shader "Custom/Water_Lit"
         {
             UNITY_INITIALIZE_OUTPUT(Input, i);
             i.screenPos = ComputeScreenPos(v.vertex);
-
-            // float3 p = v.vertex.xyz;
-
-            // float k = 2 * UNITY_PI / _WaveLenght;
-            // float c = sqrt(9.8 / k);
-            // float f = k * (p.x - c * _Time.y);
-            // float a = _WaveHeight / k;
-            // p.x += a * cos(f);
-            // p.y = a * sin(f);
-            // //v.vertex.xyz = p;
         }
 
         ///////////////////////////////////////////HELPERS////////////////////////////////////////////
@@ -236,29 +221,73 @@ Shader "Custom/Water_Lit"
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
             float depth = CalculateDepth(IN, _DepthFactor);
-
+        
             float3 refractionRay = Refraction(IN);
-            float2 screenUV = IN.screenPos.xy / IN.screenPos.w;
-
-            float2 distortedUV = screenUV + refractionRay.xy * _RefractionStrength * 0.02;
-
+            float4 screenUV = ComputeScreenCoords(IN);
+        
+            float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
+            float waterDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+        
+            float f = sceneDepth - waterDepth;
+            float behindWater = step(waterDepth, sceneDepth);
+            float2 distortedUV = screenUV.xy + refractionRay.xy * _RefractionStrength * 0.02;
+        
             float3 refractedColor = tex2D(_GrabTexture, distortedUV);
-
+        
             float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
-
+        
             float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
             float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
-
-            float3 finalColor = lerp(refractedColor, waterFoamColor, 0.4);
-
+        
+        
+            float3 finalColor = lerp(refractedColor, waterFoamColor, behindWater);
+        
             o.Albedo = finalColor;
-
+        
             o.Alpha = _DeepColor.a;
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
-
+        
             o.Normal = blendedNormals(IN);
         }
+
+        // void surf(Input IN, inout SurfaceOutputStandard o)
+        // {
+        //     float depth = CalculateDepth(IN, _DepthFactor);
+        //
+        //     float3 refractionRay = Refraction(IN);
+        //     float4 screenUV = ComputeScreenCoords(IN);
+        //
+        //     float2 distortedUV = screenUV.xy + refractionRay.xy * _RefractionStrength * 0.02;
+        //
+        //     float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
+        //     float waterDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+        //
+        //     float f = sceneDepth - waterDepth;
+        //     bool isUnderwater = sceneDepth < waterDepth;
+        //
+        //     if (isUnderwater)
+        //     {
+        //         
+        //     }
+        //     float3 refractedColor = tex2D(_GrabTexture, distortedUV);
+        //     
+        //
+        //     float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
+        //
+        //     float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
+        //     float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
+        //
+        //     float3 finalColor = lerp(refractedColor, waterFoamColor, 0.4);
+        //
+        //     o.Albedo = finalColor;
+        //
+        //     o.Alpha = _DeepColor.a;
+        //     o.Metallic = _Metallic;
+        //     o.Smoothness = _Glossiness;
+        //
+        //     o.Normal = blendedNormals(IN);
+        // }
         ENDCG
     }
 }

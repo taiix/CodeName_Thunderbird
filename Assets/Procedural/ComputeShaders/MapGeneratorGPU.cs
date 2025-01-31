@@ -60,17 +60,31 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
 
     [SerializeField] private float targetHeight;
     [SerializeField] private AnimationCurve customAreaCurve;
+    private System.Random systemRandom;
+
     private void Awake()
     {
+        Camera[] cams = FindObjectsOfType<Camera>();
+        foreach (var cam in cams)
+        {
+            cam.depthTextureMode = DepthTextureMode.Depth;
+
+        }
         terrain = GetComponent<Terrain>();
 
         terrainData = terrain.terrainData;
 
-        if (seed == 0) seed = UnityEngine.Random.Range(-1000, 1000);
+        if (seed == 0)
+        {
+            systemRandom = new System.Random();
+            seed = systemRandom.Next(-1000, 1001);
+        }
+        else
+        {
+            systemRandom = new System.Random(seed);
+        }
 
-        UnityEngine.Random.InitState(seed);
         Calculate();
-
     }
 
     public void Calculate()
@@ -95,6 +109,12 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
 
     private void OnValidate()
     {
+        Camera[] cams = FindObjectsOfType<Camera>();
+        foreach (var cam in cams)
+        {
+            cam.depthTextureMode = DepthTextureMode.Depth;
+
+        }
         noiseHeights = new float[width, height];
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
@@ -392,7 +412,6 @@ public class MapGeneratorGPU : MonoBehaviour, ISavableData
     {
         TerrainDataSave data = JsonUtility.FromJson<TerrainDataSave>(json);
         seed = data.seed;
-        Debug.Log("Serialized islandData: " + seed);
         Calculate();
     }
 

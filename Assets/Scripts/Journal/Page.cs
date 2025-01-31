@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public enum PageCategory
 {
@@ -28,7 +25,7 @@ public class Page : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("subscribed to onOreMined");
+       // Debug.Log("subscribed to onOreMined");
        
     }
 

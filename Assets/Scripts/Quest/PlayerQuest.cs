@@ -16,7 +16,7 @@ public class PlayerQuest : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject questCompletedUI;
 
-    private void OnEnable()
+    private void Start()
     {
         QuestManager_v2.OnQuestSent.AddListener(ReceiveQuest);
         OnQuestCompleted += TrackRepairQuest;
@@ -42,6 +42,7 @@ public class PlayerQuest : MonoBehaviour
 
     void ReceiveQuest(BaseSO_Properties q)
     {
+        Debug.Log("quest accepted");
         activeQuest = q;
         QuestUI.OnQuestInfoChanged?.Invoke(activeQuest.questName, activeQuest.questDescription);
 
