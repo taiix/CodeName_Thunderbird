@@ -271,7 +271,7 @@ public class CharacterMovement : MonoBehaviour
         int soundID = groundDetector.GetCurrentGroundID();
 
         
-        if (isGrounded && isMoving)
+        if (GroundCheck() && isMoving)
         {
             if (soundID != -1)
             {
