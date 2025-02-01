@@ -15,7 +15,6 @@ public static class SaveLoadSystem
         }
 
         PlayerData playerData = null;
-        PlaneData planeData = null;
         TimeData timeData = null;
         InventoryData inventoryData = null;
 
@@ -23,6 +22,7 @@ public static class SaveLoadSystem
 
         AllIslandsVegetation allIslandsVegetation = new();
         List<TerrainDataSave> terrainSeed = new();
+        List<PlaneData> planeData = new();
 
         foreach (ISavableData data in dataContainer)
         {
@@ -35,7 +35,7 @@ public static class SaveLoadSystem
                         break;
 
                     case PlanePart planePart:
-                        planeData = JsonUtility.FromJson<PlaneData>(data.ToJson());
+                        planeData.Add(JsonUtility.FromJson<PlaneData>(data.ToJson()));
                         break;
 
                     case MapGeneratorGPU mapGenerator:
@@ -132,9 +132,11 @@ public static class SaveLoadSystem
                             break;
 
                         case PlanePart planePart:
-                            if (wrapper.planeData != null)
+                            if (wrapper.planeData.Count > 0)
                             {
-                                planePart.FromJson(JsonUtility.ToJson(wrapper.planeData));
+                                string planeJson = JsonUtility.ToJson(wrapper.planeData[0]);
+                                planePart.FromJson(planeJson);
+                                wrapper.planeData.RemoveAt(0);
                             }
                             break;
 

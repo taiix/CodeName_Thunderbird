@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameDataContainer
 {
     public PlayerData playerData;
-    public PlaneData planeData;
+    public List<PlaneData> planeData;
     public List<TerrainDataSave> terrainData;
     public TimeData timeData;
     public InventoryData inventoryData;
@@ -15,7 +15,7 @@ public class GameDataContainer
 
     public NPCDialogueData npcDialogueData;
     
-    public GameDataContainer(PlayerData playerData, PlaneData planeData, List<TerrainDataSave> terrainData, 
+    public GameDataContainer(PlayerData playerData, List<PlaneData> planeData, List<TerrainDataSave> terrainData, 
         TimeData timeData, InventoryData inventoryData, 
         AllIslandsVegetation vegetationAllIslands, NPCDialogueData npcDialogueData)
     {

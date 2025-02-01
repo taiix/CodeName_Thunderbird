@@ -147,10 +147,14 @@ public class PlanePart : MonoBehaviour, ISavableData
         currentHealth = maxHealth;
         TakeDamage(0);
     }
+
     public string ToJson()
     {
         PlaneData data = new PlaneData
-            (currentHealth, planeRb.gameObject.transform.position.x, planeRb.gameObject.transform.position.y, planeRb.gameObject.transform.position.z);
+            (currentHealth, 
+            planeRb.gameObject.transform.position.x, 
+            planeRb.gameObject.transform.position.y, 
+            planeRb.gameObject.transform.position.z);
 
         return JsonUtility.ToJson(data, true);
     }
