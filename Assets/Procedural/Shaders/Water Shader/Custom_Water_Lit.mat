@@ -19,7 +19,7 @@ Material:
   m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _FoamColor _FoamScale
+  m_LockedProperties: _FoamColor _FoamScale _RefractoringNormal
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -45,7 +45,7 @@ Material:
     - _FoamSpeed: 1
     - _Glossiness: 0.155
     - _Metallic: 0
-    - _RefractionDepth: 63.87
+    - _RefractionDepth: -19.93
     - _RefractionSpeed: 1
     - _RefractionStrengt: 0.35
     - _RefractionStrength: 2

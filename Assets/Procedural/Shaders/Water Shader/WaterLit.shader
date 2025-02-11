@@ -27,7 +27,6 @@ Shader "Custom/Water_Lit"
         _RefractoringNormal("Refractoring Normal", 2D) = "bump" {}
         _RefractionStrength ("Refraction Strengt", Float) = 1.0
         _RefractionSpeed ("Refraction Speed", Float) = 1.0
-        _RefractionDepth ("Refract depth", Float) = 1.0
     }
     SubShader
     {
@@ -40,9 +39,6 @@ Shader "Custom/Water_Lit"
             "Queue" = "Transparent"
             "RenderType"="Transparent"
         }
-
-        ZWrite On
-        ColorMask 0
 
         CGPROGRAM
         #pragma surface surf Standard alpha vertex:vert
@@ -88,7 +84,6 @@ Shader "Custom/Water_Lit"
 
         float _RefractionStrength;
         float _RefractionSpeed;
-        float _RefractionDepth;
 
         void vert(inout appdata_full v, out Input i)
         {
@@ -225,11 +220,11 @@ Shader "Custom/Water_Lit"
             float3 refractionRay = Refraction(IN);
             float4 screenUV = ComputeScreenCoords(IN);
         
-            float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
-            float waterDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
+            // float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
+            // float waterDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
         
-            float f = sceneDepth - waterDepth;
-            float behindWater = step(waterDepth, sceneDepth);
+            //float f = sceneDepth - waterDepth;
+            //float behindWater = step(waterDepth, sceneDepth);
             float2 distortedUV = screenUV.xy + refractionRay.xy * _RefractionStrength * 0.02;
         
             float3 refractedColor = tex2D(_GrabTexture, distortedUV);
@@ -240,7 +235,7 @@ Shader "Custom/Water_Lit"
             float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
         
         
-            float3 finalColor = lerp(refractedColor, waterFoamColor, behindWater);
+            float3 finalColor = lerp(refractedColor, waterFoamColor, 0.4);
         
             o.Albedo = finalColor;
         
@@ -250,44 +245,6 @@ Shader "Custom/Water_Lit"
         
             o.Normal = blendedNormals(IN);
         }
-
-        // void surf(Input IN, inout SurfaceOutputStandard o)
-        // {
-        //     float depth = CalculateDepth(IN, _DepthFactor);
-        //
-        //     float3 refractionRay = Refraction(IN);
-        //     float4 screenUV = ComputeScreenCoords(IN);
-        //
-        //     float2 distortedUV = screenUV.xy + refractionRay.xy * _RefractionStrength * 0.02;
-        //
-        //     float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
-        //     float waterDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
-        //
-        //     float f = sceneDepth - waterDepth;
-        //     bool isUnderwater = sceneDepth < waterDepth;
-        //
-        //     if (isUnderwater)
-        //     {
-        //         
-        //     }
-        //     float3 refractedColor = tex2D(_GrabTexture, distortedUV);
-        //     
-        //
-        //     float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
-        //
-        //     float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
-        //     float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
-        //
-        //     float3 finalColor = lerp(refractedColor, waterFoamColor, 0.4);
-        //
-        //     o.Albedo = finalColor;
-        //
-        //     o.Alpha = _DeepColor.a;
-        //     o.Metallic = _Metallic;
-        //     o.Smoothness = _Glossiness;
-        //
-        //     o.Normal = blendedNormals(IN);
-        // }
         ENDCG
     }
 }
