@@ -196,46 +196,52 @@ Shader "Custom/Water_Lit"
 
             float t1 = _Time * _SpeedMap1;
             float t2 = _Time * _SpeedMap2;
+            float2 offset = float2(t1, t2) * _Scale;
+            
 
-            float2 offset1 = float2(t1 * _Scale, 0);
-            float2 offset2 = float2(0, t2 * _Scale);
-
-            float2 uv1 = IN.uv_RefractoringNormal + offset1 + offset2;
+            float2 uv1 = IN.uv_RefractoringNormal + offset;
             float3 lightPos = _WorldSpaceLightPos0;
             float3 normal = normalize(UnpackNormal(tex2D(_RefractoringNormal, uv1)));
-
+            
+            float3 viewDir = normalize(_WorldSpaceCameraPos - IN.worldPos);
+            
             float3 incidentRay = normalize(lightPos - IN.worldPos);
 
-            float3 refractionRay = normalize(refract(incidentRay, normal, n1 / n2));
+            float3 refractedDir = refract(-viewDir, normal, n1 / n2);
 
-            return refractionRay;
+            return refractedDir;
         }
+float CalculateRefractionDepth(Input IN, float scaleFactor)
+{
+    float4 screenUV = ComputeScreenCoords(IN);
 
+    float rawDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy);
+    float linearDepth = LinearEyeDepth(rawDepth);
+    float surfaceDepth = LinearEyeDepth(screenUV.z);
+
+    float depthDiff = saturate((linearDepth - surfaceDepth) / max(scaleFactor, 0.001));
+
+    return depthDiff;
+}
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         void surf(Input IN, inout SurfaceOutputStandard o)
         {
             float depth = CalculateDepth(IN, _DepthFactor);
+            float refractionDepth = CalculateRefractionDepth(IN, _RefractionSpeed);
         
             float3 refractionRay = Refraction(IN);
             float4 screenUV = ComputeScreenCoords(IN);
-        
-            // float sceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy));
-            // float waterDepth = UNITY_Z_0_FAR_FROM_CLIPSPACE(screenUV.z);
-        
-            //float f = sceneDepth - waterDepth;
-            //float behindWater = step(waterDepth, sceneDepth);
-            float2 distortedUV = screenUV.xy + refractionRay.xy * _RefractionStrength * 0.02;
-        
-            float3 refractedColor = tex2D(_GrabTexture, distortedUV);
+            
+            float2 distortedUV = screenUV.xy + float2(0, refractionRay.y * _RefractionStrength * 0.02);
+            float3 refractedColor = tex2D(_GrabTexture, lerp(distortedUV, screenUV.xy, refractionDepth));
         
             float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
         
             float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
             float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
-        
-        
-            float3 finalColor = lerp(refractedColor, waterFoamColor, 0.4);
+            
+            float3 finalColor = lerp(refractedColor, waterColor,  depth);
         
             o.Albedo = finalColor;
         
