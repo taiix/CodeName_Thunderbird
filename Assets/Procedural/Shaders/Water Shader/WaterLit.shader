@@ -111,6 +111,19 @@ Shader "Custom/Water_Lit"
             return depthDiff;
         }
 
+        float CalculateRefractionDepth(Input IN, float scaleFactor)
+        {
+            float4 screenUV = ComputeScreenCoords(IN);
+
+            float rawDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy);
+            float linearDepth = LinearEyeDepth(rawDepth);
+            float surfaceDepth = LinearEyeDepth(screenUV.z);
+
+            float depthDiff = saturate((linearDepth - surfaceDepth) / max(scaleFactor, 0.001));
+
+            return depthDiff;
+        }
+
         float3 blendedNormals(Input IN)
         {
             float t1 = _Time * _SpeedMap1;
@@ -211,18 +224,7 @@ Shader "Custom/Water_Lit"
 
             return refractedDir;
         }
-float CalculateRefractionDepth(Input IN, float scaleFactor)
-{
-    float4 screenUV = ComputeScreenCoords(IN);
 
-    float rawDepth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, screenUV.xy);
-    float linearDepth = LinearEyeDepth(rawDepth);
-    float surfaceDepth = LinearEyeDepth(screenUV.z);
-
-    float depthDiff = saturate((linearDepth - surfaceDepth) / max(scaleFactor, 0.001));
-
-    return depthDiff;
-}
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         void surf(Input IN, inout SurfaceOutputStandard o)
@@ -237,11 +239,13 @@ float CalculateRefractionDepth(Input IN, float scaleFactor)
             float3 refractedColor = tex2D(_GrabTexture, lerp(distortedUV, screenUV.xy, refractionDepth));
         
             float4 waterColor = lerp(_ShallowColor, _DeepColor, depth);
-        
+
             float foamAmount = foam(IN, _FoamIntensity, _FoamCutoff);
             float4 waterFoamColor = lerp(waterColor, _FoamColor, foamAmount);
-            
-            float3 finalColor = lerp(refractedColor, waterColor,  depth);
+
+            float3 waterBaseColor = lerp(refractedColor, waterColor.rgb, depth);
+
+            float3 finalColor = lerp(waterBaseColor, waterFoamColor.rgb, foamAmount);
         
             o.Albedo = finalColor;
         

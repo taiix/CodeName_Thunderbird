@@ -39,16 +39,16 @@ Material:
     m_Floats:
     - _Amplitude: 1
     - _DepthFactor: 15.5
-    - _FoamCutoff: 2.35
-    - _FoamIntensity: 8.04
-    - _FoamScale: 2.1
+    - _FoamCutoff: 3.7
+    - _FoamIntensity: 3.63
+    - _FoamScale: 7.21
     - _FoamSpeed: 1
     - _Glossiness: 0.155
     - _Metallic: 0
     - _RefractionDepth: -19.93
     - _RefractionSpeed: 173.5
     - _RefractionStrengt: 0.35
-    - _RefractionStrength: 13.51
+    - _RefractionStrength: 2.56
     - _Scale: 0.277
     - _SpeedMap1: 1
     - _SpeedMap2: 1
@@ -59,6 +59,6 @@ Material:
     m_Colors:
     - _CenterPoint: {r: 1, g: 1, b: 1, a: 1}
     - _DeepColor: {r: 0, g: 0.5, b: 1, a: 1}
-    - _FoamColor: {r: 766.99603, g: 766.99603, b: 766.99603, a: 1}
+    - _FoamColor: {r: 0.74901956, g: 0.74901956, b: 0.74901956, a: 1}
     - _ShallowColor: {r: 0.20784304, g: 0.8021809, b: 0.85882354, a: 1}
   m_BuildTextureStacks: []
