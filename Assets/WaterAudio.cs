@@ -19,7 +19,7 @@ public class WaterAudio : MonoBehaviour
             return;
         }
 
-        float dist = Vector3.Distance(this.transform.position, player.transform.position);
+        float dist = Vector3.Distance(this.transform.position, player.transform.position) - audioSource.maxDistance;
 
         if (dist < audioSource.maxDistance)
         {

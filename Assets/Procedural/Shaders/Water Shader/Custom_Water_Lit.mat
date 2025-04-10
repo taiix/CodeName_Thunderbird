@@ -39,7 +39,7 @@ Material:
     m_Floats:
     - _Amplitude: 1
     - _DepthFactor: 15.5
-    - _FoamCutoff: 3.7
+    - _FoamCutoff: 1.12
     - _FoamIntensity: 3.63
     - _FoamScale: 7.21
     - _FoamSpeed: 1
